@@ -26,16 +26,15 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         # Plugin must be same as input name
-        # plugins = [
-        #   "nvim-lspconfig"
-        #   "nvim-treesitter"
-        #   "nvim-compe"
-        #   "lualine"
-        #   "tokyonight"
-        #   "nvim-web-devicons"
-        # ];
+        plugins = [
+          "nvim-lspconfig"
+          "nvim-treesitter"
+          "nvim-compe"
+          "lualine"
+          "tokyonight"
+          "nvim-web-devicons"
+        ];
       
-        plugins = [];
         pluginOverlay = lib.buildPluginOverlay;
 
         pkgs = import nixpkgs {
@@ -72,14 +71,14 @@
         config = {
             vim.viAlias = true;
             vim.vimAlias = true;
+          vim.statusline.lualine.enable = true;
+          vim.theme.tokyonight.enable = true;
+          vim.lsp.enable = true;
+          vim.lsp.rust = true;
+          vim.lsp.nix = true;
         };
       };
 
-        #  vim.statusline.lualine.enable = true;
-        #  vim.theme.tokyonight.enable = true;
-        #  vim.lsp.enable = true;
-        #  vim.lsp.rust = true;
-        #  vim.lsp.nix = true;
       # Default package output for commands nix shell and build
       defaultPackage = packages.neovimWT;
 

@@ -1,4 +1,4 @@
-{ pkgs, inputs, plugins, ...};
+{ pkgs, inputs, plugins, ...}:
 {
   inherit (pkgs.lib);
 
