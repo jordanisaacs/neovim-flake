@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... };
+{ pkgs, config, lib, ... }:
 with lib;
 with builtins;
 
@@ -7,12 +7,6 @@ let
 in {
   options.vim.filetree.nvimTreeLua = {
     enable = mkEnableOption "Enable nvim-tree-lua";
-
-    devIcons = mkOption {
-      default = true;
-      description = "Install devicons to display next to files";
-      type = types.bool;
-    };
 
     treeSide = mkOption {
       default = "left";
@@ -28,7 +22,7 @@ in {
 
     hideFiles = mkOption {
       default = [ ".git" "node_modules" ".cache" ];
-      description = "Files to ide in the file view by default.";
+      description = "Files to hide in the file view by default.";
       type = with types; listOf str;
     };
 
@@ -117,7 +111,6 @@ in {
     in {
       vim.startPlugins = with pkgs.neovimPlugins; [
         nvim-tree-lua
-        (if cfg.devIcons then nvim-web-devicons else null)
       ];
 
       vim.nnoremap = {
@@ -144,6 +137,6 @@ in {
         "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
         "nvim_tree_lsp_diagnostics" = mkVimBool cfg.lspDiagnostics;
       };
-    };
+    }
   );
 }

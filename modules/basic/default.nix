@@ -58,7 +58,7 @@ in {
     mouseSupport = mkOption {
       default = "a";
       description = "Set modes for mouse support. a - all, n - normal, v - visual, i - insert, c - command";
-      type = types.str;
+      type = with types; enum ["a" "n" "v" "i" "c"];
     };
 
     lineNumberMode = mkOption {
@@ -75,7 +75,7 @@ in {
 
     tabWidth = mkOption {
       default = 4;
-      description = "Set the width of tabs to 4";
+      description = "Set the width of tabs";
       type = types.int;
     };
 
@@ -86,8 +86,8 @@ in {
     };
 
     cmdHeight = mkOption {
-      default = 2;
-      description = "Hight of the command pane";
+      default = 1;
+      description = "Height of the command pane";
       type = types.int;
     };
 
@@ -153,7 +153,7 @@ in {
     } else {};
 
     vim.configRC = ''
-      "Settings that are set for everything
+      " Settings that are set for everything
       set encoding=utf-8
       set mouse=${cfg.mouseSupport}
       set tabstop=${toString cfg.tabWidth}

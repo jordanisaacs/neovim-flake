@@ -6,6 +6,9 @@
     ./statusline
     ./filetree
     ./themes
+    ./icons
     ./lsp
+    ./autopairs
+    ./snippets
   ];
 }

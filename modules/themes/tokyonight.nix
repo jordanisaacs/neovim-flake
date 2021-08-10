@@ -14,6 +14,7 @@ in {
       default = "storm";
       type = types.enum [ "day" "night" "storm" ];
     };
+  };
 
   config = mkIf cfg.enable (
     let
@@ -28,7 +29,7 @@ in {
       vim.globals = {
         "tokyonight_style" = cfg.style;
       };
-    };
+    }
   );
-
+}
  

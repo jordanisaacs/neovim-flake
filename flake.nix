@@ -4,24 +4,22 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    
-    neovim = {
-      url = "github:neovim/neovim?dir=contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
 
     # Vim plugins
-   #  nvim-lspconfig = { url = "github:neovim/nvim-lspconfig"; flake = false; };
-   #  rnix-lsp.url = github:nix-community/rnix-lsp;
-   #  nvim-treesitter = { url = "github:nvim-treesitter/nvim-treesitter"; flake = false; };
-   #  nvim-compe = { url = "github:hrsh7th/nvim-compe"; flake = false; };
-   #  lualine-nvim = { url = "github:hoob3rt/lualine.nvim"; flake = false; };
-   #  tokyonight-nvim = { url = "github:folke/tokyonight.nvim"; flake = false; };
-   #  nvim-web-devicons = { url = "github:kyazdani42/nvim-web-devicons"; flake = false; };
+    nvim-lspconfig = { url = "github:neovim/nvim-lspconfig"; flake = false; };
+    rnix-lsp.url = github:nix-community/rnix-lsp;
+    nvim-treesitter = { url = "github:nvim-treesitter/nvim-treesitter"; flake = false; };
+    lspsaga = { url = "github:glepnir/lspsaga.nvim"; flake = false; };
+    nvim-compe = { url = "github:hrsh7th/nvim-compe"; flake = false; };
+    lualine = { url = "github:hoob3rt/lualine.nvim"; flake = false; };
+    tokyonight = { url = "github:folke/tokyonight.nvim"; flake = false; };
+    nvim-web-devicons = { url = "github:kyazdani42/nvim-web-devicons"; flake = false; };
+    nvim-tree-lua = { url = "github:kyazdani42/nvim-tree.lua"; flake = false; };
+    lspkind = { url = "github:onsails/lspkind-nvim"; flake = false; };
+    nvim-autopairs = { url = "github:windwp/nvim-autopairs"; flake = false; };
   };
-  
-  outputs = { nixpkgs, flake-utils, neovim, ... }@inputs:
+
+  outputs = { nixpkgs, flake-utils, ... }@inputs:
     # Create a nixpkg for each system
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -29,10 +27,15 @@
         plugins = [
           "nvim-lspconfig"
           "nvim-treesitter"
+          "lspsaga"
           "nvim-compe"
           "lualine"
           "tokyonight"
           "nvim-web-devicons"
+          "nvim-tree-lua"
+          "lspsaga"
+          "lspkind"
+          "nvim-autopairs"
         ];
       
         pluginOverlay = lib.buildPluginOverlay;
@@ -43,7 +46,6 @@
           overlays = [
             pluginOverlay
             (final: prev: {
-              neovim-nightly = neovim.defaultPackage.${system};
               rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
             })
           ];
@@ -54,8 +56,6 @@
         neovimBuilder = lib.neovimBuilder;
     in
     rec {
-      inherit neovimBuilder pkgs;
-      
       apps = {
         nvim = {
           type = "app";
@@ -66,26 +66,25 @@
       # Default app for nix run
       defaultApp = apps.nvim;
 
-
-      packages.neovimWT = neovimBuilder {
+      packages.neovimJD = neovimBuilder {
         config = {
             vim.viAlias = true;
             vim.vimAlias = true;
           vim.statusline.lualine.enable = true;
           vim.theme.tokyonight.enable = true;
+          vim.autopairs = "nvim-autopairs";
+          vim.icons.dev.enable = true;
+          vim.icons.lspkind.enable = true;
+          vim.filetree.nvimTreeLua.enable = true;
           vim.lsp.enable = true;
-          vim.lsp.rust = true;
+          vim.lsp.lspsaga = true;
+          vim.lsp.rust = false;
           vim.lsp.nix = true;
+          vim.lsp.python = true;
         };
       };
 
       # Default package output for commands nix shell and build
-      defaultPackage = packages.neovimWT;
-
-      overlay = (self: super: {
-        inherit neovimBuilder;
-        neovimWT = packages.neovimWT;
-        neovimPlugins = pkgs.neovimPlugins;
-      });
-    });
+      defaultPackage = packages.neovimJD;
+   });
 }
