@@ -63,8 +63,14 @@
         };
       };
 
-      # Default app for nix run
       defaultApp = apps.nvim;
+      defaultPackage = packages.neovimJD;
+
+      overlay = (self: super: {
+        inherit neovimBuilder;
+        neovimJD = packages.neovimJD;
+        neovimPlugins = pkgs.neovimPlugins;
+      });
 
       packages.neovimJD = neovimBuilder {
         config = {
@@ -83,8 +89,5 @@
           vim.lsp.python = true;
         };
       };
-
-      # Default package output for commands nix shell and build
-      defaultPackage = packages.neovimJD;
    });
 }
