@@ -21,14 +21,12 @@ in {
       mkVimBool = val: if val then "1" else "0";
     in {
       vim.configRC = ''
+        " need to set tokyonight style before colorscheme to apply
+        let g:tokyonight_style = "${cfg.style}"
         colorscheme tokyonight
       '';
 
       vim.startPlugins = with pkgs.neovimPlugins; [tokyonight];
-
-      vim.globals = {
-        "tokyonight_style" = cfg.style;
-      };
     }
   );
 }
