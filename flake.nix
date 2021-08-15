@@ -5,18 +5,40 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    # Vim plugins
+    # LSP plugins
     nvim-lspconfig = { url = "github:neovim/nvim-lspconfig"; flake = false; };
-    rnix-lsp.url = github:nix-community/rnix-lsp;
     nvim-treesitter = { url = "github:nvim-treesitter/nvim-treesitter"; flake = false; };
     lspsaga = { url = "github:glepnir/lspsaga.nvim"; flake = false; };
-    nvim-compe = { url = "github:hrsh7th/nvim-compe"; flake = false; };
-    lualine = { url = "github:hoob3rt/lualine.nvim"; flake = false; };
-    tokyonight = { url = "github:folke/tokyonight.nvim"; flake = false; };
-    nvim-web-devicons = { url = "github:kyazdani42/nvim-web-devicons"; flake = false; };
-    nvim-tree-lua = { url = "github:kyazdani42/nvim-tree.lua"; flake = false; };
     lspkind = { url = "github:onsails/lspkind-nvim"; flake = false; };
+
+
+    # Langauge server (use master instead of nixpkgs)
+    rnix-lsp.url = github:nix-community/rnix-lsp;
+    
+    # Filetrees
+    nvim-tree-lua = { url = "github:kyazdani42/nvim-tree.lua"; flake = false; };
+
+    # Tablines
+    nvim-bufferline-lua = { url = "github:akinsho/nvim-bufferline.lua"; flake = false; };
+
+    # Statuslines
+    lualine = { url = "github:hoob3rt/lualine.nvim"; flake = false; };
+
+    # Autocompletes
+    nvim-compe = { url = "github:hrsh7th/nvim-compe"; flake = false; };
+
+    # Autopairs
     nvim-autopairs = { url = "github:windwp/nvim-autopairs"; flake = false; };
+    nvim-ts-autotag = { url = "github:windwp/nvim-ts-autotag"; flake = false; };
+
+    # Icons
+    nvim-web-devicons = { url = "github:kyazdani42/nvim-web-devicons"; flake = false; };
+
+    # Buffer tools
+    bufdelete-nvim = { url = "github:famiu/bufdelete.nvim"; flake = false; };
+
+    # Themes
+    tokyonight = { url = "github:folke/tokyonight.nvim"; flake = false; };
   };
 
   outputs = { nixpkgs, flake-utils, ... }@inputs:
@@ -28,14 +50,16 @@
           "nvim-lspconfig"
           "nvim-treesitter"
           "lspsaga"
-          "nvim-compe"
-          "lualine"
-          "tokyonight"
-          "nvim-web-devicons"
-          "nvim-tree-lua"
-          "lspsaga"
           "lspkind"
+          "nvim-tree-lua"
+          "nvim-bufferline-lua"
+          "lualine"
+          "nvim-compe"
           "nvim-autopairs"
+          "nvim-ts-autotag"
+          "nvim-web-devicons"
+          "tokyonight"
+          "bufdelete-nvim"
         ];
       
         pluginOverlay = lib.buildPluginOverlay;
@@ -74,19 +98,31 @@
 
       packages.neovimJD = neovimBuilder {
         config = {
-            vim.viAlias = true;
-            vim.vimAlias = true;
+          vim.viAlias = true;
+          vim.vimAlias = true;
+          vim.lsp = {
+            enable = true;
+            lspsaga.enable = true;
+            rust = true;
+            nix = true;
+            python = true;
+          };
+
+
+          vim.icons.enable = true;
+          vim.icons.nvimWebDevicons = true;
           vim.statusline.lualine.enable = true;
-          vim.theme.tokyonight.enable = true;
-          vim.autopairs = "nvim-autopairs";
-          vim.icons.dev.enable = true;
-          vim.icons.lspkind.enable = true;
+          vim.theme.tokyonight = {
+            enable = true;
+            style = "night";
+          };
+          vim.autopairs.enable = true;
           vim.filetree.nvimTreeLua.enable = true;
-          vim.lsp.enable = true;
-          vim.lsp.lspsaga = true;
-          vim.lsp.rust = false;
-          vim.lsp.nix = true;
-          vim.lsp.python = true;
+          vim.tabline.nvimBufferline.enable = true;
+          vim.treesitter = {
+            enable = true;
+            autotag-html = true;
+          };
         };
       };
    });

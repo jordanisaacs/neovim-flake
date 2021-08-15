@@ -7,10 +7,10 @@ let
 
 in {
   options.vim.lsp = {
-    enable = mkEnableOption "Enable lsp support";
-    nix = mkEnableOption "Enable NIX Language Support";
-    rust = mkEnableOption "Enable Rust support";
-    python = mkEnableOption "Enable python support";
+    enable = mkEnableOption "neovim lsp support";
+    nix = mkEnableOption "Nix LSP";
+    rust = mkEnableOption "Rust LSP";
+    python = mkEnableOption "Python LSP";
   };
 
   config = mkIf cfg.enable (
@@ -20,7 +20,6 @@ in {
       vim.startPlugins = with pkgs.neovimPlugins; [
         nvim-lspconfig
         nvim-compe
-        nvim-treesitter
       ];
 
       vim.inoremap = {
@@ -34,36 +33,11 @@ in {
 
       vim.configRC = ''
         set completeopt=menuone,noselect
-
-        " Tree-sitter based folding
-        set foldmethod=expr
-        set foldexpr=nvim_treesitter#foldexpr()
-        set nofoldenable
       '';
 
       vim.luaConfigRC = ''
         -- Enable lspconfig
         local lspconfig = require'lspconfig'
-    
-        -- Treesitter config
-        require'nvim-treesitter.configs'.setup {
-          ensure_installed = "maintained",
-    
-          highlight = {
-            enable = true,
-            disable = {},
-          },
-    
-          incremental_selection = {
-            enable = true,
-            keymaps = {
-              init_selection = "gnn",
-              node_incremental = "grn",
-              scope_incremental = "grc",
-              node_decremental = "grm",
-            },
-          },
-        }
     
         -- Compe config
         require'compe'.setup {
@@ -151,8 +125,8 @@ in {
         ${writeIf cfg.rust ''
           -- Rust config
           lspconfig.rust_analyzer.setup{
-            capabilities = capabilities
-            on_attach = on_attach,
+            capabilities = capabilities;
+            on_attach = on_attach;
             cmd = {'${pkgs.rust-analyzer}/bin/rust-analyzer'}
           }
         ''}

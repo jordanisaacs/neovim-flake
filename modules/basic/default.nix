@@ -20,7 +20,7 @@ in {
     };
 
     hideSearchHighlight = mkOption {
-      default = true;
+      default = false;
       description = "Hide search highlight so it doesn't stay highlighted";
       type = types.bool;
     };
@@ -175,7 +175,7 @@ in {
         set signcolumn=yes
       ''}
       ${writeIf cfg.autoIndent ''
-        set ai
+        set autoindent
       ''}
             
       ${writeIf cfg.preventJunkFiles ''

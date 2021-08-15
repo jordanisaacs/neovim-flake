@@ -6,10 +6,12 @@ let
   cfg = config.vim.lsp;
 in {
   options.vim.lsp = {
-    lspsaga = mkEnableOption "Enable LSP Saga";
+    lspsaga = {
+      enable = mkEnableOption "LSP Saga";
+    };
   };
 
-  config = mkIf (cfg.enable && cfg.lspsaga) {
+  config = mkIf (cfg.enable && cfg.lspsaga.enable) {
     vim.startPlugins = with pkgs.neovimPlugins; [
       lspsaga
     ];

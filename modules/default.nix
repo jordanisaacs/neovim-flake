@@ -4,10 +4,12 @@
     ./core
     ./basic
     ./statusline
+    ./tabline
     ./filetree
     ./themes
     ./icons
     ./lsp
+    ./treesitter
     ./autopairs
     ./snippets
   ];

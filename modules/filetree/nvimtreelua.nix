@@ -15,7 +15,7 @@ in {
     };
 
     treeWidth = mkOption {
-      default = 30;
+      default = 25;
       description = "Width of the tree in charecters";
       type = types.int;
     };
@@ -45,7 +45,7 @@ in {
     };
 
     ignoreFileTypes = mkOption {
-      default = [ "startify" ];
+      default = [ ];
       description = "Ignore file types";
       type = with types; listOf str;
     };
@@ -110,7 +110,7 @@ in {
       mkVimBool = val: if val then 1 else 0;
     in {
       vim.startPlugins = with pkgs.neovimPlugins; [
-        nvim-tree-lua
+        (assert config.vim.icons.nvimWebDevicons == true; nvim-tree-lua)
       ];
 
       vim.nnoremap = {
