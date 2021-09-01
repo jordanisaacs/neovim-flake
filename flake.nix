@@ -1,6 +1,5 @@
 {
   description = "Jordan's Neovim Configuration";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
@@ -90,6 +89,7 @@
       defaultApp = apps.nvim;
       defaultPackage = packages.neovimJD;
 
+      devShell = pkgs.mkShell { buildInputs = [ packages.neovimJD ]; };
       overlay = (self: super: {
         inherit neovimBuilder;
         neovimJD = packages.neovimJD;
@@ -106,6 +106,7 @@
             rust = true;
             nix = true;
             python = true;
+            clang = true;
           };
 
 
@@ -117,7 +118,9 @@
             style = "night";
           };
           vim.autopairs.enable = true;
-          vim.filetree.nvimTreeLua.enable = true;
+          vim.filetree.nvimTreeLua = {
+            enable = true;
+          };
           vim.tabline.nvimBufferline.enable = true;
           vim.treesitter = {
             enable = true;

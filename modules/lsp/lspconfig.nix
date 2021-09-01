@@ -11,6 +11,7 @@ in {
     nix = mkEnableOption "Nix LSP";
     rust = mkEnableOption "Rust LSP";
     python = mkEnableOption "Python LSP";
+    clang = mkEnableOption "C language LSP";
   };
 
   config = mkIf cfg.enable (
@@ -146,6 +147,13 @@ in {
             capabilities = capabilities;
             on_attach=on_attach;
             cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"}
+          }
+        ''}
+
+        ${writeIf cfg.clang ''
+          -- CCLS (clang) config
+          lspconfig.ccls.setup{
+            cmd = {"${pkgs.ccls}/bin/ccls"}
           }
         ''}
       '';

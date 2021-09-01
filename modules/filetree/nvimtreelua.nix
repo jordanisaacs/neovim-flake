@@ -86,6 +86,12 @@ in {
       type = types.bool;
     };
 
+    hijackNetRW = mkOption {
+      default = true;
+      description = "Prevents netrw from automatically opening when opening directories";
+      type = types.bool;
+    };
+
     trailingSlash = mkOption {
       default = true;
       description = "Add a trailing slash to all folders";
@@ -133,6 +139,7 @@ in {
         "nvim_tree_hide_dotfiles" = mkVimBool cfg.hideDotFiles;
         "nvim_tree_tab_open" = mkVimBool cfg.openTreeOnNewTab;
         "nvim_tree_disable_netrw" = mkVimBool cfg.disableNetRW;
+        "nvim_tree_hijack_netrw" = mkVimBool cfg.hijackNetRW;
         "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
         "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
         "nvim_tree_lsp_diagnostics" = mkVimBool cfg.lspDiagnostics;
