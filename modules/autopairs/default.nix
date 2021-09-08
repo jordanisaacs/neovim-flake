@@ -31,12 +31,23 @@ in {
 
       vim.luaConfigRC = ''
         ${writeIf (cfg.type == "nvim-autopairs") ''
-          require("nvim-autopairs").setup{}
-          require('nvim-autopairs.completion.compe').setup({
-            map_cr = true,
-            map_complete = true,
-            auto_select = false,
-          })
+          ${writeIf config.vim.autocomplete.enable ''
+            require("nvim-autopairs").setup{}
+            ${writeIf (config.vim.autocomplete.type == "nvim-compe") ''
+              require('nvim-autopairs.completion.compe').setup({
+                map_cr = true,
+                map_complete = true,
+                auto_select = false,
+              })
+            ''}
+            ${writeIf (config.vim.autocomplete.type == "nvim-cmp") ''
+              require('nvim-autopairs.completion.cmp').setup({
+                map_cr = true,
+                map_complete = true,
+                auto_select = false,
+              })
+            ''}
+          ''}
         ''}
       '';
     }

@@ -12,7 +12,7 @@ in {
   config = mkIf cfg.enable (
     let
       mouse = {
-        right = "'verical sbuffer %d'";
+        right = "'vertical sbuffer %d'";
         close = ''
           function(bufnum)
             require("bufdelete").bufdelete(bufnum, false)
@@ -27,20 +27,27 @@ in {
 
       vim.nnoremap = {
         "<silent>[b" = ":BufferLineCycleNext<CR>";
-        "<silent>b]" = ":BufferLineCyclePrev<CR>";
-        "<silent>bse" = ":BufferLineSortByExtension<CR>";
-        "<silent>bsd" = ":BufferLineSortByDirectory<CR>";
-        "<silent>bsi" = ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";
-        "<silent>bmn" = ":BufferLineMoveNext<CR>";
-        "<silent>bmp" = ":BufferLineMovePrev<CR>";
+        "<silent>]b" = ":BufferLineCyclePrev<CR>";
+        "<silent><leader>bse" = ":BufferLineSortByExtension<CR>";
+        "<silent><leader>bsd" = ":BufferLineSortByDirectory<CR>";
+        "<silent><leader>bsi" = ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";
+        "<silent><leader>bmn" = ":BufferLineMoveNext<CR>";
+        "<silent><leader>bmp" = ":BufferLineMovePrev<CR>";
+        "<silent><leader>1" = "<Cmd>BufferLineGoToBuffer 1<CR>";
+        "<silent><leader>2" = "<Cmd>BufferLineGoToBuffer 2<CR>";
+        "<silent><leader>3" = "<Cmd>BufferLineGoToBuffer 3<CR>";
+        "<silent><leader>4" = "<Cmd>BufferLineGoToBuffer 4<CR>";
+        "<silent><leader>5" = "<Cmd>BufferLineGoToBuffer 5<CR>";
+        "<silent><leader>6" = "<Cmd>BufferLineGoToBuffer 6<CR>";
+        "<silent><leader>7" = "<Cmd>BufferLineGoToBuffer 7<CR>";
+        "<silent><leader>8" = "<Cmd>BufferLineGoToBuffer 8<CR>";
+        "<silent><leader>9" = "<Cmd>BufferLineGoToBuffer 9<CR>";
       };
 
       vim.luaConfigRC = ''
         require("bufferline").setup{
            options = {
               numbers = "both",
-              number_style = { "none", "subscript" },
-              mappings = true,
               close_command = ${mouse.close},
               right_mouse_command = ${mouse.right},
               indicator_icon = '▎',
@@ -63,6 +70,7 @@ in {
               offsets = {{filetype = "NvimTree", text = "File Explorer", text_align = "left"}},
               sort_by = 'extension',
               diagnostics = "nvim_lsp",
+              diagnostics_update_in_insert = true,
               diagnostics_indicator = function(count, level, diagnostics_dict, context)
                  local s = ""
                  for e, n in pairs(diagnostics_dict) do
@@ -73,6 +81,9 @@ in {
                     end
                  end
                  return s
+              end,
+              numbers = function(opts)
+                return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
               end,
            }
         }

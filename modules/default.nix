@@ -1,6 +1,7 @@
 {config, lib, pkgs, ...}:
 {
   imports = [
+    ./completion
     ./themes
     ./core
     ./basic

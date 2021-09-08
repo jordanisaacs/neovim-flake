@@ -25,6 +25,14 @@
 
     # Autocompletes
     nvim-compe = { url = "github:hrsh7th/nvim-compe"; flake = false; };
+    nvim-cmp = { url = "github:hrsh7th/nvim-cmp"; flake = false; };
+    cmp-buffer = { url = "github:hrsh7th/cmp-buffer"; flake = false; };
+    cmp-nvim-lsp = { url = "github:hrsh7th/cmp-nvim-lsp"; flake = false; };
+    cmp-vsnip = { url = "github:hrsh7th/cmp-vsnip"; flake = false; };
+    cmp-path = { url = "github:hrsh7th/cmp-path"; flake = false; };
+
+    # snippets
+    vim-vsnip = { url = "github:hrsh7th/vim-vsnip"; flake = false; };
 
     # Autopairs
     nvim-autopairs = { url = "github:windwp/nvim-autopairs"; flake = false; };
@@ -38,6 +46,12 @@
 
     # Themes
     tokyonight = { url = "github:folke/tokyonight.nvim"; flake = false; };
+
+    # Rust crates
+    crates-nvim = { url = "github:Saecki/crates.nvim"; flake = false; };
+
+    # Plenary (required by crates-nvim)
+    plenary-nvim = { url = "github:nvim-lua/plenary.nvim"; flake = false; };
   };
 
   outputs = { nixpkgs, flake-utils, ... }@inputs:
@@ -46,6 +60,7 @@
       let
         # Plugin must be same as input name
         plugins = [
+          "plenary-nvim"
           "nvim-lspconfig"
           "nvim-treesitter"
           "lspsaga"
@@ -59,6 +74,13 @@
           "nvim-web-devicons"
           "tokyonight"
           "bufdelete-nvim"
+          "nvim-cmp"
+          "cmp-nvim-lsp"
+          "cmp-buffer"
+          "cmp-vsnip"
+          "cmp-path"
+          "crates-nvim"
+          "vim-vsnip"
         ];
       
         pluginOverlay = lib.buildPluginOverlay;
@@ -118,6 +140,10 @@
             style = "night";
           };
           vim.autopairs.enable = true;
+          vim.autocomplete = {
+            enable = true;
+            type = "nvim-cmp";
+          };
           vim.filetree.nvimTreeLua = {
             enable = true;
           };
