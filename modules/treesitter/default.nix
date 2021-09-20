@@ -38,9 +38,8 @@ in {
 
     vim.luaConfigRC = ''
       -- Treesitter config
+      -- require 'nvim-treesitter.install'.compilers = { "${pkgs.gcc}/bin/gcc" }
       require'nvim-treesitter.configs'.setup {
-        ensure_installed = "maintained",
-    
         highlight = {
           enable = true,
           disable = {},
