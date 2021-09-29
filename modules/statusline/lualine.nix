@@ -190,7 +190,7 @@ in {
     vim.luaConfigRC = ''
       require'lualine'.setup {
         options = {
-          icons_enabled = ${if cfg.icons then (assert config.vim.icons.nvimWebDevicons == true; "true") else "false"}, 
+          icons_enabled = ${if cfg.icons then (assert config.vim.visuals.nvimWebDevicons == true; "true") else "false"}, 
           theme = "${cfg.theme}",
           component_separators = {"${cfg.component-separator.left}","${cfg.component-separator.right}"},
           section_separators = {"${cfg.component-separator.right}","${cfg.component-separator.left}"},

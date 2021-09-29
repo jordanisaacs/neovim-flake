@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ./lspconfig.nix
+    ./lsp.nix
     ./lspsaga.nix
+    ./nvim-code-action-menu.nix
+    ./trouble.nix
   ];
 }

@@ -1,10 +1,8 @@
-
-{ pkgs, lib, config, ...}:
+{ pkgs, lib, config, ... }:
 with lib;
 with builtins;
 
-let
-  cfg = config.vim;
+let cfg = config.vim;
 in {
   options.vim = {
     colourTerm = mkOption {
@@ -27,7 +25,8 @@ in {
 
     scrollOffset = mkOption {
       default = 8;
-      description = "Start scrolling this number of lines from the top or bottom of the page.";
+      description =
+        "Start scrolling this number of lines from the top or bottom of the page.";
       type = types.int;
     };
 
@@ -51,20 +50,23 @@ in {
 
     useSystemClipboard = mkOption {
       default = true;
-      description = "Make use of the clipboard for default yank and paste operations. Don't use * and +";
+      description =
+        "Make use of the clipboard for default yank and paste operations. Don't use * and +";
       type = types.bool;
     };
 
     mouseSupport = mkOption {
       default = "a";
-      description = "Set modes for mouse support. a - all, n - normal, v - visual, i - insert, c - command";
-      type = with types; enum ["a" "n" "v" "i" "c"];
+      description =
+        "Set modes for mouse support. a - all, n - normal, v - visual, i - insert, c - command";
+      type = with types; enum [ "a" "n" "v" "i" "c" ];
     };
 
     lineNumberMode = mkOption {
       default = "relNumber";
-      description = "How line numbers are displayed. none, relative, number, relNumber";
-      type = with types; enum ["relative" "number" "relNumber" "none"];
+      description =
+        "How line numbers are displayed. none, relative, number, relNumber";
+      type = with types; enum [ "relative" "number" "relNumber" "none" ];
     };
 
     preventJunkFiles = mkOption {
@@ -93,7 +95,8 @@ in {
 
     updateTime = mkOption {
       default = 300;
-      description = "The number of milliseconds till Cursor Hold event is fired";
+      description =
+        "The number of milliseconds till Cursor Hold event is fired";
       type = types.int;
     };
 
@@ -111,7 +114,8 @@ in {
 
     mapTimeout = mkOption {
       default = 500;
-      description = "Timeout in ms that neovim will wait for mapped action to complete";
+      description =
+        "Timeout in ms that neovim will wait for mapped action to complete";
       type = types.int;
     };
 
@@ -129,31 +133,28 @@ in {
 
   };
 
-  config = (
-    let 
-      writeIf = cond: msg: if cond then msg else "";
-    in {
-    vim.startPlugins = with pkgs.neovimPlugins; [
-      plenary-nvim
-    ];
+  config = (let writeIf = cond: msg: if cond then msg else "";
+  in {
+    vim.startPlugins = with pkgs.neovimPlugins; [ plenary-nvim ];
 
     vim.nmap = if (cfg.disableArrows) then {
       "<up>" = "<nop>";
       "<down>" = "<nop>";
       "<left>" = "<nop>";
       "<right>" = "<nop>";
-    } else {};
+    } else
+      { };
 
     vim.imap = if (cfg.disableArrows) then {
       "<up>" = "<nop>";
       "<down>" = "<nop>";
       "<left>" = "<nop>";
       "<right>" = "<nop>";
-    } else {};
+    } else
+      { };
 
-    vim.nnoremap = if (cfg.mapLeaderSpace) then {
-      "<space>" = "<nop>";
-    } else {};
+    vim.nnoremap =
+      if (cfg.mapLeaderSpace) then { "<space>" = "<nop>"; } else { };
 
     vim.configRC = ''
       " Settings that are set for everything
@@ -180,7 +181,7 @@ in {
       ${writeIf cfg.autoIndent ''
         set autoindent
       ''}
-            
+          
       ${writeIf cfg.preventJunkFiles ''
         set noswapfile
         set nobackup

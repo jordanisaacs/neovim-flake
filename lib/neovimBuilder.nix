@@ -1,35 +1,36 @@
-{ pkgs, lib ? pkgs.lib, ...}:
+{ pkgs, lib ? pkgs.lib, ... }:
 
 { config }:
 let
   neovimPlugins = pkgs.neovimPlugins;
-  
+
   # attempt fix for libstdc++.so.6 no file or directory
   myNeovimUnwrapped = pkgs.neovim-unwrapped.overrideAttrs (prev: {
     buildInputs = prev.buildInputs;
-    propagatedBuildInputs = [ pkgs.stdenv.cc.cc.lib ];
+    propagatedBuildInputs = [ pkgs.stdenv.cc.cc.lib pkgs.glow pkgs.graphviz ];
   });
 
   vimOptions = lib.evalModules {
     modules = [
-      { imports = [../modules]; }
-      config 
+      { imports = [ ../modules ]; }
+      config
     ];
 
     specialArgs = {
-      inherit pkgs; 
+      inherit pkgs;
     };
   };
 
   vim = vimOptions.config.vim;
-in pkgs.wrapNeovim myNeovimUnwrapped {
+in
+pkgs.wrapNeovim myNeovimUnwrapped {
   viAlias = true;
   vimAlias = true;
   configure = {
     customRC = vim.configRC;
 
     packages.myVimPackage = with neovimPlugins; {
-      start = vim.startPlugins;
+      start = builtins.filter (f: f != null) vim.startPlugins;
       opt = vim.optPlugins;
     };
   };

@@ -1,4 +1,4 @@
-{config, lib, pkgs, ...}:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     ./completion
@@ -8,10 +8,13 @@
     ./statusline
     ./tabline
     ./filetree
-    ./icons
+    ./visuals
     ./lsp
     ./treesitter
     ./autopairs
     ./snippets
+    ./keys
+    ./markdown
+    ./telescope
   ];
 }

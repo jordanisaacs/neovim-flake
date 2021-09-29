@@ -4,14 +4,15 @@ with builtins;
 
 let
   cfg = config.vim.filetree.nvimTreeLua;
-in {
+in
+{
   options.vim.filetree.nvimTreeLua = {
     enable = mkEnableOption "Enable nvim-tree-lua";
 
     treeSide = mkOption {
       default = "left";
       description = "Side the tree will appear on left or right";
-      type = types.enum ["left" "right"];
+      type = types.enum [ "left" "right" ];
     };
 
     treeWidth = mkOption {
@@ -114,15 +115,16 @@ in {
   config = mkIf cfg.enable (
     let
       mkVimBool = val: if val then 1 else 0;
-    in {
+    in
+    {
       vim.startPlugins = with pkgs.neovimPlugins; [
-        (assert config.vim.icons.nvimWebDevicons == true; nvim-tree-lua)
+        (assert config.vim.visuals.nvimWebDevicons == true; nvim-tree-lua)
       ];
 
       vim.nnoremap = {
         "<C-n>" = ":NvimTreeToggle<CR>";
-        "<leader>r" = ":NvimTreeRefresh<CR>";
-        "<leader>n" = ":NvimTreeFindFile<CR>";
+        "<leader>tr" = ":NvimTreeRefresh<CR>";
+        "<leader>tf" = ":NvimTreeFindFile<CR>";
       };
 
       vim.globals = {

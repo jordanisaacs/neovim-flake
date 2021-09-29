@@ -21,7 +21,7 @@ in {
       };
     in {
       vim.startPlugins = with pkgs.neovimPlugins; [
-        (assert config.vim.icons.nvimWebDevicons == true; nvim-bufferline-lua)
+        (assert config.vim.visuals.nvimWebDevicons == true; nvim-bufferline-lua)
         bufdelete-nvim
       ];
 
