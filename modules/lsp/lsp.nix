@@ -68,49 +68,13 @@ in
                 command = "${pkgs.sqlfluff}/bin/sqlfluff",
                 args = {
                   "fix",
-                  "-f",
+                  "--force",
                   "-",
                 },
                 to_stdin = true,
               },
               factory = null_helpers.formatter_factory,
             }),
-
-            --null_helpers.make_builtin({
-            --  method = null_methods.internal.DIAGNOSTICS,
-            --  filetypes = { "sql" },
-            --  generator_opts = {
-            --    command = "${pkgs.sqlfluff}/bin/sqlfluff",
-            --    args = {
-            --      "lint",
-            --      "--format",
-            --      "json",
-            --      "-",
-            --    },
-            --    to_stdin = true,
-            --    format = "json",
-            --    on_output = function(params)
-            --      params.messages = params and params.output and params.output[1] and params.output[1].violations or {}
-
-            --      local diagnostics = {}
-            --      for _, json_diagnostic in ipairs(params.messages) do
-            --        local diagnostic = {
-            --          row = json_diagnostic["line"],
-            --          col = json_diagnostic["line_pos"],
-            --          code = json_diagnostic["code"],
-            --          message = json_diagnostic["description"],
-            --          severity = null_helpers.diagnostics.severities["information"],
-            --        }
-
-            --        table.insert(diagnostics, diagnostic)
-            --      end
-
-            --      return diagnostics
-            --    end,
-            --  },
-            --  factory = null_helpers.generator_factory,
-            --})
-
           ''}
         }
 
@@ -123,8 +87,8 @@ in
           sources = ls_sources,
         })
 
-        -- Enable formatting on save using null-ls
-        local save_format = function(client)
+        -- Enable formatting
+        save_format = function(client)
           if client.resolved_capabilities.document_formatting then
             vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
           end
@@ -160,7 +124,6 @@ in
         cfg.rust
         ''
           -- Rust config
-          lspconfig.rust_analyzer.setup{}
           
           local rustopts = {
             server = {
@@ -170,6 +133,7 @@ in
             }
           }
 
+          lspconfig.rust_analyzer.setup{}
           require('crates').setup{}
           require('rust-tools').setup(rustopts)
           require('rust-tools.inlay_hints').set_inlay_hints()
@@ -213,6 +177,7 @@ in
           lspconfig.sqls.setup {
             on_attach = function(client)
               client.resolved_capabilities.execute_command = true
+              -- use null-ls with sqlfluff instead
               client.resolved_capabilities.document_formatting = false
 
               require'sqls'.setup{}

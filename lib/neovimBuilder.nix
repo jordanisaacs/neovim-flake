@@ -7,7 +7,7 @@ let
   # attempt fix for libstdc++.so.6 no file or directory
   myNeovimUnwrapped = pkgs.neovim-unwrapped.overrideAttrs (prev: {
     buildInputs = prev.buildInputs;
-    propagatedBuildInputs = [ pkgs.stdenv.cc.cc.lib pkgs.glow pkgs.graphviz ];
+    propagatedBuildInputs = [ pkgs.stdenv.cc.cc.lib ];
   });
 
   vimOptions = lib.evalModules {
