@@ -51,6 +51,8 @@ in
 
       vim.luaConfigRC = ''
         local null_ls = require("null-ls")
+        local null_helpers = require("null-ls.helpers")
+        local null_methods = require("null-ls.methods")
 
         local ls_sources = {
           ${writeIf cfg.python ''
@@ -58,7 +60,60 @@ in
               command = "${pkgs.black}/bin/black",
             }),
           ''}
+          ${writeIf cfg.sql ''
+            null_helpers.make_builtin({
+              method = null_methods.internal.FORMATTING,
+              filetypes = { "sql" },
+              generator_opts = {
+                command = "${pkgs.sqlfluff}/bin/sqlfluff",
+                args = {
+                  "fix",
+                  "-f",
+                  "-",
+                },
+                to_stdin = true,
+              },
+              factory = null_helpers.formatter_factory,
+            }),
+
+            --null_helpers.make_builtin({
+            --  method = null_methods.internal.DIAGNOSTICS,
+            --  filetypes = { "sql" },
+            --  generator_opts = {
+            --    command = "${pkgs.sqlfluff}/bin/sqlfluff",
+            --    args = {
+            --      "lint",
+            --      "--format",
+            --      "json",
+            --      "-",
+            --    },
+            --    to_stdin = true,
+            --    format = "json",
+            --    on_output = function(params)
+            --      params.messages = params and params.output and params.output[1] and params.output[1].violations or {}
+
+            --      local diagnostics = {}
+            --      for _, json_diagnostic in ipairs(params.messages) do
+            --        local diagnostic = {
+            --          row = json_diagnostic["line"],
+            --          col = json_diagnostic["line_pos"],
+            --          code = json_diagnostic["code"],
+            --          message = json_diagnostic["description"],
+            --          severity = null_helpers.diagnostics.severities["information"],
+            --        }
+
+            --        table.insert(diagnostics, diagnostic)
+            --      end
+
+            --      return diagnostics
+            --    end,
+            --  },
+            --  factory = null_helpers.generator_factory,
+            --})
+
+          ''}
         }
+
 
         -- Enable null-ls
         null_ls.config({
