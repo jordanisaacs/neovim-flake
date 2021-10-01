@@ -3,6 +3,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    neovim-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # LSP plugins
     nvim-lspconfig = {
       url = "github:neovim/nvim-lspconfig";
@@ -13,7 +18,7 @@
       flake = false;
     };
     lspsaga = {
-      url = "github:glepnir/lspsaga.nvim";
+      url = "github:tami5/lspsaga.nvim";
       flake = false;
     };
     lspkind = {
@@ -235,6 +240,7 @@
             (final: prev: {
               rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
             })
+            inputs.neovim-overlay.overlay
           ];
         };
 
@@ -283,6 +289,7 @@
               indent-blankline = {
                 enable = true;
                 fillChar = "";
+                eolChar = "";
               };
               cursor-wordline = {
                 enable = true;

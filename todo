@@ -1,0 +1,11 @@
+existing:
+- indent-blankline bug: colorscheme doesn't load when directly opening file
+- glow: run not from path (sent github issue)
+- sqlfluff lint: figure out why generator_opts on_return fails (sent github issue)
+
+new:
+- add onedark.nvim colorscheme
+- gitsigns.nvim (git things)
+- nvim-neoclip.lua (clipboard history)
+- kommentary (better commenting)
+- markdown-preview.nvim (powerful preview -> investigate how it works with nixos)

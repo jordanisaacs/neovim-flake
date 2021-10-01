@@ -65,13 +65,13 @@ in
               method = null_methods.internal.FORMATTING,
               filetypes = { "sql" },
               generator_opts = {
+                to_stdin = true,
                 command = "${pkgs.sqlfluff}/bin/sqlfluff",
                 args = {
                   "fix",
                   "--force",
                   "-",
                 },
-                to_stdin = true,
               },
               factory = null_helpers.formatter_factory,
             }),
@@ -94,7 +94,7 @@ in
           end
         end
 
-        local default_on_attach = function(client)
+        default_on_attach = function(client)
           save_format(client)
         end
 

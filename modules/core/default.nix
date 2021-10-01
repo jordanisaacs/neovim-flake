@@ -163,6 +163,7 @@ in
     in
     {
       vim.configRC = ''
+        ${concatStringsSep "\n" globalsScript}
         " Lua config from vim.luaConfigRC
         ${wrapLuaConfig
         (concatStringsSep "\n" [ cfg.startLuaConfigRC cfg.luaConfigRC ])}
@@ -182,7 +183,6 @@ in
           ${builtins.concatStringsSep "\n" cnoremap}
           ${builtins.concatStringsSep "\n" onoremap}
           ${builtins.concatStringsSep "\n" tnoremap}
-        ${concatStringsSep "\n" globalsScript}
       '';
     };
 

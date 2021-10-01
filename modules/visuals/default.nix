@@ -89,8 +89,17 @@ in
         vim.wo.colorcolumn = "99999"
         vim.opt.list = true
 
-        local listchars = "${if cfg.indent-blankline.fillChar == "" then "eol:${cfg.indent-blankline.eolChar}" else "eol:${cfg.indent-blankline.eolChar},space:${cfg.indent-blankline.fillChar}"}"
-        vim.opt.listchars = listchars;
+
+        ${if cfg.indent-blankline.eolChar == "" then
+            ""
+          else
+            ''vim.opt.listchars:append({ eol = "${cfg.indent-blankline.eolChar}" })''
+        }
+        ${if cfg.indent-blankline.fillChar == "" then
+            ""
+          else
+            ''vim.opt.listchars:append({ space = "${cfg.indent-blankline.fillChar}"})''
+        }
 
         require("indent_blankline").setup {
           char = "${cfg.indent-blankline.listChar}",
@@ -103,3 +112,4 @@ in
     '';
   };
 }
+

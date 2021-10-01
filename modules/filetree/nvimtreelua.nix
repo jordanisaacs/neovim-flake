@@ -112,40 +112,45 @@ in
     };
   };
 
-  config = mkIf cfg.enable (
-    let
-      mkVimBool = val: if val then 1 else 0;
-    in
-    {
-      vim.startPlugins = with pkgs.neovimPlugins; [
-        (assert config.vim.visuals.nvimWebDevicons == true; nvim-tree-lua)
-      ];
+  config = mkIf (cfg.enable && config.vim.visuals.nvimWebDevicons)
+    (
+      let
+        mkVimBool = val: if val then 1 else 0;
+      in
+      {
+        vim.startPlugins = with pkgs.neovimPlugins; [
+          nvim-tree-lua
+        ];
 
-      vim.nnoremap = {
-        "<C-n>" = ":NvimTreeToggle<CR>";
-        "<leader>tr" = ":NvimTreeRefresh<CR>";
-        "<leader>tf" = ":NvimTreeFindFile<CR>";
-      };
+        vim.nnoremap = {
+          "<C-n>" = ":NvimTreeToggle<CR>";
+          "<leader>tr" = ":NvimTreeRefresh<CR>";
+          "<leader>tf" = ":NvimTreeFindFile<CR>";
+        };
 
-      vim.globals = {
-        "nvim_tree_side" = cfg.treeSide;
-        "nvim_tree_width" = cfg.treeWidth;
-        "nvim_tree_ignore" = cfg.hideFiles;
-        "nvim_tree_gitignore" = mkVimBool cfg.hideIgnoredGitFiles;
-        "nvim_tree_auto_open" = mkVimBool cfg.openOnDirectoryStart;
-        "nvim_tree_auto_close" = mkVimBool cfg.closeOnLastWindow;
-        "nvim_tree_auto_ignore_ft" = cfg.ignoreFileTypes;
-        "nvim_tree_quit_on_open" = mkVimBool cfg.closeOnFileOpen;
-        "nvim_tree_follow" = mkVimBool cfg.followBufferFile;
-        "nvim_tree_indent_markers" = mkVimBool cfg.indentMarkers;
-        "nvim_tree_hide_dotfiles" = mkVimBool cfg.hideDotFiles;
-        "nvim_tree_tab_open" = mkVimBool cfg.openTreeOnNewTab;
-        "nvim_tree_disable_netrw" = mkVimBool cfg.disableNetRW;
-        "nvim_tree_hijack_netrw" = mkVimBool cfg.hijackNetRW;
-        "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
-        "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
-        "nvim_tree_lsp_diagnostics" = mkVimBool cfg.lspDiagnostics;
-      };
-    }
-  );
+        vim.globals = {
+          "nvim_tree_ignore" = cfg.hideFiles;
+          "nvim_tree_gitignore" = mkVimBool cfg.hideIgnoredGitFiles;
+          "nvim_tree_quit_on_open" = mkVimBool cfg.closeOnFileOpen;
+          "nvim_tree_indent_markers" = mkVimBool cfg.indentMarkers;
+          "nvim_tree_hide_dotfiles" = mkVimBool cfg.hideDotFiles;
+          "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
+          "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
+        };
+
+        vim.luaConfigRC = ''
+          require'nvim-tree'.setup({
+            disable_netrw = ${boolToString cfg.disableNetRW},
+            hijack_netrw = ${boolToString cfg.hijackNetRW},
+            open_on_tab = ${boolToString cfg.openTreeOnNewTab},
+            auto_close = ${boolToString cfg.closeOnLastWindow},
+            lsp_diagnostics = ${boolToString cfg.lspDiagnostics},
+            view  = {
+              width = ${toString cfg.treeWidth},
+              side = ${"'" + cfg.treeSide + "'"},
+            },
+          })
+        '';
+      }
+    );
 }
