@@ -290,6 +290,7 @@
                 enable = true;
                 fillChar = "";
                 eolChar = "";
+                showCurrContext = false;
               };
               cursor-wordline = {
                 enable = true;
