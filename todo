@@ -1,7 +1,8 @@
 existing:
 - indent-blankline bug: colorscheme doesn't load when directly opening file
 - glow: run not from path (sent github issue)
-- sqlfluff lint: figure out why generator_opts on_return fails (sent github issue)
+- sqlfluff format: not applying (sent github discussion)
+- keep documenting capabilities
 
 new:
 - add onedark.nvim colorscheme
