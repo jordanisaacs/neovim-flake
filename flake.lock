@@ -420,11 +420,11 @@
     "nvim-code-action-menu": {
       "flake": false,
       "locked": {
-        "lastModified": 1632859478,
-        "narHash": "sha256-8gmtWJPgYXLoQQA3d70eqA2O1Ka5DJHFB4dm7HtFDKA=",
+        "lastModified": 1633280037,
+        "narHash": "sha256-BicnSUrjld1ET0uns+VGr6dNcdBIPEr2qjWQ0XoDtIs=",
         "owner": "weilbith",
         "repo": "nvim-code-action-menu",
-        "rev": "4efac33349a6d4669c2072a22ede61d94886c48d",
+        "rev": "7361b5637930999d01b93b6ab4c45b784fa0618a",
         "type": "github"
       },
       "original": {
