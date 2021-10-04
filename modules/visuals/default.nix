@@ -65,12 +65,6 @@ in
         default = true;
         description = "Highlight current context from treesitter";
       };
-
-      useTreesitter = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Use treesitter to calculate indentation when possible";
-      };
     };
   };
 
@@ -103,9 +97,8 @@ in
 
         require("indent_blankline").setup {
           char = "${cfg.indent-blankline.listChar}",
-          use_treesitter = ${toString cfg.indent-blankline.useTreesitter},
-          show_current_context = ${toString cfg.indent-blankline.showCurrContext},
-          show_end_of_line = true;
+          show_current_context = ${boolToString cfg.indent-blankline.showCurrContext},
+          show_end_of_line = true,
         }
       '' else ""}
       ${if cfg.cursor-wordline.enable then "vim.g.cursorline_timeout = ${toString cfg.cursor-wordline.line-timeout}" else ""}
