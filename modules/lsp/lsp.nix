@@ -66,15 +66,52 @@ in
               filetypes = { "sql" },
               generator_opts = {
                 to_stdin = true,
+                ignore_stderr = true,
+                suppress_errors = true,
                 command = "${pkgs.sqlfluff}/bin/sqlfluff",
                 args = {
                   "fix",
-                  "--force",
                   "-",
                 },
               },
               factory = null_helpers.formatter_factory,
             }),
+
+            null_helpers.make_builtin({
+              method = null_methods.internal.DIAGNOSTICS,
+              filetypes = { "sql" },
+              generator_opts = {
+                command = "${pkgs.sqlfluff}/bin/sqlfluff",
+                args = {
+                  "lint",
+                  "--format",
+                  "json",
+                  "-",
+                },
+                to_stdin = true,
+                from_stderr = true,
+                format = "json",
+                on_output = function(params)
+                  params.messages = params and params.output and params.output[1] and params.output[1].violations or {}
+            
+                  local diagnostics = {}
+                  for _, json_diagnostic in ipairs(params.messages) do
+                    local diagnostic = {
+                      row = json_diagnostic["line_no"],
+                      col = json_diagnostic["line_pos"],
+                      code = json_diagnostic["code"],
+                      message = json_diagnostic["description"],
+                      severity = null_helpers.diagnostics.severities["information"],
+                    }
+            
+                    table.insert(diagnostics, diagnostic)
+                  end
+            
+                  return diagnostics
+                end,
+              },
+              factory = null_helpers.generator_factory,
+            })
           ''}
         }
 
@@ -85,6 +122,7 @@ in
           debounce = 250,
           default_timeout = 5000,
           sources = ls_sources,
+          debug = true,
         })
 
         -- Enable formatting
