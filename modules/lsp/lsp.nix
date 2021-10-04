@@ -32,8 +32,8 @@ in
       ] else [ ]);
 
 
-      vim.configRC =
-        if cfg.rust then ''
+      vim.configRC = ''
+        ${if cfg.rust then ''
           function! MapRustTools()
             nnoremap <silent>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
             nnoremap <silent>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
@@ -47,7 +47,12 @@ in
           autocmd filetype rust nnoremap <silent>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
           autocmd filetype rust nnoremap <silent>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
           autocmd filetype rust nnoremap <silent>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-        '' else "";
+        '' else ""}
+
+        ${if cfg.nix then ''
+          autocmd filetype nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
+        '' else ""}
+      '';
 
       vim.luaConfigRC = ''
         local null_ls = require("null-ls")
@@ -93,7 +98,7 @@ in
                 format = "json",
                 on_output = function(params)
                   params.messages = params and params.output and params.output[1] and params.output[1].violations or {}
-            
+        
                   local diagnostics = {}
                   for _, json_diagnostic in ipairs(params.messages) do
                     local diagnostic = {
@@ -103,10 +108,10 @@ in
                       message = json_diagnostic["description"],
                       severity = null_helpers.diagnostics.severities["information"],
                     }
-            
+        
                     table.insert(diagnostics, diagnostic)
                   end
-            
+        
                   return diagnostics
                 end,
               },
@@ -142,25 +147,20 @@ in
         local lspconfig = require('lspconfig')
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-        ${ if config.vim.autocomplete.enable then
-          (
-            if config.vim.autocomplete.type == "nvim-compe" then ''
-              vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
-              capabilities.textDocument.completion.completionItem.resolveSupport = {
-                properties = {
-                  'documentation',
-                  'detail',
-                  'additionalTextEdits',
-                }
-              }
-            '' else ''
-              capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-            ''
-          ) else ""}
-    
-        ${writeIf
-        cfg.rust
-        ''
+        ${if config.vim.autocomplete.enable then (if config.vim.autocomplete.type == "nvim-compe" then ''
+          vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
+          capabilities.textDocument.completion.completionItem.resolveSupport = {
+            properties = {
+              'documentation',
+              'detail',
+              'additionalTextEdits',
+            }
+          }
+        '' else ''
+          capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+        '') else ""}
+
+        ${writeIf cfg.rust ''
           -- Rust config
           
           local rustopts = {
@@ -177,9 +177,7 @@ in
           require('rust-tools.inlay_hints').set_inlay_hints()
         ''}
     
-        ${writeIf
-        cfg.python
-        ''
+        ${writeIf cfg.python ''
           -- Python config
           lspconfig.pyright.setup{
             capabilities = capabilities;
@@ -188,9 +186,7 @@ in
           }
         ''}
     
-        ${writeIf
-        cfg.nix
-        ''
+        ${writeIf cfg.nix ''
           -- Nix config
           lspconfig.rnix.setup{
             capabilities = capabilities;
@@ -199,18 +195,14 @@ in
           }
         ''}
 
-        ${writeIf
-        cfg.clang
-        ''
+        ${writeIf cfg.clang ''
           -- CCLS (clang) config
           lspconfig.ccls.setup{
             cmd = {"${pkgs.ccls}/bin/ccls"}
           }
         ''}
 
-        ${writeIf
-        cfg.sql
-        ''
+        ${writeIf cfg.sql ''
           -- SQLS config
           lspconfig.sqls.setup {
             on_attach = function(client)
@@ -223,8 +215,6 @@ in
             cmd = {"${pkgs.sqls}/bin/sqls", "-config", string.format("%s/config.yml", vim.fn.getcwd()) }
           }
         ''}
-
-
       '';
     }
   );
