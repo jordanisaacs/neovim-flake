@@ -161,11 +161,11 @@
     "indent-blankline": {
       "flake": false,
       "locked": {
-        "lastModified": 1632895617,
-        "narHash": "sha256-L2ysPoIA+5dgmprZrbDhE1FGcc2MRNKN28X2XRhx+BQ=",
+        "lastModified": 1633328857,
+        "narHash": "sha256-ka2kAVKD9yMhCRWfG06+pGaMtpBEwFYU+Zfgw8vNnrs=",
         "owner": "lukas-reineke",
         "repo": "indent-blankline.nvim",
-        "rev": "a5c8b551e290113b0e54530f7d5bdee14bcdedff",
+        "rev": "31fe9b4ac3eaaac0bf5e90d607662c32f59dc0b7",
         "type": "github"
       },
       "original": {
