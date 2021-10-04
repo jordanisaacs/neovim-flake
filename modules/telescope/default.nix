@@ -38,10 +38,5 @@ in
     } else { }) // (if config.vim.treesitter.enable then {
       "<leader>fs" = "<cmd> Telescope treesitter";
     } else { });
-
-    vim.configRC = ''
-      autocmd FileType markdown noremap <leader>p :Glow<CR>
-      let g:glow_binary_path = "${pkgs.glow}/bin"
-    '';
   };
 }
