@@ -202,6 +202,7 @@
           "nvim-treesitter"
           "lspsaga"
           "lspkind"
+          "lsp-signature"
           "nvim-tree-lua"
           "nvim-bufferline-lua"
           "lualine"
@@ -275,6 +276,7 @@
               lspsaga.enable = true;
               nvim-code-action-menu.enable = true;
               trouble.enable = true;
+              lsp-signature.enable = true;
               rust = true;
               nix = true;
               python = true;
