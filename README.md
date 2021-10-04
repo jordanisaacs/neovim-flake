@@ -15,7 +15,7 @@ nix run .#
 If you want to live life on the edge you can point to this repository with:
 
 ```
-nix run github:jordanisaacs/neovim-flake#.
+nix run github:jordanisaacs/neovim-flake.#
 ```
 
 ## Options
