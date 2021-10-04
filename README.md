@@ -6,7 +6,7 @@ Originally based on Wil Taylor's amazing [neovim-flake](https://github.com/wilta
 
 ## Installation
 
-This config is constantly changing and updating as it is my personal config. I recommend cloning the config and running it locally with:
+This config is constantly changing and updating as it is my personal config. Some available options may also be broken which will be documented in issues. I recommend cloning the config and running it locally with:
 
 ```
 nix run .#
