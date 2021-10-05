@@ -52,6 +52,12 @@ in
         ${if cfg.nix then ''
           autocmd filetype nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
         '' else ""}
+
+        ${if cfg.clang then ''
+          " c syntax for header (otherwise breaks treesitter highlighting) 
+          " https://www.reddit.com/r/neovim/comments/orfpcd/question_does_the_c_parser_from_nvimtreesitter/
+          let g:c_syntax_for_h = 1
+        '' else ""}
       '';
 
       vim.luaConfigRC = ''
