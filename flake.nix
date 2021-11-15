@@ -314,7 +314,7 @@
                 name = "onedark";
                 style = "darker";
               };
-              vim.autopairs.enable = false;
+              vim.autopairs.enable = true;
               vim.autocomplete = {
                 enable = true;
                 type = "nvim-cmp";

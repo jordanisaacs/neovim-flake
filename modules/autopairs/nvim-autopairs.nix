@@ -17,6 +17,11 @@ in
         type = types.enum [ "nvim-autopairs" ];
         description = "Set the autopairs type. Options: nvim-autopairs [nvim-autopairs]";
       };
+
+      checkTS = mkOption {
+        type = types.bool;
+        description = "Whether to check treesitter for a pair";
+      };
     };
   };
 
@@ -35,15 +40,8 @@ in
           ${writeIf (cfg.type == "nvim-autopairs") ''
             ${writeIf cfg.enable ''
               require("nvim-autopairs").setup{}
-              ${writeIf (config.vim.completion.type == "nvim-compe") ''
+              ${writeIf (config.vim.autocomplete.type == "nvim-compe") ''
                 require('nvim-autopairs.completion.compe').setup({
-                  map_cr = true,
-                  map_complete = true,
-                  auto_select = false,
-                })
-              ''}
-              ${writeIf (config.vim.completion.type == "nvim-cmp") ''
-                require('nvim-autopairs.completion.cmp').setup({
                   map_cr = true,
                   map_complete = true,
                   auto_select = false,
