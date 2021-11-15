@@ -23,13 +23,14 @@ in
     in
     {
       vim.startPlugins = with pkgs.neovimPlugins; [
-        (assert config.vim.visuals.nvimWebDevicons == true; nvim-bufferline-lua)
+        (assert config.vim.visuals.nvimWebDevicons.enable == true; nvim-bufferline-lua)
         bufdelete-nvim
       ];
 
       vim.nnoremap = {
-        "<silent>[b" = ":BufferLineCycleNext<CR>";
-        "<silent>]b" = ":BufferLineCyclePrev<CR>";
+        "<silent><leader>bn" = ":BufferLineCycleNext<CR>";
+        "<silent><leader>bp" = ":BufferLineCyclePrev<CR>";
+        "<silent><leader>bc" = ":BufferLinePick<CR>";
         "<silent><leader>bse" = ":BufferLineSortByExtension<CR>";
         "<silent><leader>bsd" = ":BufferLineSortByDirectory<CR>";
         "<silent><leader>bsi" = ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";

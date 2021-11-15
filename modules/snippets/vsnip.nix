@@ -4,7 +4,8 @@ with builtins;
 
 let
   cfg = config.vim.snippets.vsnip;
-in {
+in
+{
   options.vim.snippets.vsnip = {
     enable = mkEnableOption "Enable vim-vsnip";
   };

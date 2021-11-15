@@ -9,12 +9,12 @@ in
   options.vim.keys = {
     enable = mkEnableOption "key binding plugins";
 
-    which-key = {
+    whichKey = {
       enable = mkEnableOption "which-key menu";
     };
   };
 
-  config = mkIf (cfg.enable && cfg.which-key.enable) {
+  config = mkIf (cfg.enable && cfg.whichKey.enable) {
     vim.startPlugins = with pkgs.neovimPlugins; [
       which-key
     ];

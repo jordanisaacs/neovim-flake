@@ -6,7 +6,7 @@ let
 
   # attempt fix for libstdc++.so.6 no file or directory
   myNeovimUnwrapped = pkgs.neovim-unwrapped.overrideAttrs (prev: {
-    propagatedBuildInputs = [ pkgs.stdenv.cc.cc.lib ];
+    propagatedBuildInputs = with pkgs; [ pkgs.stdenv.cc.cc.lib ripgrep ];
   });
 
   vimOptions = lib.evalModules {
@@ -23,8 +23,8 @@ let
   vim = vimOptions.config.vim;
 in
 pkgs.wrapNeovim myNeovimUnwrapped {
-  viAlias = true;
-  vimAlias = true;
+  viAlias = vim.viAlias;
+  vimAlias = vim.vimAlias;
   configure = {
     customRC = vim.configRC;
 

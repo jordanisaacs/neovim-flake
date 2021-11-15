@@ -7,7 +7,11 @@ let
 in
 {
   options.vim.filetree.nvimTreeLua = {
-    enable = mkEnableOption "Enable nvim-tree-lua";
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable nvim-tree-lua";
+    };
 
     treeSide = mkOption {
       default = "left";
@@ -33,7 +37,7 @@ in
       type = types.bool;
     };
 
-    openOnDirectoryStart = mkOption {
+    openOnSetup = mkOption {
       default = true;
       description = "Open when vim is started on a directory";
       type = types.bool;
@@ -112,7 +116,7 @@ in
     };
   };
 
-  config = mkIf (cfg.enable && config.vim.visuals.nvimWebDevicons)
+  config = mkIf cfg.enable
     (
       let
         mkVimBool = val: if val then 1 else 0;
@@ -129,11 +133,9 @@ in
         };
 
         vim.globals = {
-          "nvim_tree_ignore" = cfg.hideFiles;
           "nvim_tree_gitignore" = mkVimBool cfg.hideIgnoredGitFiles;
           "nvim_tree_quit_on_open" = mkVimBool cfg.closeOnFileOpen;
           "nvim_tree_indent_markers" = mkVimBool cfg.indentMarkers;
-          "nvim_tree_hide_dotfiles" = mkVimBool cfg.hideDotFiles;
           "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
           "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
         };
@@ -143,11 +145,20 @@ in
             disable_netrw = ${boolToString cfg.disableNetRW},
             hijack_netrw = ${boolToString cfg.hijackNetRW},
             open_on_tab = ${boolToString cfg.openTreeOnNewTab},
+            open_on_setup = ${boolToString cfg.openOnSetup},
             auto_close = ${boolToString cfg.closeOnLastWindow},
-            lsp_diagnostics = ${boolToString cfg.lspDiagnostics},
+            diagnostics = {
+              enable = ${boolToString cfg.lspDiagnostics},
+            },
             view  = {
               width = ${toString cfg.treeWidth},
               side = ${"'" + cfg.treeSide + "'"},
+            },
+            filters = {
+              dotfiles = ${boolToString cfg.hideDotFiles},
+              custom = {
+                ${builtins.concatStringsSep "\n" (builtins.map (s: "\"" + s + "\",") cfg.hideFiles)}
+              },
             },
           })
         '';

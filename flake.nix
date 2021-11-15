@@ -152,6 +152,11 @@
       flake = false;
     };
 
+    onedark = {
+      url = "github:navarasu/onedark.nvim";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";
@@ -229,6 +234,7 @@
           "glow-nvim"
           "telescope"
           "rust-tools"
+          "onedark"
         ];
 
         pluginOverlay = lib.buildPluginOverlay;
@@ -267,66 +273,70 @@
           neovimPlugins = pkgs.neovimPlugins;
         });
 
-        packages.neovimJD = neovimBuilder {
-          config = {
-            vim.viAlias = true;
-            vim.vimAlias = true;
-            vim.lsp = {
-              enable = true;
-              lspsaga.enable = true;
-              nvim-code-action-menu.enable = true;
-              trouble.enable = true;
-              lsp-signature.enable = true;
-              rust = true;
-              nix = true;
-              python = true;
-              clang = true;
-              sql = true;
-            };
-
-            vim.visuals = {
-              enable = true;
-              nvimWebDevicons = true;
-              lspkind = true;
-              indent-blankline = {
+        packages.neovimJD = neovimBuilder
+          {
+            config = {
+              vim.viAlias = false;
+              vim.vimAlias = true;
+              vim.lsp = {
                 enable = true;
-                fillChar = "";
-                eolChar = "";
-                showCurrContext = true;
+                lspsaga.enable = true;
+                nvimCodeActionMenu.enable = true;
+                trouble.enable = true;
+                lspSignature.enable = true;
+                rust.enable = true;
+                nix = true;
+                python = true;
+                clang = true;
+                sql = true;
               };
-              cursor-wordline = {
+              vim.visuals = {
                 enable = true;
-                line-timeout = 0;
+                nvimWebDevicons.enable = true;
+                lspkind.enable = true;
+                indentBlankline = {
+                  enable = true;
+                  fillChar = "";
+                  eolChar = "";
+                  showCurrContext = true;
+                };
+                cursorWordline = {
+                  enable = true;
+                  lineTimeout = 0;
+                };
               };
-            };
-            vim.statusline.lualine.enable = true;
-            vim.theme.tokyonight = {
-              enable = true;
-              style = "night";
-            };
-            vim.autopairs.enable = true;
-            vim.autocomplete = {
-              enable = true;
-              type = "nvim-cmp";
-            };
-            vim.filetree.nvimTreeLua = { enable = true; };
-            vim.tabline.nvimBufferline.enable = true;
-            vim.treesitter = {
-              enable = true;
-              autotag-html = true;
-            };
-            vim.keys = {
-              enable = true;
-              which-key.enable = true;
-            };
-            vim.telescope = {
-              enable = true;
-            };
-            vim.markdown = {
-              enable = true;
-              preview = true;
+              vim.statusline.lualine = {
+                enable = true;
+                theme = "onedark";
+              };
+              vim.theme = {
+                enable = true;
+                name = "onedark";
+                style = "darker";
+              };
+              vim.autopairs.enable = false;
+              vim.autocomplete = {
+                enable = true;
+                type = "nvim-cmp";
+              };
+              vim.filetree.nvimTreeLua = { enable = true; };
+              vim.tabline.nvimBufferline.enable = true;
+              vim.treesitter = {
+                enable = true;
+                autotagHtml = true;
+              };
+              vim.keys = {
+                enable = true;
+                whichKey.enable = true;
+              };
+              vim.telescope = {
+                enable = true;
+              };
+              vim.markdown = {
+                enable = false;
+                glow.enable = true;
+              };
             };
           };
-        };
       });
 }

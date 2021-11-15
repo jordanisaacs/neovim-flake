@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 {
   imports = [
-    ./lualine.nix
+    ./theme.nix
     ./config.nix
   ];
 }

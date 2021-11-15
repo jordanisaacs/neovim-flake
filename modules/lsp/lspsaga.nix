@@ -35,7 +35,7 @@ in
         "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>";
       "<silent><leader>]e" =
         "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>";
-    } // (if (!cfg.nvim-code-action-menu.enable) then {
+    } // (if (!cfg.nvimCodeActionMenu.enable) then {
       "<silent><leader>ca" =
         "<cmd>lua require('lspsaga.codeaction').code_action()<CR>";
     } else { });

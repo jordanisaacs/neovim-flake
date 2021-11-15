@@ -4,14 +4,15 @@ with builtins;
 
 let
   cfg = config.vim.lsp;
-in {
+in
+{
   options.vim.lsp = {
-    nvim-code-action-menu = {
+    nvimCodeActionMenu = {
       enable = mkEnableOption "nvim code action menu";
     };
   };
 
-  config = mkIf (cfg.enable && cfg.nvim-code-action-menu.enable) {
+  config = mkIf (cfg.enable && cfg.nvimCodeActionMenu.enable) {
     vim.startPlugins = with pkgs.neovimPlugins; [
       nvim-code-action-menu
     ];

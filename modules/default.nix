@@ -2,7 +2,7 @@
 {
   imports = [
     ./completion
-    ./themes
+    ./theme
     ./core
     ./basic
     ./statusline

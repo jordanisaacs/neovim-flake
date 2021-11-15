@@ -8,12 +8,12 @@ in
 {
 
   options.vim.lsp = {
-    lsp-signature = {
+    lspSignature = {
       enable = mkEnableOption "lsp signature viewer";
     };
   };
 
-  config = mkIf (cfg.enable && cfg.trouble.enable) {
+  config = mkIf (cfg.enable && cfg.lspSignature.enable) {
     vim.startPlugins = with pkgs.neovimPlugins; [ lsp-signature ];
 
     vim.luaConfigRC = ''

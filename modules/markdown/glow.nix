@@ -9,21 +9,23 @@ in
   options.vim.markdown = {
     enable = mkEnableOption "markdown tools and plugins";
 
-    preview = mkOption {
+    glow.enable = mkOption {
       type = types.bool;
-      default = false;
-      description = "enable markdown preview in neovim with glow";
+      default = true;
+      description = "Enable markdown preview in neovim with glow";
     };
   };
 
-  config = mkIf (cfg.enable && cfg.preview) {
+  config = mkIf (cfg.enable) {
     vim.startPlugins = with pkgs.neovimPlugins; [
-      glow-nvim
+      (if cfg.glow.enable then glow-nvim else null)
     ];
 
-    vim.configRC = ''
-      autocmd FileType markdown noremap <leader>p :Glow<CR>
-      let g:glow_binary_path = "${pkgs.glow}/bin"
-    '';
+    vim.configRC =
+      if cfg.glow then ''
+        autocmd FileType markdown noremap <leader>p :Glow<CR>
+        let g:glow_binary_path = "${pkgs.glow}/bin"
+      '' else "";
   };
 }
+

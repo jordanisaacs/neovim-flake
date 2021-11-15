@@ -4,20 +4,20 @@ with builtins;
 
 let
   cfg = config.vim.statusline.lualine;
-in {
+in
+{
   options.vim.statusline.lualine = {
-    enable = mkEnableOption "Enable lualine";
+    enable = mkOption {
+      type = types.bool;
+      description = "Enable lualine";
+    };
 
     icons = mkOption {
-      description = "Enable icons for lualine";
-      default = true;
       type = types.bool;
-
+      description = "Enable icons for lualine";
     };
 
     theme = mkOption {
-      description = "Theme for lualine";
-      default = "auto";
       type = types.enum (
         [
           "auto"
@@ -52,169 +52,138 @@ in {
           "solarized_dark"
           "tomorrow"
           "wombat"
-        ] ++ ( if config.vim.theme.tokyonight.enable == true then [ "tokyonight" ] else [] )
+        ] ++ (if config.vim.theme.name == "tokyonight" then [ "tokyonight" ] else [ "onedark" ])
       );
+      description = "Theme for lualine";
     };
 
-    section-separator = {
+    sectionSeparator = {
       left = mkOption {
+        type = types.str;
         description = "Section separator for left side";
-        default = "";
-        type = types.str;
       };
-      
+
       right = mkOption {
+        type = types.str;
         description = "Section separator for right side";
-        default = "";
-        type = types.str;
       };
     };
 
-    component-separator = {
+    componentSeparator = {
       left = mkOption {
+        type = types.str;
         description = "Component separator for left side";
-        default = "⏽";
-        type = types.str;
       };
-      
+
       right = mkOption {
+        type = types.str;
         description = "Component separator for right side";
-        default = "⏽";
-        type = types.str;
       };
     };
 
-    sections = {
+    activeSection = {
       a = mkOption {
+        type = types.str;
         description = "active config for: | (A) | B | C       X | Y | Z |";
-        default = "{'mode'}";
-        type = types.str;
       };
 
       b = mkOption {
+        type = types.str;
         description = "active config for: | A | (B) | C       X | Y | Z |";
-        default = ''
-          {
-            {
-              "branch",
-              separator = '',
-            },
-            "diff",
-          }
-        '';
-        type = types.str;
       };
-      
+
       c = mkOption {
-        description = "active config for: | A | B | (C)       X | Y | Z |";
-        default = "{'branch'}";
         type = types.str;
+        description = "active config for: | A | B | (C)       X | Y | Z |";
       };
 
       x = mkOption {
-        description = "active config for: | A | B | C       (X) | Y | Z |";
-        default = ''
-          {
-            {
-              "diagnostics",
-              sources = {'nvim_lsp'},
-              separator = '',
-              symbols = {error = '', warn = '', info = '', hint = ''},
-            },
-            {
-              "filetype",
-            },
-            "fileformat",
-            "encoding",
-          }
-        '';
         type = types.str;
+        description = "active config for: | A | B | C       (X) | Y | Z |";
       };
 
       y = mkOption {
-        description = "active config for: | A | B | C       X | (Y) | Z |";
-        default = "{'progress'}";
         type = types.str;
+        description = "active config for: | A | B | C       X | (Y) | Z |";
       };
 
       z = mkOption {
-        description = "active config for: | A | B | C       X | Y | (Z) |";
-        default = "{'location'}";
         type = types.str;
+        description = "active config for: | A | B | C       X | Y | (Z) |";
       };
     };
 
-    inactive-sections = {
+    inactiveSection = {
       a = mkOption {
-        description = "inactive config for: | (A) | B | C       X | Y | Z |";
-        default = "{}";
         type = types.str;
+        description = "inactive config for: | (A) | B | C       X | Y | Z |";
       };
 
       b = mkOption {
+        type = types.str;
         description = "inactive config for: | A | (B) | C       X | Y | Z |";
-        default = "{}";
-        type = types.str;
       };
-      
+
       c = mkOption {
-        description = "inactive config for: | A | B | (C)       X | Y | Z |";
-        default = "{'filename'}";
         type = types.str;
+        description = "inactive config for: | A | B | (C)       X | Y | Z |";
       };
 
       x = mkOption {
-        description = "inactive config for: | A | B | C       (X) | Y | Z |";
-        default = "{'location'}";
         type = types.str;
+        description = "inactive config for: | A | B | C       (X) | Y | Z |";
       };
 
       y = mkOption {
-        description = "inactive config for: | A | B | C       X | (Y) | Z |";
-        default = "{}";
         type = types.str;
+        description = "inactive config for: | A | B | C       X | (Y) | Z |";
       };
 
       z = mkOption {
-        description = "inactive config for: | A | B | C       X | Y | (Z) |";
-        default = ''
-          {}
-        '';
         type = types.str;
+        description = "inactive config for: | A | B | C       X | Y | (Z) |";
       };
     };
   };
 
-  config = mkIf cfg.enable {
-    vim.startPlugins = with pkgs.neovimPlugins; [ lualine ];
-    vim.luaConfigRC = ''
-      require'lualine'.setup {
-        options = {
-          icons_enabled = ${if cfg.icons then (assert config.vim.visuals.nvimWebDevicons == true; "true") else "false"}, 
-          theme = "${cfg.theme}",
-          component_separators = {"${cfg.component-separator.left}","${cfg.component-separator.right}"},
-          section_separators = {"${cfg.component-separator.right}","${cfg.component-separator.left}"},
-          disabled_filetypes = {},
-        },
-        sections = {
-          lualine_a = ${cfg.sections.a},
-          lualine_b = ${cfg.sections.b},
-          lualine_c = ${cfg.sections.c},
-          lualine_x = ${cfg.sections.x},
-          lualine_y = ${cfg.sections.y},
-          lualine_z = ${cfg.sections.z},
-        },
-        inactive_sections = {
-          lualine_a = ${cfg.inactive-sections.a},
-          lualine_b = ${cfg.inactive-sections.b},
-          lualine_c = ${cfg.inactive-sections.c},
-          lualine_x = ${cfg.inactive-sections.x},
-          lualine_y = ${cfg.inactive-sections.y},
-          lualine_z = ${cfg.inactive-sections.z},
-        },
-        tabline = {},
-        extensions = {${if config.vim.filetree.nvimTreeLua.enable then "\"nvim-tree\"" else ""}},
-      }
-    '';
-  };
+  config = mkIf cfg.enable
+    {
+      #assertions = [
+      #  ({
+      #    assertion = if cfg.icons then (config.vim.visuals.enable && config.vim.visual.nvimWebDevicons) else true;
+      #    message = "Must enable config.vim.visual.nvimWebDevicons if using config.vim.visuals.lualine.icons";
+      #  })
+      #];
+
+      vim.startPlugins = with pkgs.neovimPlugins; [ lualine ];
+      vim.luaConfigRC = ''
+        require'lualine'.setup {
+          options = {
+            icons_enabled = ${if cfg.icons then "true" else "false"}, 
+            theme = "${cfg.theme}",
+            component_separators = {"${cfg.componentSeparator.left}","${cfg.componentSeparator.right}"},
+            section_separators = {"${cfg.sectionSeparator.left}","${cfg.sectionSeparator.right}"},
+            disabled_filetypes = {},
+          },
+          sections = {
+            lualine_a = ${cfg.activeSection.a},
+            lualine_b = ${cfg.activeSection.b},
+            lualine_c = ${cfg.activeSection.c},
+            lualine_x = ${cfg.activeSection.x},
+            lualine_y = ${cfg.activeSection.y},
+            lualine_z = ${cfg.activeSection.z},
+          },
+          inactive_sections = {
+            lualine_a = ${cfg.inactiveSection.a},
+            lualine_b = ${cfg.inactiveSection.b},
+            lualine_c = ${cfg.inactiveSection.c},
+            lualine_x = ${cfg.inactiveSection.x},
+            lualine_y = ${cfg.inactiveSection.y},
+            lualine_z = ${cfg.inactiveSection.z},
+          },
+          tabline = {},
+          extensions = {${if config.vim.filetree.nvimTreeLua.enable then "\"nvim-tree\"" else ""}},
+        }
+      '';
+    };
 }

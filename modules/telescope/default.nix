@@ -31,8 +31,8 @@ in
       "<leader>flsw" = "<cmd> Telescope lsp_workspace_symbols<CR>";
       "<leader>flr" = "<cmd> Telescope lsp_references<CR>";
       "<leader>flc" = "<cmd> Telescope lsp_code_actions<CR>";
-      "<leader>fld" = "<cmd> Telescope lsp_definitions<CR>";
       "<leader>flt" = "<cmd> Telescope lsp_type_definitions<CR>";
+      "<leader>fldf" = "<cmd> Telescope lsp_definitions<CR>";
       "<leader>fldb" = "<cmd> Telescope lsp_document_diagnostics<CR>";
       "<leader>fldw" = "<cmd> Telescope lsp_workspace_diagnostics<CR>";
     } else { }) // (if config.vim.treesitter.enable then {

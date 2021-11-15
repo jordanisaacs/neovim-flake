@@ -8,8 +8,8 @@ in
   options.vim = {
     autocomplete = {
       enable = mkOption {
-        default = true;
         type = types.bool;
+        default = false;
         description = "enable autocomplete";
       };
 
@@ -33,18 +33,16 @@ in
           cmp-buffer
           cmp-vsnip
           cmp-path
-        ] else
-          [ ]);
+        ] else [ ]);
 
       vim.inoremap = mkIf (cfg.type == "nvim-compe") ({
         "<silent><expr><C-space>" = "compe#complete()";
         "<silent><expr><C-e>" = "compe#close('<C-e>')";
         "<silent><expr><C-f>" = "compe#scroll({ 'delta': +4 })";
         "<silent><expr><C-d>" = "compe#scroll({ 'delta': -4 })";
-      } // (if config.vim.autopairs == "none" then {
+      } // (if (config.vim.autopairs.enable == false) then {
         "<silent><expr><CR>" = "compe#confirm('CR')";
-      } else
-        { }));
+      } else { }));
 
       vim.configRC = writeIf (cfg.type == "nvim-compe") ''
         set completeopt=menuone,noselect
@@ -128,13 +126,13 @@ in
         ''}
 
         ${writeIf (cfg.type == "nvim-cmp") ''
-          local check_back_space = function()
-            local col = vim.fn.col('.') - 1
-            return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s')
+          local has_words_before = function()
+            local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+            return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
           end
 
-          local t = function(str)
-            return vim.api.nvim_replace_termcodes(str, true, true, true)
+          local feedkey = function(key, mode)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
           end
 
           local cmp = require'cmp'
@@ -149,7 +147,7 @@ in
               { name = 'vsnip' },
               { name = 'path' },
               ${writeIf (config.vim.lsp.enable) "{ name = 'nvim_lsp' },"}
-              ${writeIf (config.vim.lsp.rust) "{ name = 'crates' },"}
+              ${writeIf (config.vim.lsp.rust.enable) "{ name = 'crates' },"}
             },
             mapping = {
               ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -161,33 +159,24 @@ in
                 select = true,
               }),
               ['<Tab>'] = cmp.mapping(function (fallback)
-                if vim.fn.pumvisible() == 1 then
-                  vim.fn.feedkeys(t'<C-n>', 'n')
-                elseif check_back_space() then
-                  vim.fn.feedkeys(t'<Tab>', 'n')
-                elseif vim.fn['vsnip#available']() == 1 then
-                  vim.fn.feedkeys(t'<Plug>(vsnip-expand-or-jump)', "")
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif vim.fn['vsnip#available'](1) == 1 then
+                  feedkey("<Plug>(vsnip-expand-or-jump)", "")
+                elseif has_words_before() then
+                  cmp.complete()
                 else
                   fallback()
                 end
-              end, {
-                'i',
-                's'
-              }),
+              end, { 'i', 's' }),
+
               ['<S-Tab>'] = cmp.mapping(function (fallback)
-                if vim.fn.pumvisible() == 1 then
-                  vim.fn.feedkeys(t'<C-p>', 'n')
-                elseif check_back_space() then
-                  vim.fn.feedkeys(t'<Tab>', 'n')
-                elseif vim.fn['vsnip#available']() == 1 then
-                  vim.fn.feedkeys(t'<Plug>(vsnip-jump-prev)', "")
-                else
-                  fallback()
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                elseif vim.fn['vsnip#available'](-1) == 1 then
+                  vim.fn.feedkeys("<Plug>(vsnip-jump-prev)", "")
                 end
-              end, {
-                'i',
-                's'
-              })
+              end, { 'i', 's' })
             },
             completion = {
               completeopt = 'menu,menuone,noinsert',
@@ -196,7 +185,7 @@ in
               format = function(entry, vim_item)
                 -- type of kind
                 vim_item.kind = ${
-                  writeIf (config.vim.visuals.lspkind)
+                  writeIf (config.vim.visuals.lspkind.enable)
                   "require('lspkind').presets.default[vim_item.kind] .. ' ' .."
                 } vim_item.kind
           

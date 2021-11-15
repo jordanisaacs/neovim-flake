@@ -10,7 +10,20 @@ in
   options.vim.lsp = {
     enable = mkEnableOption "neovim lsp support";
     nix = mkEnableOption "Nix LSP";
-    rust = mkEnableOption "Rust LSP";
+    rust = {
+      enable = mkEnableOption "Rust LSP";
+      rustAnalyzerOpts = mkOption {
+        type = types.str;
+        default = ''
+          ["rust-analyzer"] = {
+            experimental = {
+              procAttrMacros = true,
+            },
+          },
+        '';
+        description = "options to pass to rust analyzer";
+      };
+    };
     python = mkEnableOption "Python LSP";
     clang = mkEnableOption "C language LSP";
     sql = mkEnableOption "SQL Language LSP";
@@ -26,14 +39,14 @@ in
         null-ls
         (if (config.vim.autocomplete.enable && (config.vim.autocomplete.type == "nvim-cmp")) then cmp-nvim-lsp else null)
         (if cfg.sql then sqls-nvim else null)
-      ] ++ (if cfg.rust then [
+      ] ++ (if cfg.rust.enable then [
         crates-nvim
         rust-tools
       ] else [ ]);
 
 
       vim.configRC = ''
-        ${if cfg.rust then ''
+        ${if cfg.rust.enable then ''
           function! MapRustTools()
             nnoremap <silent>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
             nnoremap <silent>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
@@ -166,14 +179,17 @@ in
           capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
         '') else ""}
 
-        ${writeIf cfg.rust ''
+        ${writeIf cfg.rust.enable ''
           -- Rust config
           
           local rustopts = {
             server = {
-              capabilities = capabilities;
-              on_attach = default_on_attach;
-              cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"}
+              capabilities = capabilities,
+              on_attach = default_on_attach,
+              cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},
+              settings = {
+                ${cfg.rust.rustAnalyzerOpts}
+              }
             }
           }
 
