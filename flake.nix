@@ -333,7 +333,7 @@
                 enable = true;
               };
               vim.markdown = {
-                enable = false;
+                enable = true;
                 glow.enable = true;
               };
             };
