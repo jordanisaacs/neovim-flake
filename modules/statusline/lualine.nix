@@ -150,7 +150,7 @@ in
     {
       #assertions = [
       #  ({
-      #    assertion = if cfg.icons then (config.vim.visuals.enable && config.vim.visual.nvimWebDevicons) else true;
+      #    assertion = if cfg.icons then (config.vim.visuals.enable && config.vim.visuals.nvimWebDevicons.enable) else true;
       #    message = "Must enable config.vim.visual.nvimWebDevicons if using config.vim.visuals.lualine.icons";
       #  })
       #];

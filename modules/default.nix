@@ -16,5 +16,6 @@
     ./keys
     ./markdown
     ./telescope
+    ./git
   ];
 }

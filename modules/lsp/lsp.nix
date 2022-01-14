@@ -27,6 +27,7 @@ in
     python = mkEnableOption "Python LSP";
     clang = mkEnableOption "C language LSP";
     sql = mkEnableOption "SQL Language LSP";
+    go = mkEnableOption "Go language LSP";
   };
 
   config = mkIf cfg.enable (
@@ -48,18 +49,18 @@ in
       vim.configRC = ''
         ${if cfg.rust.enable then ''
           function! MapRustTools()
-            nnoremap <silent>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-            nnoremap <silent>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-            nnoremap <silent>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-            nnoremap <silent>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-            nnoremap <silent>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
+            nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
+            nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
+            nnoremap <silent><leader>>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
+            nnoremap <silent><leader>>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
+            nnoremap <silent><leader>>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
           endfunction
         
-          autocmd filetype rust nnoremap <silent>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-          autocmd filetype rust nnoremap <silent>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-          autocmd filetype rust nnoremap <silent>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-          autocmd filetype rust nnoremap <silent>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-          autocmd filetype rust nnoremap <silent>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
+          autocmd filetype rust nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
+          autocmd filetype rust nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
+          autocmd filetype rust nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
+          autocmd filetype rust nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
+          autocmd filetype rust nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
         '' else ""}
 
         ${if cfg.nix then ''
@@ -72,7 +73,6 @@ in
           let g:c_syntax_for_h = 1
         '' else ""}
       '';
-
       vim.luaConfigRC = ''
         local null_ls = require("null-ls")
         local null_helpers = require("null-ls.helpers")
@@ -83,6 +83,9 @@ in
             null_ls.builtins.formatting.black.with({
               command = "${pkgs.black}/bin/black",
             }),
+          ''}
+          ${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
+            null_ls.builtins.code_actions.gitsigns,
           ''}
           ${writeIf cfg.sql ''
             null_helpers.make_builtin({
@@ -117,7 +120,7 @@ in
                 format = "json",
                 on_output = function(params)
                   params.messages = params and params.output and params.output[1] and params.output[1].violations or {}
-        
+
                   local diagnostics = {}
                   for _, json_diagnostic in ipairs(params.messages) do
                     local diagnostic = {
@@ -127,10 +130,10 @@ in
                       message = json_diagnostic["description"],
                       severity = null_helpers.diagnostics.severities["information"],
                     }
-        
+
                     table.insert(diagnostics, diagnostic)
                   end
-        
+
                   return diagnostics
                 end,
               },
@@ -138,16 +141,6 @@ in
             })
           ''}
         }
-
-
-        -- Enable null-ls
-        null_ls.config({
-          diagnostics_format = "[#{m}] #{s} (#{c})",
-          debounce = 250,
-          default_timeout = 5000,
-          sources = ls_sources,
-          debug = true,
-        })
 
         -- Enable formatting
         save_format = function(client)
@@ -160,7 +153,14 @@ in
           save_format(client)
         end
 
-        require('lspconfig')['null-ls'].setup({ on_attach=default_on_attach })
+        -- Enable null-ls
+        require('null-ls').setup({
+          diagnostics_format = "[#{m}] #{s} (#{c})",
+          debounce = 250,
+          default_timeout = 5000,
+          sources = ls_sources,
+          on_attach=default_on_attach
+        })
 
         -- Enable lspconfig
         local lspconfig = require('lspconfig')
@@ -235,6 +235,15 @@ in
               require'sqls'.setup{}
             end,
             cmd = {"${pkgs.sqls}/bin/sqls", "-config", string.format("%s/config.yml", vim.fn.getcwd()) }
+          }
+        ''}
+
+        ${writeIf cfg.go ''
+          -- Go config
+          lspconfig.gopls.setup {
+            capabilities = capabilities;
+            on_attach = default_on_attach;
+            cmd = {"${pkgs.gopls}/bin/gopls", "serve"},
           }
         ''}
       '';

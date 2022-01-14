@@ -33,16 +33,21 @@ in
           cmp-buffer
           cmp-vsnip
           cmp-path
+          cmp-treesitter
         ] else [ ]);
 
-      vim.inoremap = mkIf (cfg.type == "nvim-compe") ({
-        "<silent><expr><C-space>" = "compe#complete()";
-        "<silent><expr><C-e>" = "compe#close('<C-e>')";
-        "<silent><expr><C-f>" = "compe#scroll({ 'delta': +4 })";
-        "<silent><expr><C-d>" = "compe#scroll({ 'delta': -4 })";
-      } // (if (config.vim.autopairs.enable == false) then {
-        "<silent><expr><CR>" = "compe#confirm('CR')";
-      } else { }));
+      vim.inoremap = mkIf (cfg.type == "nvim-compe") (
+        {
+          "<silent><expr><C-space>" = "compe#complete()";
+          "<silent><expr><C-e>" = "compe#close('<C-e>')";
+          "<silent><expr><C-f>" = "compe#scroll({ 'delta': +4 })";
+          "<silent><expr><C-d>" = "compe#scroll({ 'delta': -4 })";
+        } // (
+          if (config.vim.autopairs.enable == false) then {
+            "<silent><expr><CR>" = "compe#confirm('CR')";
+          } else { }
+        )
+      );
 
       vim.configRC = writeIf (cfg.type == "nvim-compe") ''
         set completeopt=menuone,noselect
@@ -143,19 +148,23 @@ in
               end,
             },
             sources = {
-              { name = 'buffer' },
-              { name = 'vsnip' },
-              { name = 'path' },
               ${writeIf (config.vim.lsp.enable) "{ name = 'nvim_lsp' },"}
               ${writeIf (config.vim.lsp.rust.enable) "{ name = 'crates' },"}
+              { name = 'vsnip' },
+              { name = 'treesitter' },
+              { name = 'path' },
+              { name = 'buffer' },
             },
             mapping = {
-              ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-              ['<C-f>'] = cmp.mapping.scroll_docs(4),
-              ['<C-Space>'] = cmp.mapping.complete(),
-              ['<C-e>'] = cmp.mapping.close(),
+              ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+              ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c'}),
+              ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c'}),
+              ['<C-y>'] = cmp.config.disable,
+              ['<C-e>'] = cmp.mapping({
+                i = cmp.mapping.abort(),
+                c = cmp.mapping.close(),
+              }),
               ['<CR>'] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
                 select = true,
               }),
               ['<Tab>'] = cmp.mapping(function (fallback)
@@ -174,7 +183,7 @@ in
                 if cmp.visible() then
                   cmp.select_prev_item()
                 elseif vim.fn['vsnip#available'](-1) == 1 then
-                  vim.fn.feedkeys("<Plug>(vsnip-jump-prev)", "")
+                  feedkeys("<Plug>(vsnip-jump-prev)", "")
                 end
               end, { 'i', 's' })
             },

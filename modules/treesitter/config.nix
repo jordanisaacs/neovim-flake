@@ -7,6 +7,7 @@ with lib;
       enable = mkDefault false;
       fold = mkDefault true;
       autotagHtml = mkDefault false;
+      context.enable = mkDefault false;
     };
   };
 }

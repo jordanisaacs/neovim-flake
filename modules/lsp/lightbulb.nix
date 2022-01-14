@@ -4,11 +4,12 @@ with builtins;
 
 let
   cfg = config.vim.lsp;
-in {
+in
+{
 
   options.vim.lsp = {
     trouble = {
-        enable = mkEnableOption "trouble diagnostics viewer";
+      enable = mkEnableOption "trouble diagnostics viewer";
     };
   };
 

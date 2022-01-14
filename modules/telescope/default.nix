@@ -38,5 +38,27 @@ in
     } else { }) // (if config.vim.treesitter.enable then {
       "<leader>fs" = "<cmd> Telescope treesitter";
     } else { });
+
+    vim.luaConfigRC = ''
+      require("telescope").setup {
+        defaults = {
+          vimgrep_arguments = {
+            "${pkgs.ripgrep}/bin/rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case"
+          },
+          pickers = {
+            find_command = {
+              "${pkgs.fd}/bin/fd",
+            },
+          },
+        }
+      }
+    '';
   };
+
 }

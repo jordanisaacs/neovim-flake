@@ -29,6 +29,10 @@
       url = "github:folke/trouble.nvim";
       flake = false;
     };
+    nvim-treesitter-context = {
+      url = "github:romgrk/nvim-treesitter-context";
+      flake = false;
+    };
 
     nvim-code-action-menu = {
       url = "github:weilbith/nvim-code-action-menu";
@@ -113,6 +117,10 @@
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
+    cmp-treesitter = {
+      url = "github:ray-x/cmp-treesitter";
+      flake = false;
+    };
 
     # snippets
     vim-vsnip = {
@@ -176,6 +184,10 @@
       url = "github:kyazdani42/nvim-web-devicons";
       flake = false;
     };
+    gitsigns-nvim = {
+      url = "github:lewis6991/gitsigns.nvim";
+      flake = false;
+    };
 
     # Key binding help
     which-key = {
@@ -202,6 +214,8 @@
       let
         # Plugin must be same as input name
         plugins = [
+          "nvim-treesitter-context"
+          "gitsigns-nvim"
           "plenary-nvim"
           "nvim-lspconfig"
           "nvim-treesitter"
@@ -222,6 +236,7 @@
           "cmp-buffer"
           "cmp-vsnip"
           "cmp-path"
+          "cmp-treesitter"
           "crates-nvim"
           "vim-vsnip"
           "nvim-code-action-menu"
@@ -289,6 +304,7 @@
                 python = true;
                 clang = true;
                 sql = true;
+                go = true;
               };
               vim.visuals = {
                 enable = true;
@@ -324,6 +340,7 @@
               vim.treesitter = {
                 enable = true;
                 autotagHtml = true;
+                context.enable = true;
               };
               vim.keys = {
                 enable = true;
@@ -335,6 +352,10 @@
               vim.markdown = {
                 enable = true;
                 glow.enable = true;
+              };
+              vim.git = {
+                enable = true;
+                gitsigns.enable = true;
               };
             };
           };

@@ -29,7 +29,7 @@ with lib;
             "diff",
           }
         '';
-        c = mkDefault "{'branch'}";
+        c = mkDefault "{'filename'}";
         x = mkDefault ''
           {
             {

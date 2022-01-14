@@ -35,14 +35,22 @@ in
       in
       {
 
-        vim.configRC = ''
+        vim.configRC = mkIf (cfg.name == "tokyonight") ''
           " need to set style before colorscheme to apply
           let g:${cfg.name}_style = "${cfg.style}"
           colorscheme ${cfg.name}
         '';
 
         vim.startPlugins = with pkgs.neovimPlugins;
-          if (cfg.style == "tokyonight") then [ tokyonight ] else [ onedark ];
+          if (cfg.name == "tokyonight") then [ tokyonight ] else [ onedark ];
+
+        vim.luaConfigRC = mkIf (cfg.name == "onedark") ''
+          -- OneDark theme
+          require('onedark').setup {
+            style = "${cfg.style}"
+          }
+          require('onedark').load()
+        '';
       }
     );
 }

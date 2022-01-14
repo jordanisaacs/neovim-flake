@@ -133,7 +133,6 @@ in
         };
 
         vim.globals = {
-          "nvim_tree_gitignore" = mkVimBool cfg.hideIgnoredGitFiles;
           "nvim_tree_quit_on_open" = mkVimBool cfg.closeOnFileOpen;
           "nvim_tree_indent_markers" = mkVimBool cfg.indentMarkers;
           "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
@@ -153,6 +152,10 @@ in
             view  = {
               width = ${toString cfg.treeWidth},
               side = ${"'" + cfg.treeSide + "'"},
+            },
+            git = {
+              enable = true,
+              nvim_tree_gitignore = ${boolToString cfg.hideIgnoredGitFiles},
             },
             filters = {
               dotfiles = ${boolToString cfg.hideDotFiles},
