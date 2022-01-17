@@ -84,9 +84,10 @@ in
               command = "${pkgs.black}/bin/black",
             }),
           ''}
-          ${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
-            null_ls.builtins.code_actions.gitsigns,
-          ''}
+          -- Commented out for now
+          --${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
+          --  null_ls.builtins.code_actions.gitsigns,
+          --''}
           ${writeIf cfg.sql ''
             null_helpers.make_builtin({
               method = null_methods.internal.FORMATTING,
