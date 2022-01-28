@@ -6,13 +6,13 @@ Originally based on Wil Taylor's amazing [neovim-flake](https://github.com/wilta
 
 ## Installation
 
-This config is constantly changing and updating as it is my personal config. Some available options may also be broken which will be documented in issues. I recommend cloning the config and running it locally with:
+This config is constantly changing and updating as it is my personal config. It is opinionated and some available options may also be broken which I will try to keep documented in issues. I am sharing it so anyone can use it as inspiration/a starting point for their own config. I recommend cloning the config and running it locally with:
 
 ```
 nix run .#
 ```
 
-If you want to live life on the edge you can point to this repository with:
+If you want to live life on the edge you can point to this repository directly with:
 
 ```
 nix run github:jordanisaacs/neovim-flake.#
@@ -22,7 +22,7 @@ nix run github:jordanisaacs/neovim-flake.#
 
 The philosophy behind this flake configuration is sensible options. While the default package has almost everything enabled, when building your own config using the overlay everything is disabled. By enabling a plugin or language, it will set up the keybindings and plugin automatically. Additionally each plugin knows when another plugin is enabled allowing for smart configuration of keybindings and automatic setup of things like completion sources and languages.
 
-A goal of mine is that you should not be able to break neovim by enabling or disabling an option. For example you can't have two completion plugins enabled as the option is an enum.
+A goal of mine is that I shouldn't not be able to break neovim by enabling or disabling an option. For example you can't have two completion plugins enabled as the option is an enum.
 
 ## Language Support
 
@@ -39,6 +39,7 @@ Rust analyzer provides builtin formatting with [rustfmt](https://github.com/rust
 **Plugins**
 
 - [rust-tools](https://github.com/simrat39/rust-tools.nvim)
+- [crates.nvim](https://github.com/Saecki/crates.nvim)
 
 ### Nix
 
@@ -70,11 +71,12 @@ Using [sqlfluff](https://github.com/sqlfluff/sqlfluff) through null-ls to provid
 
 ### Python
 
-**LSP Server**: [pyright]()
+**LSP Server**: [pyright](https://github.com/microsoft/pyright)
 
 **Formatting**:
 
-Using [black]() through null-ls
+Using [black](https://github.com/psf/black) through null-ls
+
 
 ### Markdown
 
@@ -88,7 +90,6 @@ Using [black]() through null-ls
 
 - [nvim-ts-autotag](https://github.com/ellisonleao/glow.nvim/issues/44) for autoclosing and renaming html tags. Works with html, tsx, vue, svelte, and php
 
-
 ## All Plugins
 
 A list of all plugins that can be enabled
@@ -99,7 +100,9 @@ A list of all plugins that can be enabled
 - [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) neovim as a language server to inject LSP diagnostics, code actions, etc.
 - [lspsaga.nvim](https://github.com/glepnir/lspsaga.nvim) useful UI and tools for lsp
 - [trouble.nvim](https://github.com/folke/trouble.nvim) pretty list of lsp data
+- [nvim-code-action-menu](https://github.com/weilbith/nvim-code-action-menu) a better code action menu with diff support
 - [lsp-signature](https://github.com/ray-x/lsp_signature.nvim) show function signatures as you type
+- [lspkind-nvim](https://github.com/onsails/lspkind-nvim) for pictograms in lsp (with support for nvim-cmp)
 
 ### Buffers
 
@@ -114,18 +117,29 @@ A list of all plugins that can be enabled
 
 - [nvim-tree-lua](https://github.com/kyazdani42/nvim-tree.lua) a file explorer tree written in lua. Using
 
+### Git
+
+- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) a variety of git decorations
+
+### Treesitter
+
+- Manually downloaded treesitter (Nix way is unreliable currently)
+- [nvim-tressitter-context](https://github.com/romgrk/nvim-treesitter-context) a context bar using tree-sitter
+- [nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) uses treesitter to autoclose/rename html tags
+
 ### Visuals
 
-- [lspkind-nvim](https://github.com/onsails/lspkind-nvim) for pictograms in lsp
 - [indent-blankline](https://github.com/lukas-reineke/indent-blankline.nvim) for indentation guides
-- [nvim-cursorline]()
 - [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons) Plugins and colors for icons. Requires patched font
 
 ### Utilities
 
 - [telescope](https://github.com/nvim-telescope/telescope.nvim) an extendable fuzzy finder of lists
 - [which-key](https://github.com/folke/which-key.nvim) a popup that displays possible keybindings of command being typed
-- [glow.nvim](https://github.com/ellisonleao/glow.nvim) a markdown preview directly in neovim [currently broken]
+
+### Markdown
+
+- [glow.nvim](https://github.com/ellisonleao/glow.nvim) a markdown preview directly in neovim using glow
 
 ### Completions
 
@@ -135,6 +149,8 @@ A list of all plugins that can be enabled
     - [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) a source for builtin LSP client
     - [cmp-vsnip](https://github.com/hrsh7th/cmp-vsnip) a source for vim-vsnip autocomplete
     - [cmp-path](https://github.com/hrsh7th/cmp-path) a source for path autocomplete
+    - [cmp-treesitter](https://github.com/ray-x/cmp-treesitter) treesitter nodes autcomplete
+    - [crates.nvim](https://github.com/Saecki/crates.nvim) autocompletion of rust crate versions in `cargo.toml`
 
 ### Snippets
 
@@ -143,10 +159,10 @@ A list of all plugins that can be enabled
 ### Autopairs
 
 - [nvim-autopairs](https://github.com/windwp/nvim-autopairs) an autopair plugin for neovim
-- [nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) uses treesitter to autoclose/rename html tags
 
 ### Themes
 
+- [onedark](https://github.com/navarasu/onedark.nvim) a dark colorscheme with multiple options
 - [tokyonight-nvim](https://github.com/folke/tokyonight.nvim) a neovim theme with multiple color options
 
 ### Dependencies
