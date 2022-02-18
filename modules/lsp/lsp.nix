@@ -221,6 +221,8 @@ in
         ${writeIf cfg.clang ''
           -- CCLS (clang) config
           lspconfig.ccls.setup{
+            capabilities = capabilities;
+            on_attach=default_on_attach;
             cmd = {"${pkgs.ccls}/bin/ccls"}
           }
         ''}
