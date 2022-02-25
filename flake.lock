@@ -132,15 +132,13 @@
       "locked": {
         "lastModified": 1638122382,
         "narHash": "sha256-sQzZzAbvKEqN9s0bzWuYmRaA03v40gaJ4+iL1LXjaeI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
+        "path": "/nix/store/qcvnd2dsa5a3h4gq8x5x7hds6z85i4dw-source",
         "rev": "74f7e4319258e287b0f9cb95426c9853b282730b",
-        "type": "github"
+        "type": "path"
       },
       "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
+        "id": "flake-utils",
+        "type": "indirect"
       }
     },
     "flake-utils_2": {
@@ -219,6 +217,26 @@
       "original": {
         "owner": "lukas-reineke",
         "repo": "indent-blankline.nvim",
+        "type": "github"
+      }
+    },
+    "jdpkgs": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1645770577,
+        "narHash": "sha256-Ad5sVL70SFzfH7GoW0Vk1XOuSvJjD8kF4+gtMxwtLMs=",
+        "owner": "jordanisaacs",
+        "repo": "jdpkgs",
+        "rev": "a940623ce40854cbbe21e30356d105b7a959ec8c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jordanisaacs",
+        "repo": "jdpkgs",
         "type": "github"
       }
     },
@@ -731,6 +749,7 @@
         "glow-nvim": "glow-nvim",
         "hare-vim": "hare-vim",
         "indent-blankline": "indent-blankline",
+        "jdpkgs": "jdpkgs",
         "kommentary": "kommentary",
         "lsp-signature": "lsp-signature",
         "lspkind": "lspkind",
