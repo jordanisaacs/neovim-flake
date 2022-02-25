@@ -1,9 +1,23 @@
-{ inputs, plugins, ... }:
+{ pkgs, inputs, plugins, ... }:
 final: prev:
 let
   inherit (prev.vimUtils) buildVimPluginFrom2Nix;
 
-  treesitterGrammars = prev.tree-sitter.withPlugins (_: prev.tree-sitter.allGrammars);
+  treesitterGrammars = prev.tree-sitter.withPlugins (p: [
+    p.tree-sitter-c
+    p.tree-sitter-nix
+    p.tree-sitter-python
+    p.tree-sitter-rust
+    p.tree-sitter-markdown
+    p.tree-sitter-comment
+    p.tree-sitter-toml
+    p.tree-sitter-make
+    p.tree-sitter-tsx
+    p.tree-sitter-html
+    p.tree-sitter-javascript
+    p.tree-sitter-css
+    pkgs.tree-sitter-hare
+  ]);
 
   buildPlug = name: buildVimPluginFrom2Nix {
     pname = name;
@@ -11,11 +25,13 @@ let
     src = builtins.getAttr name inputs;
     # Tree-sitter fails for a variety of lang grammars unless using :TSUpdate
     # For now install imperatively
-    #postPatch =
-    #  if (name == "nvim-treesitter") then ''
-    #    rm -r parser
-    #    ln -s ${treesitterGrammars} parser
-    #  '' else "";
+    postPatch =
+      if (name == "nvim-treesitter") then ''
+        rm -r parser
+        ln -s ${treesitterGrammars} parser
+        mkdir queries/hare
+        ln -s ${pkgs.tree-sitter-hare}/queries/* queries/hare
+      '' else "";
   };
 in
 {

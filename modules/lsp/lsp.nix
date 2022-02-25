@@ -28,6 +28,7 @@ in
     clang = mkEnableOption "C language LSP";
     sql = mkEnableOption "SQL Language LSP";
     go = mkEnableOption "Go language LSP";
+    hare = mkEnableOption "Hare plugin (not LSP)";
   };
 
   config = mkIf cfg.enable (
@@ -43,6 +44,7 @@ in
       ] ++ (if cfg.rust.enable then [
         crates-nvim
         rust-tools
+        (if cfg.hare then hare-vim else null)
       ] else [ ]);
 
 

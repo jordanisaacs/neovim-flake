@@ -206,6 +206,16 @@
       url = "github:nvim-lua/plenary.nvim";
       flake = false;
     };
+
+    hare-vim = {
+      url = "git+https://git.sr.ht/~sircmpwn/hare.vim";
+      flake = false;
+    };
+
+    tree-sitter-hare = {
+      url = "git+https://git.sr.ht/~ecmma/tree-sitter-hare";
+      flake = false;
+    };
   };
 
   outputs = { nixpkgs, flake-utils, ... }@inputs:
@@ -250,6 +260,7 @@
           "telescope"
           "rust-tools"
           "onedark"
+          "hare-vim"
         ];
 
         pluginOverlay = lib.buildPluginOverlay;
@@ -261,12 +272,44 @@
             pluginOverlay
             (final: prev: {
               rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
+              tree-sitter-hare = prev.stdenv.mkDerivation rec {
+                name = "hare-grammar";
+
+                src = inputs.tree-sitter-hare;
+
+                buildInputs = [ prev.tree-sitter ];
+
+                dontConfigure = true;
+
+                CFLAGS = [ "-I${src}/src" "-O2" ];
+
+                buildPhase = ''
+                  $CC -c "./src/parser.c" -o parser.o $CFLAGS
+                  $CXX -shared -o parser *.o
+                '';
+
+                installPhase = ''
+                  mkdir $out
+                  mv parser $out/
+                  ls -lah
+                  mv queries $out/
+                  runHook postinstall
+                '';
+
+                fixupPhase = ''
+                  runHook preFixup
+                  $STRIP $out/parser
+                  runHook postFixup
+                '';
+              };
             })
             inputs.neovim-overlay.overlay
           ];
         };
 
-        lib = import ./lib { inherit pkgs inputs plugins; };
+        lib = import
+          ./lib
+          { inherit pkgs inputs plugins; };
 
         neovimBuilder = lib.neovimBuilder;
       in
@@ -305,6 +348,7 @@
                 clang = true;
                 sql = true;
                 go = true;
+                hare = true;
               };
               vim.visuals = {
                 enable = true;
