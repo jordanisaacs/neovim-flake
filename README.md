@@ -47,7 +47,7 @@ Rust analyzer provides builtin formatting with [rustfmt](https://github.com/rust
 
 **Formatting**
 
-rnix provides builtin formatting with [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt)
+rnix provides builtin formatting with [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt) but it is disabled and I am instead using null-ls with [alejandra](https://github.com/kamadorueda/alejandra)
 
 ### SQL
 
@@ -55,7 +55,7 @@ rnix provides builtin formatting with [nixpkgs-fmt](https://github.com/nix-commu
 
 **Formatting**
 
-sqls provides formatting but it does not work very well so it is disabled. Instead using [sqlfluff](https://github.com/sqlfluff/sqlfluff) through null-ls. Currently broken, waiting on [issue](https://github.com/jose-elias-alvarez/null-ls.nvim/discussions/231)
+sqls provides formatting but it does not work very well so it is disabled. Instead using [sqlfluff](https://github.com/sqlfluff/sqlfluff) through null-ls.
 
 **Linting**
 
@@ -123,8 +123,8 @@ A list of all plugins that can be enabled
 
 ### Treesitter
 
-- Manually downloaded treesitter (Nix way is unreliable currently)
-- [nvim-tressitter-context](https://github.com/romgrk/nvim-treesitter-context) a context bar using tree-sitter
+- Nix installation of treesitter
+- [nvim-treesitter-context](https://github.com/romgrk/nvim-treesitter-context) a context bar using tree-sitter
 - [nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) uses treesitter to autoclose/rename html tags
 
 ### Visuals
@@ -134,7 +134,7 @@ A list of all plugins that can be enabled
 
 ### Utilities
 
-- [telescope](https://github.com/nvim-telescope/telescope.nvim) an extendable fuzzy finder of lists
+- [telescope](https://github.com/nvim-telescope/telescope.nvim) an extendable fuzzy finder of lists. Working ripgrep and fd
 - [which-key](https://github.com/folke/which-key.nvim) a popup that displays possible keybindings of command being typed
 
 ### Markdown
