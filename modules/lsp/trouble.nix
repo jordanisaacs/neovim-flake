@@ -18,11 +18,11 @@ in
 
     vim.nnoremap = {
       "<leader>xx" = "<cmd>TroubleToggle<CR>";
-      "<leader>xw" = "<cmd>TroubleToggle lsp_worskpace_diagnostics<CR>";
-      "<leader>xd" = "<cmd>TroubleToggle lsp_document_diagnostics<CR>";
+      "<leader>lwd" = "<cmd>TroubleToggle lsp_workspace_diagnostics<CR>";
+      "<leader>ld" = "<cmd>TroubleToggle lsp_document_diagnostics<CR>";
+      "<leader>lr" = "<cmd>TroubleToggle lsp_references<CR>";
       "<leader>xq" = "<cmd>TroubleToggle quickfix<CR>";
       "<leader>xl" = "<cmd>TroubleToggle loclist<CR>";
-      "<leader>xr" = "<cmd>TroubleToggle lsp_references<CR>";
     };
 
     vim.luaConfigRC = ''

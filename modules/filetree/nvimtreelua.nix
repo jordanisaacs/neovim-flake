@@ -133,8 +133,6 @@ in
         };
 
         vim.globals = {
-          "nvim_tree_quit_on_open" = mkVimBool cfg.closeOnFileOpen;
-          "nvim_tree_indent_markers" = mkVimBool cfg.indentMarkers;
           "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
           "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
         };
@@ -145,7 +143,6 @@ in
             hijack_netrw = ${boolToString cfg.hijackNetRW},
             open_on_tab = ${boolToString cfg.openTreeOnNewTab},
             open_on_setup = ${boolToString cfg.openOnSetup},
-            auto_close = ${boolToString cfg.closeOnLastWindow},
             diagnostics = {
               enable = ${boolToString cfg.lspDiagnostics},
             },
@@ -153,9 +150,19 @@ in
               width = ${toString cfg.treeWidth},
               side = ${"'" + cfg.treeSide + "'"},
             },
+            renderer = {
+              indent_markers = {
+                enable = ${boolToString cfg.indentMarkers},
+              },
+            },
+            actions = {
+              open_file = {
+                quit_on_open = ${boolToString cfg.closeOnFileOpen},
+              },
+            },
             git = {
               enable = true,
-              nvim_tree_gitignore = ${boolToString cfg.hideIgnoredGitFiles},
+              ignore = ${boolToString cfg.hideIgnoredGitFiles},
             },
             filters = {
               dotfiles = ${boolToString cfg.hideDotFiles},

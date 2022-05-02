@@ -3,8 +3,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    jdpkgs = {
-      url = "github:jordanisaacs/jdpkgs";
+    jdpkgs = { url = "github:jordanisaacs/jdpkgs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -15,7 +14,7 @@
 
     # LSP plugins
     nvim-lspconfig = {
-      url = "github:neovim/nvim-lspconfig";
+      url = "github:neovim/nvim-lspconfig?ref=v0.1.3";
       flake = false;
     };
     nvim-treesitter = {
@@ -35,7 +34,7 @@
       flake = false;
     };
     nvim-treesitter-context = {
-      url = "github:romgrk/nvim-treesitter-context";
+      url = "github:lewis6991/nvim-treesitter-context";
       flake = false;
     };
 
@@ -87,7 +86,7 @@
 
     # Tablines
     nvim-bufferline-lua = {
-      url = "github:akinsho/nvim-bufferline.lua";
+      url = "github:akinsho/nvim-bufferline.lua?ref=v1.2.0";
       flake = false;
     };
 
@@ -223,7 +222,12 @@
     };
   };
 
-  outputs = { nixpkgs, jdpkgs, flake-utils, ... }@inputs:
+  outputs =
+    { nixpkgs
+    , jdpkgs
+    , flake-utils
+    , ...
+    } @ inputs:
     let
       system = "x86_64-linux";
 
@@ -283,9 +287,10 @@
         ];
       };
 
-      lib = import
-        ./lib
-        { inherit pkgs inputs plugins; };
+      lib =
+        import
+          ./lib
+          { inherit pkgs inputs plugins; };
 
       neovimBuilder = lib.neovimBuilder;
     in
@@ -301,83 +306,83 @@
       defaultPackage.${system} = packages.${system}.neovimJD;
 
       devShell.${system} = pkgs.mkShell { buildInputs = [ packages.${system}.neovimJD ]; };
-      overlay = (final: prev: {
+      overlay = final: prev: {
         inherit neovimBuilder;
         neovimJD = packages.${system}.neovimJD;
         neovimPlugins = pkgs.neovimPlugins;
-      });
+      };
 
-      packages.${system}.neovimJD = neovimBuilder
-        {
-          config = {
-            vim.viAlias = false;
-            vim.vimAlias = true;
-            vim.lsp = {
-              enable = true;
-              lspsaga.enable = true;
-              nvimCodeActionMenu.enable = true;
-              trouble.enable = true;
-              lspSignature.enable = true;
-              rust.enable = true;
-              nix = true;
-              python = true;
-              clang = true;
-              sql = true;
-              go = true;
-              hare = true;
-            };
-            vim.visuals = {
-              enable = true;
-              nvimWebDevicons.enable = true;
-              lspkind.enable = true;
-              indentBlankline = {
+      packages.${system}.neovimJD =
+        neovimBuilder
+          {
+            config = {
+              vim.viAlias = false;
+              vim.vimAlias = true;
+              vim.lsp = {
                 enable = true;
-                fillChar = "";
-                eolChar = "";
-                showCurrContext = true;
+                lspsaga.enable = false;
+                nvimCodeActionMenu.enable = true;
+                trouble.enable = true;
+                lspSignature.enable = true;
+                rust.enable = true;
+                nix = true;
+                python = true;
+                clang = true;
+                sql = true;
+                go = true;
+                hare = true;
               };
-              cursorWordline = {
+              vim.visuals = {
                 enable = true;
-                lineTimeout = 0;
+                nvimWebDevicons.enable = true;
+                lspkind.enable = true;
+                indentBlankline = {
+                  enable = true;
+                  fillChar = "";
+                  eolChar = "";
+                  showCurrContext = true;
+                };
+                cursorWordline = {
+                  enable = true;
+                  lineTimeout = 0;
+                };
               };
-            };
-            vim.statusline.lualine = {
-              enable = true;
-              theme = "onedark";
-            };
-            vim.theme = {
-              enable = true;
-              name = "onedark";
-              style = "darker";
-            };
-            vim.autopairs.enable = true;
-            vim.autocomplete = {
-              enable = true;
-              type = "nvim-cmp";
-            };
-            vim.filetree.nvimTreeLua = { enable = true; };
-            vim.tabline.nvimBufferline.enable = true;
-            vim.treesitter = {
-              enable = true;
-              autotagHtml = true;
-              context.enable = true;
-            };
-            vim.keys = {
-              enable = true;
-              whichKey.enable = true;
-            };
-            vim.telescope = {
-              enable = true;
-            };
-            vim.markdown = {
-              enable = true;
-              glow.enable = true;
-            };
-            vim.git = {
-              enable = true;
-              gitsigns.enable = true;
+              vim.statusline.lualine = {
+                enable = true;
+                theme = "onedark";
+              };
+              vim.theme = {
+                enable = true;
+                name = "onedark";
+                style = "darker";
+              };
+              vim.autopairs.enable = true;
+              vim.autocomplete = {
+                enable = true;
+                type = "nvim-cmp";
+              };
+              vim.filetree.nvimTreeLua = { enable = true; };
+              vim.tabline.nvimBufferline.enable = true;
+              vim.treesitter = {
+                enable = true;
+                autotagHtml = true;
+                context.enable = true;
+              };
+              vim.keys = {
+                enable = true;
+                whichKey.enable = true;
+              };
+              vim.telescope = {
+                enable = true;
+              };
+              vim.markdown = {
+                enable = true;
+                glow.enable = true;
+              };
+              vim.git = {
+                enable = true;
+                gitsigns.enable = true; };
             };
           };
-        };
     };
 }

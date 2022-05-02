@@ -36,15 +36,15 @@ in
         "<silent><leader>bsi" = ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";
         "<silent><leader>bmn" = ":BufferLineMoveNext<CR>";
         "<silent><leader>bmp" = ":BufferLineMovePrev<CR>";
-        "<silent><leader>1" = "<Cmd>BufferLineGoToBuffer 1<CR>";
-        "<silent><leader>2" = "<Cmd>BufferLineGoToBuffer 2<CR>";
-        "<silent><leader>3" = "<Cmd>BufferLineGoToBuffer 3<CR>";
-        "<silent><leader>4" = "<Cmd>BufferLineGoToBuffer 4<CR>";
-        "<silent><leader>5" = "<Cmd>BufferLineGoToBuffer 5<CR>";
-        "<silent><leader>6" = "<Cmd>BufferLineGoToBuffer 6<CR>";
-        "<silent><leader>7" = "<Cmd>BufferLineGoToBuffer 7<CR>";
-        "<silent><leader>8" = "<Cmd>BufferLineGoToBuffer 8<CR>";
-        "<silent><leader>9" = "<Cmd>BufferLineGoToBuffer 9<CR>";
+        "<silent><leader>b1" = "<Cmd>BufferLineGoToBuffer 1<CR>";
+        "<silent><leader>b2" = "<Cmd>BufferLineGoToBuffer 2<CR>";
+        "<silent><leader>b3" = "<Cmd>BufferLineGoToBuffer 3<CR>";
+        "<silent><leader>b4" = "<Cmd>BufferLineGoToBuffer 4<CR>";
+        "<silent><leader>b5" = "<Cmd>BufferLineGoToBuffer 5<CR>";
+        "<silent><leader>b6" = "<Cmd>BufferLineGoToBuffer 6<CR>";
+        "<silent><leader>b7" = "<Cmd>BufferLineGoToBuffer 7<CR>";
+        "<silent><leader>b8" = "<Cmd>BufferLineGoToBuffer 8<CR>";
+        "<silent><leader>b9" = "<Cmd>BufferLineGoToBuffer 9<CR>";
       };
 
       vim.luaConfigRC = ''
@@ -68,7 +68,7 @@ in
               show_close_icon = true,
               show_tab_indicators = true,
               persist_buffer_sort = true,
-              enforce_regular_tabs = true,
+              enforce_regular_tabs = false,
               always_show_bufferline = true,
               offsets = {{filetype = "NvimTree", text = "File Explorer", text_align = "left"}},
               sort_by = 'extension',

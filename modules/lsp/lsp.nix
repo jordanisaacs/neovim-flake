@@ -76,6 +76,25 @@ in
         '' else ""}
       '';
       vim.luaConfigRC = ''
+
+        local attach_keymaps = function(client, bufnr)
+          local opts = { noremap=true, silent=true }
+
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lgD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lgd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lgt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lgn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lgp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>lwa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', 'leader>lwr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', 'leader>lwl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ls', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+          vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ln', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        end
+
         local null_ls = require("null-ls")
         local null_helpers = require("null-ls.helpers")
         local null_methods = require("null-ls.methods")
@@ -107,53 +126,32 @@ in
               factory = null_helpers.formatter_factory,
             }),
 
-            null_helpers.make_builtin({
-              method = null_methods.internal.DIAGNOSTICS,
-              filetypes = { "sql" },
-              generator_opts = {
-                command = "${pkgs.sqlfluff}/bin/sqlfluff",
-                args = {
-                  "lint",
-                  "--format",
-                  "json",
-                  "-",
-                },
-                to_stdin = true,
-                from_stderr = true,
-                format = "json",
-                on_output = function(params)
-                  params.messages = params and params.output and params.output[1] and params.output[1].violations or {}
+            null_ls.builtins.diagnostics.sqlfluff.with({
+              command = "${pkgs.sqlfluff}/bin/sqlfluff",
+              extra_args = {"--dialect", "postgres"}
+            }),
 
-                  local diagnostics = {}
-                  for _, json_diagnostic in ipairs(params.messages) do
-                    local diagnostic = {
-                      row = json_diagnostic["line_no"],
-                      col = json_diagnostic["line_pos"],
-                      code = json_diagnostic["code"],
-                      message = json_diagnostic["description"],
-                      severity = null_helpers.diagnostics.severities["information"],
-                    }
-
-                    table.insert(diagnostics, diagnostic)
-                  end
-
-                  return diagnostics
-                end,
-              },
-              factory = null_helpers.generator_factory,
-            })
+            null_ls.builtins.formatting.alejandra.with({
+              command = "${pkgs.alejandra}/bin/alejandra"
+            }),
           ''}
         }
 
         -- Enable formatting
-        save_format = function(client)
-          if client.resolved_capabilities.document_formatting then
-            vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-          end
+        format_callback = function(client, bufnr)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = augroup,
+            buffer = bufnr,
+            callback = function()
+              local params = require'vim.lsp.util'.make_formatting_params({})
+              client.request('textDocument/formatting', params, nil, bufnr)
+            end
+          })
         end
 
-        default_on_attach = function(client)
-          save_format(client)
+        default_on_attach = function(client, bufnr)
+          attach_keymaps(client, bufnr)
+          format_callback(client, bufnr)
         end
 
         -- Enable null-ls
@@ -169,18 +167,24 @@ in
         local lspconfig = require('lspconfig')
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-        ${if config.vim.autocomplete.enable then (if config.vim.autocomplete.type == "nvim-compe" then ''
-          vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
-          capabilities.textDocument.completion.completionItem.resolveSupport = {
-            properties = {
-              'documentation',
-              'detail',
-              'additionalTextEdits',
-            }
-          }
-        '' else ''
-          capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-        '') else ""}
+
+        ${let
+            cfg = config.vim.autocomplete;
+          in
+            writeIf cfg.enable
+              (if cfg.type == "nvim-compe" then ''
+                vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
+                capabilities.textDocument.completion.completionItem.resolveSupport = {
+                  properties = {
+                    'documentation',
+                    'detail',
+                    'additionalTextEdits',
+                  }
+                }
+              ''
+              else ''
+                capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+              '')}
 
         ${writeIf cfg.rust.enable ''
           -- Rust config
@@ -215,7 +219,9 @@ in
           -- Nix config
           lspconfig.rnix.setup{
             capabilities = capabilities;
-            on_attach=default_on_attach;
+            on_attach = function(client, bufnr)
+              attach_keymaps(client, bufnr)
+            end,
             cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"}
           }
         ''}
@@ -233,10 +239,8 @@ in
           -- SQLS config
           lspconfig.sqls.setup {
             on_attach = function(client)
-              client.resolved_capabilities.execute_command = true
-              -- use null-ls with sqlfluff instead
-              client.resolved_capabilities.document_formatting = false
-
+              client.server_capabilities.execute_command = true
+              on_attach_keymaps(client, bufnr)
               require'sqls'.setup{}
             end,
             cmd = {"${pkgs.sqls}/bin/sqls", "-config", string.format("%s/config.yml", vim.fn.getcwd()) }
