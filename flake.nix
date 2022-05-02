@@ -38,6 +38,10 @@
       url = "github:lewis6991/nvim-treesitter-context";
       flake = false;
     };
+    nvim-lightbulb = {
+      url = "github:kosayoda/nvim-lightbulb";
+      flake = false;
+    };
 
     nvim-code-action-menu = {
       url = "github:weilbith/nvim-code-action-menu";
@@ -240,6 +244,7 @@
       "nvim-treesitter"
       "lspsaga"
       "lspkind"
+      "nvim-lightbulb"
       "lsp-signature"
       "nvim-tree-lua"
       "nvim-bufferline-lua"
@@ -340,6 +345,7 @@
           vim.vimAlias = true;
           vim.lsp = {
             enable = true;
+            lightbulb.enable = true;
             lspsaga.enable = false;
             nvimCodeActionMenu.enable = true;
             trouble.enable = true;
@@ -381,7 +387,7 @@
             enable = true;
             type = "nvim-cmp";
           };
-          vim.filetree.nvimTreeLua = {enable = true;};
+          vim.filetree.nvimTreeLua.enable = true;
           vim.tabline.nvimBufferline.enable = true;
           vim.treesitter = {
             enable = true;
