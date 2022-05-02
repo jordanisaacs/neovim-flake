@@ -24,6 +24,10 @@ The philosophy behind this flake configuration is sensible options. While the de
 
 A goal of mine is that I shouldn't not be able to break neovim by enabling or disabling an option. For example you can't have two completion plugins enabled as the option is an enum.
 
+## Screenshot
+
+![screenshot](./screenshot.png)
+
 ## Language Support
 
 Most languages use [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) to set up language server. Additionally some languages also (or exclusively) use [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) to extend capabilities.
