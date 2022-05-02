@@ -1,11 +1,13 @@
-{ pkgs, lib, config, ... }:
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.autopairs;
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.autopairs;
+in {
   options.vim = {
     autopairs = {
       enable = mkOption {
@@ -14,7 +16,7 @@ in
       };
 
       type = mkOption {
-        type = types.enum [ "nvim-autopairs" ];
+        type = types.enum ["nvim-autopairs"];
         description = "Set the autopairs type. Options: nvim-autopairs [nvim-autopairs]";
       };
 
@@ -25,15 +27,21 @@ in
     };
   };
 
-  config = mkIf cfg.enable
+  config =
+    mkIf cfg.enable
     (
       let
-        writeIf = cond: msg: if cond then msg else "";
-      in
-      {
-
+        writeIf = cond: msg:
+          if cond
+          then msg
+          else "";
+      in {
         vim.startPlugins = with pkgs.neovimPlugins; [
-          (if (cfg.type == "nvim-autopairs") then nvim-autopairs else null)
+          (
+            if (cfg.type == "nvim-autopairs")
+            then nvim-autopairs
+            else null
+          )
         ];
 
         vim.luaConfigRC = ''

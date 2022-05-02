@@ -1,5 +1,9 @@
-{ pkgs, config, lib, ... }:
 {
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ./config.nix
     ./visuals.nix

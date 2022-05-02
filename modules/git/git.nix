@@ -1,12 +1,13 @@
-{ pkgs, config, lib, ... }:
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.git;
-in
 {
-
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.git;
+in {
   options.vim.git = {
     enable = mkOption {
       type = types.bool;
@@ -19,14 +20,19 @@ in
     };
   };
 
-  config = mkIf cfg.enable
+  config =
+    mkIf cfg.enable
     (
       let
-        mkVimBool = val: if val then "1" else "0";
-      in
-      {
+        mkVimBool = val:
+          if val
+          then "1"
+          else "0";
+      in {
         vim.startPlugins = with pkgs.neovimPlugins;
-          if (cfg.gitsigns.enable) then [ gitsigns-nvim ] else [ ];
+          if (cfg.gitsigns.enable)
+          then [gitsigns-nvim]
+          else [];
 
         vim.luaConfigRC = mkIf (cfg.gitsigns.enable) ''
           -- GitSigns setup
@@ -61,4 +67,3 @@ in
       }
     );
 }
- 

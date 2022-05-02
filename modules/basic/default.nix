@@ -1,10 +1,13 @@
-{ pkgs, lib, config, ... }:
-with lib;
-with builtins;
-
-let cfg = config.vim;
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim;
+in {
   options.vim = {
     colourTerm = mkOption {
       type = types.bool;
@@ -23,8 +26,7 @@ in
 
     scrollOffset = mkOption {
       type = types.int;
-      description =
-        "Start scrolling this number of lines from the top or bottom of the page.";
+      description = "Start scrolling this number of lines from the top or bottom of the page.";
     };
 
     wordWrap = mkOption {
@@ -44,20 +46,17 @@ in
 
     useSystemClipboard = mkOption {
       type = types.bool;
-      description =
-        "Make use of the clipboard for default yank and paste operations. Don't use * and +";
+      description = "Make use of the clipboard for default yank and paste operations. Don't use * and +";
     };
 
     mouseSupport = mkOption {
-      type = with types; enum [ "a" "n" "v" "i" "c" ];
-      description =
-        "Set modes for mouse support. a - all, n - normal, v - visual, i - insert, c - command";
+      type = with types; enum ["a" "n" "v" "i" "c"];
+      description = "Set modes for mouse support. a - all, n - normal, v - visual, i - insert, c - command";
     };
 
     lineNumberMode = mkOption {
-      type = with types; enum [ "relative" "number" "relNumber" "none" ];
-      description =
-        "How line numbers are displayed. none, relative, number, relNumber";
+      type = with types; enum ["relative" "number" "relNumber" "none"];
+      description = "How line numbers are displayed. none, relative, number, relNumber";
     };
 
     preventJunkFiles = mkOption {
@@ -82,8 +81,7 @@ in
 
     updateTime = mkOption {
       type = types.int;
-      description =
-        "The number of milliseconds till Cursor Hold event is fired";
+      description = "The number of milliseconds till Cursor Hold event is fired";
     };
 
     showSignColumn = mkOption {
@@ -92,14 +90,13 @@ in
     };
 
     bell = mkOption {
-      type = types.enum [ "none" "visual" "on" ];
+      type = types.enum ["none" "visual" "on"];
       description = "Set how bells are handled. Options: on, visual or none";
     };
 
     mapTimeout = mkOption {
       type = types.int;
-      description =
-        "Timeout in ms that neovim will wait for mapped action to complete";
+      description = "Timeout in ms that neovim will wait for mapped action to complete";
     };
 
     splitBelow = mkOption {
@@ -111,13 +108,15 @@ in
       type = types.bool;
       description = "New splits will open to the right";
     };
-
   };
 
   config = (
-    let writeIf = cond: msg: if cond then msg else "";
-    in
-    {
+    let
+      writeIf = cond: msg:
+        if cond
+        then msg
+        else "";
+    in {
       vim.colourTerm = mkDefault true;
       vim.disableArrows = false;
       vim.hideSearchHighlight = mkDefault false;
@@ -139,28 +138,32 @@ in
       vim.splitBelow = mkDefault true;
       vim.splitRight = mkDefault true;
 
-      vim.startPlugins = with pkgs.neovimPlugins; [ plenary-nvim ];
+      vim.startPlugins = with pkgs.neovimPlugins; [plenary-nvim];
 
       vim.nmap =
-        if (cfg.disableArrows) then {
+        if (cfg.disableArrows)
+        then {
           "<up>" = "<nop>";
           "<down>" = "<nop>";
           "<left>" = "<nop>";
           "<right>" = "<nop>";
-        } else
-          { };
+        }
+        else {};
 
       vim.imap =
-        if (cfg.disableArrows) then {
+        if (cfg.disableArrows)
+        then {
           "<up>" = "<nop>";
           "<down>" = "<nop>";
           "<left>" = "<nop>";
           "<right>" = "<nop>";
-        } else
-          { };
+        }
+        else {};
 
       vim.nnoremap =
-        if (cfg.mapLeaderSpace) then { "<space>" = "<nop>"; } else { };
+        if (cfg.mapLeaderSpace)
+        then {"<space>" = "<nop>";}
+        else {};
 
       vim.configRC = ''
         " Settings that are set for everything
@@ -187,7 +190,7 @@ in
         ${writeIf cfg.autoIndent ''
           set autoindent
         ''}
-          
+
         ${writeIf cfg.preventJunkFiles ''
           set noswapfile
           set nobackup
@@ -220,7 +223,7 @@ in
           let maplocalleader=" "
         ''}
         ${writeIf cfg.syntaxHighlighting ''
-          syntax on 
+          syntax on
         ''}
         ${writeIf (cfg.wordWrap == false) ''
           set nowrap

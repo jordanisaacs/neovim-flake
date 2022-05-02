@@ -1,10 +1,13 @@
-{ pkgs, lib, config, ... }:
-with lib;
-with builtins;
-
-let cfg = config.vim.autocomplete;
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.autocomplete;
+in {
   options.vim = {
     autocomplete = {
       enable = mkOption {
@@ -15,26 +18,36 @@ in
 
       type = mkOption {
         default = "nvim-cmp";
-        description =
-          "Set the autocomplete plugin. Options: [nvim-cmp] nvim-compe";
-        type = types.enum [ "nvim-compe" "nvim-cmp" ];
+        description = "Set the autocomplete plugin. Options: [nvim-cmp] nvim-compe";
+        type = types.enum ["nvim-compe" "nvim-cmp"];
       };
     };
   };
 
   config = mkIf (cfg.enable) (
-    let writeIf = cond: msg: if cond then msg else "";
-    in
-    {
+    let
+      writeIf = cond: msg:
+        if cond
+        then msg
+        else "";
+    in {
       vim.startPlugins = with pkgs.neovimPlugins;
-        (if cfg.type == "nvim-compe" then [ nvim-compe ] else [ ])
-        ++ (if cfg.type == "nvim-cmp" then [
-          nvim-cmp
-          cmp-buffer
-          cmp-vsnip
-          cmp-path
-          cmp-treesitter
-        ] else [ ]);
+        (
+          if cfg.type == "nvim-compe"
+          then [nvim-compe]
+          else []
+        )
+        ++ (
+          if cfg.type == "nvim-cmp"
+          then [
+            nvim-cmp
+            cmp-buffer
+            cmp-vsnip
+            cmp-path
+            cmp-treesitter
+          ]
+          else []
+        );
 
       vim.inoremap = mkIf (cfg.type == "nvim-compe") (
         {
@@ -42,10 +55,13 @@ in
           "<silent><expr><C-e>" = "compe#close('<C-e>')";
           "<silent><expr><C-f>" = "compe#scroll({ 'delta': +4 })";
           "<silent><expr><C-d>" = "compe#scroll({ 'delta': -4 })";
-        } // (
-          if (config.vim.autopairs.enable == false) then {
+        }
+        // (
+          if (config.vim.autopairs.enable == false)
+          then {
             "<silent><expr><CR>" = "compe#confirm('CR')";
-          } else { }
+          }
+          else {}
         )
       );
 
@@ -98,11 +114,11 @@ in
             if vim.fn.pumvisible() == 1 then
               return t "<C-n>"
             ${
-              writeIf config.vim.snippets.vsnip.enable ''
-                elseif vim.fn['vsnip#available'](1) == 1 then
-                  return t "<Plug>(vsnip-expand-or-jump)
-              ''
-            }
+            writeIf config.vim.snippets.vsnip.enable ''
+              elseif vim.fn['vsnip#available'](1) == 1 then
+                return t "<Plug>(vsnip-expand-or-jump)
+            ''
+          }
             elseif check_back_space() then
               return t "<Tab>"
             else
@@ -113,11 +129,11 @@ in
             if vim.fn.pumvisible() == 1 then
               return t "<C-p>"
             ${
-              writeIf config.vim.snippets.vsnip.enable ''
-                elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-                  return t "<Plug>(vsnip-jump-prev)
-              ''
-            }
+            writeIf config.vim.snippets.vsnip.enable ''
+              elseif vim.fn['vsnip#jumpable'](-1) == 1 then
+                return t "<Plug>(vsnip-jump-prev)
+            ''
+          }
             else
               -- If <S-Tab> is not working in your terminal, change it to <C-h>
               return t "<S-Tab>"
@@ -194,10 +210,10 @@ in
               format = function(entry, vim_item)
                 -- type of kind
                 vim_item.kind = ${
-                  writeIf (config.vim.visuals.lspkind.enable)
-                  "require('lspkind').presets.default[vim_item.kind] .. ' ' .."
-                } vim_item.kind
-          
+            writeIf (config.vim.visuals.lspkind.enable)
+            "require('lspkind').presets.default[vim_item.kind] .. ' ' .."
+          } vim_item.kind
+
                 -- name for each source
                 vim_item.menu = ({
                   buffer = "[Buffer]",
@@ -218,12 +234,9 @@ in
       '';
 
       vim.snippets.vsnip.enable =
-        if (cfg.type == "nvim-cmp") then
-          true
-        else
-          config.vim.snippets.vsnip.enable;
+        if (cfg.type == "nvim-cmp")
+        then true
+        else config.vim.snippets.vsnip.enable;
     }
   );
 }
-
-

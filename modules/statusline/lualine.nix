@@ -1,11 +1,13 @@
-{ pkgs, config, lib, ... }:
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.statusline.lualine;
-in
 {
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.statusline.lualine;
+in {
   options.vim.statusline.lualine = {
     enable = mkOption {
       type = types.bool;
@@ -52,7 +54,12 @@ in
           "solarized_dark"
           "tomorrow"
           "wombat"
-        ] ++ (if config.vim.theme.name == "tokyonight" then [ "tokyonight" ] else [ "onedark" ])
+        ]
+        ++ (
+          if config.vim.theme.name == "tokyonight"
+          then ["tokyonight"]
+          else ["onedark"]
+        )
       );
       description = "Theme for lualine";
     };
@@ -146,7 +153,8 @@ in
     };
   };
 
-  config = mkIf cfg.enable
+  config =
+    mkIf cfg.enable
     {
       #assertions = [
       #  ({
@@ -155,11 +163,15 @@ in
       #  })
       #];
 
-      vim.startPlugins = with pkgs.neovimPlugins; [ lualine ];
+      vim.startPlugins = with pkgs.neovimPlugins; [lualine];
       vim.luaConfigRC = ''
         require'lualine'.setup {
           options = {
-            icons_enabled = ${if cfg.icons then "true" else "false"}, 
+            icons_enabled = ${
+          if cfg.icons
+          then "true"
+          else "false"
+        },
             theme = "${cfg.theme}",
             component_separators = {"${cfg.componentSeparator.left}","${cfg.componentSeparator.right}"},
             section_separators = {"${cfg.sectionSeparator.left}","${cfg.sectionSeparator.right}"},
@@ -182,7 +194,11 @@ in
             lualine_z = ${cfg.inactiveSection.z},
           },
           tabline = {},
-          extensions = {${if config.vim.filetree.nvimTreeLua.enable then "\"nvim-tree\"" else ""}},
+          extensions = {${
+          if config.vim.filetree.nvimTreeLua.enable
+          then "\"nvim-tree\""
+          else ""
+        }},
         }
       '';
     };

@@ -1,12 +1,13 @@
-{ pkgs, config, lib, ... }:
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.lsp;
-
-in
 {
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.lsp;
+in {
   options.vim.lsp = {
     enable = mkEnableOption "neovim lsp support";
     nix = mkEnableOption "Nix LSP";
@@ -33,47 +34,78 @@ in
 
   config = mkIf cfg.enable (
     let
-      writeIf = cond: msg: if cond then msg else "";
-    in
-    {
-      vim.startPlugins = with pkgs.neovimPlugins; [
-        nvim-lspconfig
-        null-ls
-        (if (config.vim.autocomplete.enable && (config.vim.autocomplete.type == "nvim-cmp")) then cmp-nvim-lsp else null)
-        (if cfg.sql then sqls-nvim else null)
-      ] ++ (if cfg.rust.enable then [
-        crates-nvim
-        rust-tools
-        (if cfg.hare then hare-vim else null)
-      ] else [ ]);
-
+      writeIf = cond: msg:
+        if cond
+        then msg
+        else "";
+    in {
+      vim.startPlugins = with pkgs.neovimPlugins;
+        [
+          nvim-lspconfig
+          null-ls
+          (
+            if (config.vim.autocomplete.enable && (config.vim.autocomplete.type == "nvim-cmp"))
+            then cmp-nvim-lsp
+            else null
+          )
+          (
+            if cfg.sql
+            then sqls-nvim
+            else null
+          )
+        ]
+        ++ (
+          if cfg.rust.enable
+          then [
+            crates-nvim
+            rust-tools
+            (
+              if cfg.hare
+              then hare-vim
+              else null
+            )
+          ]
+          else []
+        );
 
       vim.configRC = ''
-        ${if cfg.rust.enable then ''
-          function! MapRustTools()
-            nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-            nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-            nnoremap <silent><leader>>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-            nnoremap <silent><leader>>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-            nnoremap <silent><leader>>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-          endfunction
-        
-          autocmd filetype rust nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-          autocmd filetype rust nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-          autocmd filetype rust nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-          autocmd filetype rust nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-          autocmd filetype rust nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-        '' else ""}
+        ${
+          if cfg.rust.enable
+          then ''
+            function! MapRustTools()
+              nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
+              nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
+              nnoremap <silent><leader>>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
+              nnoremap <silent><leader>>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
+              nnoremap <silent><leader>>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
+            endfunction
 
-        ${if cfg.nix then ''
-          autocmd filetype nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
-        '' else ""}
+            autocmd filetype rust nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
+            autocmd filetype rust nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
+            autocmd filetype rust nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
+            autocmd filetype rust nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
+            autocmd filetype rust nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
+          ''
+          else ""
+        }
 
-        ${if cfg.clang then ''
-          " c syntax for header (otherwise breaks treesitter highlighting) 
-          " https://www.reddit.com/r/neovim/comments/orfpcd/question_does_the_c_parser_from_nvimtreesitter/
-          let g:c_syntax_for_h = 1
-        '' else ""}
+        ${
+          if cfg.nix
+          then ''
+            autocmd filetype nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
+          ''
+          else ""
+        }
+
+        ${
+          if cfg.clang
+          then ''
+            " c syntax for header (otherwise breaks treesitter highlighting)
+            " https://www.reddit.com/r/neovim/comments/orfpcd/question_does_the_c_parser_from_nvimtreesitter/
+            let g:c_syntax_for_h = 1
+          ''
+          else ""
+        }
       '';
       vim.luaConfigRC = ''
 
@@ -101,40 +133,40 @@ in
 
         local ls_sources = {
           ${writeIf cfg.python ''
-            null_ls.builtins.formatting.black.with({
-              command = "${pkgs.black}/bin/black",
-            }),
-          ''}
+          null_ls.builtins.formatting.black.with({
+            command = "${pkgs.black}/bin/black",
+          }),
+        ''}
           -- Commented out for now
           --${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
           --  null_ls.builtins.code_actions.gitsigns,
           --''}
           ${writeIf cfg.sql ''
-            null_helpers.make_builtin({
-              method = null_methods.internal.FORMATTING,
-              filetypes = { "sql" },
-              generator_opts = {
-                to_stdin = true,
-                ignore_stderr = true,
-                suppress_errors = true,
-                command = "${pkgs.sqlfluff}/bin/sqlfluff",
-                args = {
-                  "fix",
-                  "-",
-                },
-              },
-              factory = null_helpers.formatter_factory,
-            }),
-
-            null_ls.builtins.diagnostics.sqlfluff.with({
+          null_helpers.make_builtin({
+            method = null_methods.internal.FORMATTING,
+            filetypes = { "sql" },
+            generator_opts = {
+              to_stdin = true,
+              ignore_stderr = true,
+              suppress_errors = true,
               command = "${pkgs.sqlfluff}/bin/sqlfluff",
-              extra_args = {"--dialect", "postgres"}
-            }),
+              args = {
+                "fix",
+                "-",
+              },
+            },
+            factory = null_helpers.formatter_factory,
+          }),
 
-            null_ls.builtins.formatting.alejandra.with({
-              command = "${pkgs.alejandra}/bin/alejandra"
-            }),
-          ''}
+          null_ls.builtins.diagnostics.sqlfluff.with({
+            command = "${pkgs.sqlfluff}/bin/sqlfluff",
+            extra_args = {"--dialect", "postgres"}
+          }),
+
+          null_ls.builtins.formatting.alejandra.with({
+            command = "${pkgs.alejandra}/bin/alejandra"
+          }),
+        ''}
         }
 
         -- Enable formatting
@@ -169,26 +201,29 @@ in
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
         ${let
-            cfg = config.vim.autocomplete;
-          in
-            writeIf cfg.enable
-              (if cfg.type == "nvim-compe" then ''
-                vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
-                capabilities.textDocument.completion.completionItem.resolveSupport = {
-                  properties = {
-                    'documentation',
-                    'detail',
-                    'additionalTextEdits',
-                  }
+          cfg = config.vim.autocomplete;
+        in
+          writeIf cfg.enable
+          (
+            if cfg.type == "nvim-compe"
+            then ''
+              vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
+              capabilities.textDocument.completion.completionItem.resolveSupport = {
+                properties = {
+                  'documentation',
+                  'detail',
+                  'additionalTextEdits',
                 }
-              ''
-              else ''
-                capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-              '')}
+              }
+            ''
+            else ''
+              capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+            ''
+          )}
 
         ${writeIf cfg.rust.enable ''
           -- Rust config
-          
+
           local rustopts = {
             server = {
               capabilities = capabilities,
@@ -205,7 +240,7 @@ in
           require('rust-tools').setup(rustopts)
           require('rust-tools.inlay_hints').set_inlay_hints()
         ''}
-    
+
         ${writeIf cfg.python ''
           -- Python config
           lspconfig.pyright.setup{
@@ -214,7 +249,7 @@ in
             cmd = {"${pkgs.nodePackages.pyright}/bin/pyright-langserver", "--stdio"}
           }
         ''}
-    
+
         ${writeIf cfg.nix ''
           -- Nix config
           lspconfig.rnix.setup{
@@ -259,4 +294,3 @@ in
     }
   );
 }
-

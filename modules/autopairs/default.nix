@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./config.nix
     ./nvim-autopairs.nix
