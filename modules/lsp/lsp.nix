@@ -225,6 +225,13 @@ in {
           -- Rust config
 
           local rustopts = {
+            tools = {
+              autoSetHints = true,
+              hover_with_actions = false,
+              inlay_hints = {
+                only_current_line = false,
+              }
+            },
             server = {
               capabilities = capabilities,
               on_attach = default_on_attach,
@@ -235,10 +242,13 @@ in {
             }
           }
 
-          lspconfig.rust_analyzer.setup{}
-          require('crates').setup{}
+          require('crates').setup {
+            null_ls = {
+              enabled = true,
+              name = "crates.nvim",
+            }
+          }
           require('rust-tools').setup(rustopts)
-          require('rust-tools.inlay_hints').set_inlay_hints()
         ''}
 
         ${writeIf cfg.python ''
