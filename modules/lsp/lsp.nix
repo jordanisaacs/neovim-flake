@@ -10,6 +10,7 @@ with builtins; let
 in {
   options.vim.lsp = {
     enable = mkEnableOption "neovim lsp support";
+    formatOnSave = mkEnableOption "Format on save";
     nix = mkEnableOption "Nix LSP";
     rust = {
       enable = mkEnableOption "Rust LSP";
@@ -29,6 +30,7 @@ in {
     clang = mkEnableOption "C language LSP";
     sql = mkEnableOption "SQL Language LSP";
     go = mkEnableOption "Go language LSP";
+    ts = mkEnableOption "TS language LSP";
     hare = mkEnableOption "Hare plugin (not LSP)";
   };
 
@@ -132,42 +134,58 @@ in {
         local null_methods = require("null-ls.methods")
 
         local ls_sources = {
-          ${writeIf cfg.python ''
-          null_ls.builtins.formatting.black.with({
-            command = "${pkgs.black}/bin/black",
-          }),
-        ''}
+          ${writeIf cfg.python
+          ''
+            null_ls.builtins.formatting.black.with({
+              command = "${pkgs.black}/bin/black",
+            }),
+          ''}
           -- Commented out for now
           --${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
           --  null_ls.builtins.code_actions.gitsigns,
           --''}
-          ${writeIf cfg.sql ''
-          null_helpers.make_builtin({
-            method = null_methods.internal.FORMATTING,
-            filetypes = { "sql" },
-            generator_opts = {
-              to_stdin = true,
-              ignore_stderr = true,
-              suppress_errors = true,
-              command = "${pkgs.sqlfluff}/bin/sqlfluff",
-              args = {
-                "fix",
-                "-",
+          ${writeIf cfg.sql
+          ''
+            null_helpers.make_builtin({
+              method = null_methods.internal.FORMATTING,
+              filetypes = { "sql" },
+              generator_opts = {
+                to_stdin = true,
+                ignore_stderr = true,
+                suppress_errors = true,
+                command = "${pkgs.sqlfluff}/bin/sqlfluff",
+                args = {
+                  "fix",
+                  "-",
+                },
               },
-            },
-            factory = null_helpers.formatter_factory,
-          }),
+              factory = null_helpers.formatter_factory,
+            }),
 
-          null_ls.builtins.diagnostics.sqlfluff.with({
-            command = "${pkgs.sqlfluff}/bin/sqlfluff",
-            extra_args = {"--dialect", "postgres"}
-          }),
+            null_ls.builtins.diagnostics.sqlfluff.with({
+              command = "${pkgs.sqlfluff}/bin/sqlfluff",
+              extra_args = {"--dialect", "postgres"}
+            }),
+          ''}
+          ${writeIf cfg.nix
+          ''
+            null_ls.builtins.formatting.alejandra.with({
+              command = "${pkgs.alejandra}/bin/alejandra"
+            }),
+          ''}
 
-          null_ls.builtins.formatting.alejandra.with({
-            command = "${pkgs.alejandra}/bin/alejandra"
-          }),
-        ''}
+          ${writeIf cfg.ts
+          ''
+            null_ls.builtins.diagnostics.eslint,
+            null_ls.builtins.formatting.prettier,
+          ''}
         }
+
+        vim.g.formatsave = ${
+          if cfg.formatOnSave
+          then "true"
+          else "false"
+        };
 
         -- Enable formatting
         format_callback = function(client, bufnr)
@@ -175,8 +193,10 @@ in {
             group = augroup,
             buffer = bufnr,
             callback = function()
-              local params = require'vim.lsp.util'.make_formatting_params({})
-              client.request('textDocument/formatting', params, nil, bufnr)
+              if vim.g.formatsave then
+                  local params = require'vim.lsp.util'.make_formatting_params({})
+                  client.request('textDocument/formatting', params, nil, bufnr)
+              end
             end
           })
         end
@@ -298,6 +318,17 @@ in {
             capabilities = capabilities;
             on_attach = default_on_attach;
             cmd = {"${pkgs.gopls}/bin/gopls", "serve"},
+          }
+        ''}
+
+        ${writeIf cfg.ts ''
+          -- TS config
+          lspconfig.tsserver.setup {
+            capabilities = capabilities;
+            on_attach = function(client, bufnr)
+              attach_keymaps(client, bufnr)
+            end,
+            cmd = { "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server", "--stdio" }
           }
         ''}
       '';

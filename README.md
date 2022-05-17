@@ -73,6 +73,20 @@ Using [sqlfluff](https://github.com/sqlfluff/sqlfluff) through null-ls to provid
 
 **LSP Server**: [ccls](https://github.com/MaskRay/ccls)
 
+### Typescript
+
+**LSP Server**: [typescript-language-server](https://github.com/typescript-language-server/typescript-language-server)
+
+**Linting**
+
+Using [eslint](https://github.com/prettier/prettier) through null-ls.
+
+**Formatting**
+
+Disabled lsp server formatting, using [prettier](https://github.com/prettier/prettier) through null-ls.
+
+
+
 ### Python
 
 **LSP Server**: [pyright](https://github.com/microsoft/pyright)

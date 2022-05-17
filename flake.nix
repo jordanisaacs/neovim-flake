@@ -355,6 +355,7 @@
             python = true;
             clang = true;
             sql = true;
+            ts = true;
             go = true;
             hare = true;
           };
