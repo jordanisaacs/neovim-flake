@@ -19,6 +19,7 @@
     p.tree-sitter-html
     p.tree-sitter-javascript
     p.tree-sitter-css
+    p.tree-sitter-graphql
     pkgs.tree-sitter-hare
   ]);
 
