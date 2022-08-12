@@ -5,10 +5,12 @@
 }: {config}: let
   neovimPlugins = pkgs.neovimPlugins;
 
+  myNeovimUnwrapped = pkgs.neovim-unwrapped;
+
   # attempt fix for libstdc++.so.6 no file or directory
-  myNeovimUnwrapped = pkgs.neovim-unwrapped.overrideAttrs (prev: {
-    propagatedBuildInputs = with pkgs; [pkgs.stdenv.cc.cc.lib];
-  });
+  # myNeovimUnwrapped = pkgs.neovim-unwrapped.overrideAttrs (prev: {
+  #   propagatedBuildInputs = with pkgs; [pkgs.stdenv.cc.cc.lib];
+  # });
 
   vimOptions = lib.evalModules {
     modules = [
