@@ -116,6 +116,12 @@ in {
       description = "Shows lsp diagnostics in the tree";
       type = types.bool;
     };
+
+    systemOpenCmd = mkOption {
+      default = "${pkgs.xdg-utils}/bin/xdg-open";
+      description = "The command used to open a file with the associated default program";
+      type = types.str;
+    };
   };
 
   config = mkIf cfg.enable (
@@ -146,6 +152,9 @@ in {
           hijack_netrw = ${boolToString cfg.hijackNetRW},
           open_on_tab = ${boolToString cfg.openTreeOnNewTab},
           open_on_setup = ${boolToString cfg.openOnSetup},
+          system_open = {
+            cmd = ${"'" + cfg.systemOpenCmd + "'"},
+          },
           diagnostics = {
             enable = ${boolToString cfg.lspDiagnostics},
           },
