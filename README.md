@@ -106,7 +106,7 @@ Using [black](https://github.com/psf/black) through null-ls
 
 **Plugins**
 
-- [nvim-ts-autotag](https://github.com/ellisonleao/glow.nvim/issues/44) for autoclosing and renaming html tags. Works with html, tsx, vue, svelte, and php
+- [nvim-ts-autotag](https://github.com/windwp/nvim-ts-autotag) for autoclosing and renaming html tags. Works with html, tsx, vue, svelte, and php
 
 ## All Plugins
 
