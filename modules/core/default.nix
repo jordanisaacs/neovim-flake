@@ -123,9 +123,23 @@ in {
   };
 
   config = let
+    mkVimBool = val:
+      if val
+      then "1"
+      else "0";
+    valToVim = val:
+      if (isInt val)
+      then (builtins.toString val)
+      else
+        (
+          if (isBool val)
+          then (mkVimBool val)
+          else (toJSON val)
+        );
+
     filterNonNull = mappings: filterAttrs (name: value: value != null) mappings;
     globalsScript =
-      mapAttrsFlatten (name: value: "let g:${name}=${toJSON value}")
+      mapAttrsFlatten (name: value: "let g:${name}=${valToVim value}")
       (filterNonNull cfg.globals);
 
     matchCtrl = it: match "Ctrl-(.)(.*)" it;

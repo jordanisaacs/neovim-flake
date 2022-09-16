@@ -27,12 +27,12 @@ in {
       )
     ];
 
-    vim.configRC =
-      if cfg.glow.enable
-      then ''
-        autocmd FileType markdown noremap <leader>p :Glow<CR>
-        let g:glow_binary_path = "${pkgs.glow}/bin"
-      ''
-      else "";
+    vim.globals = mkIf (cfg.glow.enable) {
+      "glow_binary_path" = "${pkgs.glow}/bin";
+    };
+
+    vim.configRC = mkIf (cfg.glow.enable) ''
+      autocmd FileType markdown noremap <leader>p :Glow<CR>
+    '';
   };
 }

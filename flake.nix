@@ -205,6 +205,11 @@
       flake = false;
     };
 
+    # Tidal cycles
+    tidalcycles = {
+      url = "github:mitchmindtree/tidalcycles.nix";
+    };
+
     # Plenary (required by crates-nvim)
     plenary-nvim = {
       url = "github:nvim-lua/plenary.nvim";
@@ -279,6 +284,7 @@
       config = {allowUnfree = true;};
       overlays = [
         pluginOverlay
+        inputs.tidalcycles.overlays.default
         (final: prev: {
           rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
           tree-sitter-hare = jdpkgs.packages.${system}.tree-sitter-hare;
@@ -367,7 +373,7 @@
           vim.filetree.nvimTreeLua.enable = true;
           vim.tabline.nvimBufferline.enable = true;
           vim.treesitter = {
-            enable = true;
+            enable = false;
             autotagHtml = true;
             context.enable = true;
           };

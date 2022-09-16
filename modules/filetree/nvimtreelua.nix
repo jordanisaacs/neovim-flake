@@ -59,7 +59,13 @@ in {
 
     closeOnFileOpen = mkOption {
       default = false;
-      description = "Close the tree when a file is opened";
+      description = "Closes the tree when a file is opened.";
+      type = types.bool;
+    };
+
+    resizeOnFileOpen = mkOption {
+      default = false;
+      description = "Resizes the tree when opening a file.";
       type = types.bool;
     };
 
@@ -124,66 +130,59 @@ in {
     };
   };
 
-  config = mkIf cfg.enable (
-    let
-      mkVimBool = val:
-        if val
-        then 1
-        else 0;
-    in {
-      vim.startPlugins = with pkgs.neovimPlugins; [
-        nvim-tree-lua
-      ];
+  config = mkIf cfg.enable {
+    vim.startPlugins = with pkgs.neovimPlugins; [
+      nvim-tree-lua
+    ];
 
-      vim.nnoremap = {
-        "<C-n>" = ":NvimTreeToggle<CR>";
-        "<leader>tr" = ":NvimTreeRefresh<CR>";
-        "<leader>tf" = ":NvimTreeFindFile<CR>";
-      };
+    vim.nnoremap = {
+      "<C-n>" = ":NvimTreeToggle<CR>";
+      "<leader>tr" = ":NvimTreeRefresh<CR>";
+      "<leader>tg" = ":NvimTreeFindFile<CR>";
+      "<leader>tf" = ":NvimTreeFocus<CR>";
+    };
 
-      vim.globals = {
-        "nvim_tree_add_trailing" = mkVimBool cfg.trailingSlash;
-        "nvim_tree_group_empty" = mkVimBool cfg.groupEmptyFolders;
-      };
-
-      vim.luaConfigRC = ''
-        require'nvim-tree'.setup({
-          disable_netrw = ${boolToString cfg.disableNetRW},
-          hijack_netrw = ${boolToString cfg.hijackNetRW},
-          open_on_tab = ${boolToString cfg.openTreeOnNewTab},
-          open_on_setup = ${boolToString cfg.openOnSetup},
-          system_open = {
-            cmd = ${"'" + cfg.systemOpenCmd + "'"},
+    vim.luaConfigRC = ''
+      require'nvim-tree'.setup({
+        disable_netrw = ${boolToString cfg.disableNetRW},
+        hijack_netrw = ${boolToString cfg.hijackNetRW},
+        open_on_tab = ${boolToString cfg.openTreeOnNewTab},
+        open_on_setup = ${boolToString cfg.openOnSetup},
+        open_on_setup_file = ${boolToString cfg.openOnSetup},
+        system_open = {
+          cmd = ${"'" + cfg.systemOpenCmd + "'"},
+        },
+        diagnostics = {
+          enable = ${boolToString cfg.lspDiagnostics},
+        },
+        view  = {
+          width = ${toString cfg.treeWidth},
+          side = ${"'" + cfg.treeSide + "'"},
+        },
+        renderer = {
+          indent_markers = {
+            enable = ${boolToString cfg.indentMarkers},
           },
-          diagnostics = {
-            enable = ${boolToString cfg.lspDiagnostics},
+          add_trailing = ${boolToString cfg.trailingSlash},
+          group_empty = ${boolToString cfg.groupEmptyFolders},
+        },
+        actions = {
+          open_file = {
+            quit_on_open = ${boolToString cfg.closeOnFileOpen},
+            resize_window = ${boolToString cfg.resizeOnFileOpen},
           },
-          view  = {
-            width = ${toString cfg.treeWidth},
-            side = ${"'" + cfg.treeSide + "'"},
+        },
+        git = {
+          enable = true,
+          ignore = ${boolToString cfg.hideIgnoredGitFiles},
+        },
+        filters = {
+          dotfiles = ${boolToString cfg.hideDotFiles},
+          custom = {
+            ${builtins.concatStringsSep "\n" (builtins.map (s: "\"" + s + "\",") cfg.hideFiles)}
           },
-          renderer = {
-            indent_markers = {
-              enable = ${boolToString cfg.indentMarkers},
-            },
-          },
-          actions = {
-            open_file = {
-              quit_on_open = ${boolToString cfg.closeOnFileOpen},
-            },
-          },
-          git = {
-            enable = true,
-            ignore = ${boolToString cfg.hideIgnoredGitFiles},
-          },
-          filters = {
-            dotfiles = ${boolToString cfg.hideDotFiles},
-            custom = {
-              ${builtins.concatStringsSep "\n" (builtins.map (s: "\"" + s + "\",") cfg.hideFiles)}
-            },
-          },
-        })
-      '';
-    }
-  );
+        },
+      })
+    '';
+  };
 }

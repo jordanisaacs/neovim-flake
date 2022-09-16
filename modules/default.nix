@@ -15,6 +15,7 @@
     ./visuals
     ./lsp
     ./treesitter
+    ./tidal
     ./autopairs
     ./snippets
     ./keys
