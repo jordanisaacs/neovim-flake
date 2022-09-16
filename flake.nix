@@ -385,6 +385,10 @@
         type = "app";
         program = "${packages.${system}.default}/bin/nvim";
       };
+      tidal = {
+        type = "app";
+        program = "${packages.${system}.neovimTidal}/bin/nvim";
+      };
 
       default = nvim;
     };
