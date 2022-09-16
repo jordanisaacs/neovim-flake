@@ -939,11 +939,11 @@
     "vim-tidal-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1663296162,
-        "narHash": "sha256-UNt9t8hQQcrvEfFNaX84WdBO873M1AgQ8rcYJ3MIxz0=",
+        "lastModified": 1663300154,
+        "narHash": "sha256-r1q4Lx/ObUW0ENY3jTXevR8MpQ/PoegzK3WiDcKVHME=",
         "owner": "jordanisaacs",
         "repo": "vim-tidal",
-        "rev": "fd651c887f4f689ca59fff3b2e7e7dd0ed41a2b5",
+        "rev": "a48d8551833ab0ce48521cff8bb0b668ef3b540c",
         "type": "github"
       },
       "original": {

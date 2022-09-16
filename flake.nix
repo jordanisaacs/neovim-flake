@@ -300,6 +300,12 @@
 
     neovimBuilder = lib.neovimBuilder;
 
+    tidalConfig = {
+      config = {
+        vim.tidal.enable = true;
+      };
+    };
+
     configBuilder = isMaximal: {
       config = {
         vim.viAlias = false;
@@ -383,19 +389,26 @@
       default = nvim;
     };
 
-    devShells.${system}.default = pkgs.mkShell {
-      buildInputs = [(neovimBuilder (configBuilder false))];
+    devShells.${system} = {
+      default = pkgs.mkShell {
+        buildInputs = [(neovimBuilder (configBuilder false))];
+      };
+      tidal = pkgs.mkShell {
+        buildInputs = [(neovimBuilder tidalConfig)];
+      };
     };
 
     overlays.default = final: prev: {
       inherit neovimBuilder;
       neovimJD = packages.${system}.neovimJD;
+      neovimTidal = packages.${system}.neovimTidal;
       neovimPlugins = pkgs.neovimPlugins;
     };
 
     packages.${system} = rec {
       default = neovimJD;
       neovimJD = neovimBuilder (configBuilder true);
+      neovimTidal = neovimBuilder tidalConfig;
     };
   };
 }
