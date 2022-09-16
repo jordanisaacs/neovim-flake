@@ -1,28 +1,38 @@
 # neovim-flake
 
-Nix flake for neovim with configuration options
+A highly configurable nix flake for neovim
 
 Originally based on Wil Taylor's amazing [neovim-flake](https://github.com/wiltaylor/neovim-flake)
 
 ## Installation
 
-This config is constantly changing and updating as it is my personal config. It is opinionated and some available options may also be broken which I will try to keep documented in issues. I am sharing it so anyone can use it as inspiration/a starting point for their own config. I recommend cloning the config and running it locally with:
+While I am working towards this config being more stable so people can point to it directly, its origins are as an opinionated personal config. Thus, I recommend cloning the config and running it locally with:
 
 ```
 nix run .#
 ```
 
-If you want to live life on the edge you can point to this repository directly with:
+If you want to live life on the edge you can run from this repository directly with:
 
 ```
-nix run github:jordanisaacs/neovim-flake.#
+nix run github:jordanisaacs/neovim-flake#
 ```
 
-## Options
+## Philosophy
 
-The philosophy behind this flake configuration is sensible options. While the default package has almost everything enabled, when building your own config using the overlay everything is disabled. By enabling a plugin or language, it will set up the keybindings and plugin automatically. Additionally each plugin knows when another plugin is enabled allowing for smart configuration of keybindings and automatic setup of things like completion sources and languages.
+The philosophy behind this flake configuration is to allow for easily configurable and reproducible neovim environments. Enter a directory and have a ready to go neovim configuration that is the same on every machine. Whether you are a developer, writer, or live coder (see tidal cycles below!), quickly craft a config that suits every project's need. Think of it like a distribution of Neovim that takes advantage of pinning vim plugins and third party dependencies (such as tree-sitter grammars, language servers, and more).
 
-A goal of mine is that I shouldn't not be able to break neovim by enabling or disabling an option. For example you can't have two completion plugins enabled as the option is an enum.
+As a result, one should never get a broken config when setting options. If setting multiple options results in a broken neovim, file an issue! Each plugin knows when another plugin which allows for smart configuration of keybindings and automatic setup of things like completion sources and languages.
+
+## Default Configs
+
+### Tidal Cycles:
+
+```
+nix run github:jordanisaacs/neovim-flake#tidal file.tidal
+```
+
+Utilizing mitchmindtree's fantastic [tidalcycles.nix](https://github.com/mitchmindtree/tidalcycles.nix) and [vim-tidal](https://github.com/mitchmindtree/vim-tidal/tree/mitchmindtree) start playing with tidal cycles in a single command. Type on the first line of your tidal file, a cycle e.g. `d1 $ s "drum"` and then press `ctrl+enter`. Super collider with superdirt, and a modified GHCI with tidal will start up and begin playing. Note, you need jack enabled on your system. If you are using pipewire, its as easy as setting `services.pipewire.jack.enable = true`.
 
 ## Screenshot
 
