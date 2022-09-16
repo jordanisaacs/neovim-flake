@@ -32,7 +32,7 @@ As a result, one should never get a broken config when setting options. If setti
 nix run github:jordanisaacs/neovim-flake#tidal file.tidal
 ```
 
-Utilizing mitchmindtree's fantastic [tidalcycles.nix](https://github.com/mitchmindtree/tidalcycles.nix) and [vim-tidal](https://github.com/mitchmindtree/vim-tidal/tree/mitchmindtree) start playing with tidal cycles in a single command. Type on the first line of your tidal file, a cycle e.g. `d1 $ s "drum"` and then press `ctrl+enter`. Super collider with superdirt, and a modified GHCI with tidal will start up and begin playing. Note, you need jack enabled on your system. If you are using pipewire, its as easy as setting `services.pipewire.jack.enable = true`.
+Utilizing [vim-tidal](https://github.com/mitchmindtree/vim-tidal/tree/mitchmindtree) and mitchmindtree's fantastic [tidalcycles.nix](https://github.com/mitchmindtree/tidalcycles.nix) start playing with tidal cycles in a single command. Type on the first line of your tidal file, a cycle e.g. `d1 $ s "drum"` and then press `ctrl+enter`. Super collider with superdirt, and a modified GHCI with tidal will start up and begin playing. Note, you need jack enabled on your system. If you are using pipewire, its as easy as setting `services.pipewire.jack.enable = true`.
 
 ## Screenshot
 
