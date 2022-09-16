@@ -129,22 +129,6 @@
         "type": "github"
       }
     },
-    "flake-compat": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1650374568,
-        "narHash": "sha256-Z+s0J8/r907g149rllvwhb4pKi8Wam5ij0st8PwAh+E=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "b4a34015c698c7793d592d66adbab377907a2be8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "locked": {
         "lastModified": 0,
@@ -955,11 +939,11 @@
     "vim-tidal-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1661670183,
-        "narHash": "sha256-HU075U97COak/Xqw+4ifVkEEIgWzGvwRoR3q9LGKl8s=",
-        "owner": "mitchmindtree",
+        "lastModified": 1663296162,
+        "narHash": "sha256-UNt9t8hQQcrvEfFNaX84WdBO873M1AgQ8rcYJ3MIxz0=",
+        "owner": "jordanisaacs",
         "repo": "vim-tidal",
-        "rev": "5c1e70ee3d2b4655b8ccba11422866c496610ca8",
+        "rev": "fd651c887f4f689ca59fff3b2e7e7dd0ed41a2b5",
         "type": "github"
       },
       "original": {

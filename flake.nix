@@ -208,6 +208,7 @@
     # Tidal cycles
     tidalcycles = {
       url = "github:mitchmindtree/tidalcycles.nix";
+      inputs.vim-tidal-src.url = "github:jordanisaacs/vim-tidal/neovim-sc";
     };
 
     # Plenary (required by crates-nvim)
