@@ -298,6 +298,80 @@
       {inherit pkgs inputs plugins;};
 
     neovimBuilder = lib.neovimBuilder;
+
+    configBuilder = isMaximal: {
+      config = {
+        vim.viAlias = false;
+        vim.vimAlias = true;
+        vim.lsp = {
+          enable = true;
+          formatOnSave = true;
+          lightbulb.enable = true;
+          lspsaga.enable = false;
+          nvimCodeActionMenu.enable = true;
+          trouble.enable = true;
+          lspSignature.enable = true;
+          nix = true;
+          rust.enable = isMaximal;
+          python = isMaximal;
+          clang = isMaximal;
+          sql = isMaximal;
+          ts = isMaximal;
+          go = isMaximal;
+          hare = isMaximal;
+        };
+        vim.visuals = {
+          enable = true;
+          nvimWebDevicons.enable = true;
+          lspkind.enable = true;
+          indentBlankline = {
+            enable = true;
+            fillChar = "";
+            eolChar = "";
+            showCurrContext = true;
+          };
+          cursorWordline = {
+            enable = true;
+            lineTimeout = 0;
+          };
+        };
+        vim.statusline.lualine = {
+          enable = true;
+          theme = "onedark";
+        };
+        vim.theme = {
+          enable = true;
+          name = "onedark";
+          style = "darker";
+        };
+        vim.autopairs.enable = true;
+        vim.autocomplete = {
+          enable = true;
+          type = "nvim-cmp";
+        };
+        vim.filetree.nvimTreeLua.enable = true;
+        vim.tabline.nvimBufferline.enable = true;
+        vim.treesitter = {
+          enable = true;
+          context.enable = true;
+        };
+        vim.keys = {
+          enable = true;
+          whichKey.enable = true;
+        };
+        vim.telescope = {
+          enable = true;
+        };
+        vim.markdown = {
+          enable = true;
+          glow.enable = true;
+        };
+        vim.git = {
+          enable = true;
+          gitsigns.enable = true;
+        };
+      };
+    };
   in rec {
     apps.${system} = rec {
       nvim = {
@@ -309,7 +383,7 @@
     };
 
     devShells.${system}.default = pkgs.mkShell {
-      buildInputs = [packages.${system}.neovimJD];
+      buildInputs = [(neovimBuilder (configBuilder false))];
     };
 
     overlays.default = final: prev: {
@@ -320,80 +394,7 @@
 
     packages.${system} = rec {
       default = neovimJD;
-      neovimJD = neovimBuilder {
-        config = {
-          vim.viAlias = false;
-          vim.vimAlias = true;
-          vim.lsp = {
-            enable = true;
-            formatOnSave = true;
-            lightbulb.enable = true;
-            lspsaga.enable = false;
-            nvimCodeActionMenu.enable = true;
-            trouble.enable = true;
-            lspSignature.enable = true;
-            rust.enable = true;
-            nix = true;
-            python = true;
-            clang = true;
-            sql = true;
-            ts = true;
-            go = true;
-            hare = true;
-          };
-          vim.visuals = {
-            enable = true;
-            nvimWebDevicons.enable = true;
-            lspkind.enable = true;
-            indentBlankline = {
-              enable = true;
-              fillChar = "";
-              eolChar = "";
-              showCurrContext = true;
-            };
-            cursorWordline = {
-              enable = true;
-              lineTimeout = 0;
-            };
-          };
-          vim.statusline.lualine = {
-            enable = true;
-            theme = "onedark";
-          };
-          vim.theme = {
-            enable = true;
-            name = "onedark";
-            style = "darker";
-          };
-          vim.autopairs.enable = true;
-          vim.autocomplete = {
-            enable = true;
-            type = "nvim-cmp";
-          };
-          vim.filetree.nvimTreeLua.enable = true;
-          vim.tabline.nvimBufferline.enable = true;
-          vim.treesitter = {
-            enable = false;
-            autotagHtml = true;
-            context.enable = true;
-          };
-          vim.keys = {
-            enable = true;
-            whichKey.enable = true;
-          };
-          vim.telescope = {
-            enable = true;
-          };
-          vim.markdown = {
-            enable = true;
-            glow.enable = true;
-          };
-          vim.git = {
-            enable = true;
-            gitsigns.enable = true;
-          };
-        };
-      };
+      neovimJD = neovimBuilder (configBuilder true);
     };
   };
 }
