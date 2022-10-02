@@ -9,13 +9,13 @@ Originally based on Wil Taylor's amazing [neovim-flake](https://github.com/wilta
 While I am working towards this config being more stable so people can point to it directly, its origins are as an opinionated personal config. Thus, I recommend cloning the config and running it locally with:
 
 ```
-nix run .#
+nix run .
 ```
 
 If you want to live life on the edge you can run from this repository directly with:
 
 ```
-nix run github:jordanisaacs/neovim-flake#
+nix run github:jordanisaacs/neovim-flake
 ```
 
 ## Philosophy
