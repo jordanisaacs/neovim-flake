@@ -8,6 +8,7 @@
 
   treesitterGrammars = prev.tree-sitter.withPlugins (p: [
     p.tree-sitter-c
+    p.tree-sitter-cpp
     p.tree-sitter-nix
     p.tree-sitter-python
     p.tree-sitter-rust
