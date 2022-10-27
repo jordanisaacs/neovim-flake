@@ -48,19 +48,16 @@ in {
         set nofoldenable
       '';
 
-      vim.luaConfigRC = let
-        tree-sitter-hare = builtins.fetchGit {
-          url = "https://git.sr.ht/~ecmma/tree-sitter-hare";
-          ref = "master";
-          rev = "bc26a6a949f2e0d98b7bfc437d459b250900a165";
-        };
-      in ''
+      vim.luaConfigRC = ''
         -- Treesitter config
         require'nvim-treesitter.configs'.setup {
           highlight = {
             enable = true,
             disable = {},
           },
+
+          auto_install = false,
+          ensure_isntalled = {},
 
           incremental_selection = {
             enable = true,

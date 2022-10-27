@@ -226,27 +226,18 @@ in {
         local lspconfig = require('lspconfig')
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-        ${let
-          cfg = config.vim.autocomplete;
-        in
-          writeIf cfg.enable
-          (
-            if cfg.type == "nvim-compe"
-            then ''
-              vim.capabilities.textDocument.completion.completionItem.snippetSupport = true
-              capabilities.textDocument.completion.completionItem.resolveSupport = {
-                properties = {
-                  'documentation',
-                  'detail',
-                  'additionalTextEdits',
-                }
-              }
-            ''
-            else ''
-              capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-            ''
-          )}
+        ${
+          let
+            cfg = config.vim.autocomplete;
+          in
+            writeIf cfg.enable (
+              if cfg.type == "nvim-cmp"
+              then ''
+                capabilities = require('cmp_nvim_lsp').default_capabilities()
+              ''
+              else ""
+            )
+        }
 
         ${writeIf cfg.rust.enable ''
           -- Rust config
