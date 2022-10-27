@@ -208,7 +208,7 @@
     # Tidal cycles
     tidalcycles = {
       url = "github:mitchmindtree/tidalcycles.nix";
-      inputs.vim-tidal-src.url = "github:jordanisaacs/vim-tidal/neovim-sc";
+      inputs.vim-tidal-src.url = "github:tidalcycles/vim-tidal";
     };
 
     # Plenary (required by crates-nvim)
@@ -321,7 +321,7 @@
           nix = true;
           rust.enable = isMaximal;
           python = isMaximal;
-          clang = isMaximal;
+          clang.enable = isMaximal;
           sql = isMaximal;
           ts = isMaximal;
           go = isMaximal;

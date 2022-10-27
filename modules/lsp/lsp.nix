@@ -27,7 +27,14 @@ in {
       };
     };
     python = mkEnableOption "Python LSP";
-    clang = mkEnableOption "C language LSP";
+    clang = {
+      enable = mkEnableOption "C language LSP";
+      c_header = mkEnableOption "C syntax header files";
+      cclsOpts = mkOption {
+        type = types.str;
+        default = "";
+      };
+    };
     sql = mkEnableOption "SQL Language LSP";
     go = mkEnableOption "Go language LSP";
     ts = mkEnableOption "TS language LSP";
@@ -100,7 +107,7 @@ in {
         }
 
         ${
-          if cfg.clang
+          if cfg.clang.c_header
           then ''
             " c syntax for header (otherwise breaks treesitter highlighting)
             " https://www.reddit.com/r/neovim/comments/orfpcd/question_does_the_c_parser_from_nvimtreesitter/
@@ -291,12 +298,17 @@ in {
           }
         ''}
 
-        ${writeIf cfg.clang ''
+        ${writeIf cfg.clang.enable ''
           -- CCLS (clang) config
           lspconfig.ccls.setup{
             capabilities = capabilities;
             on_attach=default_on_attach;
-            cmd = {"${pkgs.ccls}/bin/ccls"}
+            cmd = {"${pkgs.ccls}/bin/ccls"};
+            ${
+            if cfg.clang.cclsOpts == ""
+            then ""
+            else "init_options = ${cfg.clang.cclsOpts}"
+          }
           }
         ''}
 
