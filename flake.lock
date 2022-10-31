@@ -989,11 +989,11 @@
     "which-key": {
       "flake": false,
       "locked": {
-        "lastModified": 1647590687,
-        "narHash": "sha256-KvzS9Lzkw09s0TRmHLN/CLjXvietGJzI06W7WNChcwI=",
+        "lastModified": 1666956294,
+        "narHash": "sha256-IbJP6j+M+POPhX4YbewTJiSoELvDo6y+vF0RREqqm4c=",
         "owner": "folke",
         "repo": "which-key.nvim",
-        "rev": "a3c19ec5754debb7bf38a8404e36a9287b282430",
+        "rev": "61553aeb3d5ca8c11eea8be6eadf478062982ac9",
         "type": "github"
       },
       "original": {
