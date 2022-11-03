@@ -1,0 +1,4 @@
+[
+  "tokyonight"
+  "onedark"
+]
