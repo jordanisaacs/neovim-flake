@@ -1,12 +1,10 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+{ pkgs, config, lib, ... }:
 with lib;
-with builtins; let
+with lib.attrsets;
+with builtins;
+let
   cfg = config.vim.theme;
+  supported_themes = import ./supported_themes.nix;
 in {
   options.vim.theme = {
     enable = mkOption {
@@ -15,47 +13,23 @@ in {
     };
 
     name = mkOption {
-      type = types.enum ["onedark" "tokyonight"];
-      description = ''Name of theme to use: "onedark" "tokyonight"'';
+      type = types.enum (attrNames supported_themes);
+      description = "Supported themes can be found in `supported_themes.nix`";
     };
 
     style = mkOption {
-      type = with types; (
-        if (cfg.name == "tokyonight")
-        then (enum ["day" "night" "storm"])
-        else (enum ["dark" "darker" "cool" "deep" "warm" "warmer"])
-      );
-      description = ''Theme style: "storm", darker variant "night", and "day"'';
+      type = with types; enum supported_themes.${cfg.name}.styles;
+      description = "Specific style for theme if it supports it";
+    };
+    extraConfig = mkOption {
+      type = with types; lines;
+      description = "Additional lua configuration to add before setup";
     };
   };
 
-  config =
-    mkIf cfg.enable
-    (
-      let
-        mkVimBool = val:
-          if val
-          then "1"
-          else "0";
-      in {
-        vim.configRC = mkIf (cfg.name == "tokyonight") ''
-          " need to set style before colorscheme to apply
-          let g:${cfg.name}_style = "${cfg.style}"
-          colorscheme ${cfg.name}
-        '';
-
-        vim.startPlugins = with pkgs.neovimPlugins;
-          if (cfg.name == "tokyonight")
-          then [tokyonight]
-          else [onedark];
-
-        vim.luaConfigRC = mkIf (cfg.name == "onedark") ''
-          -- OneDark theme
-          require('onedark').setup {
-            style = "${cfg.style}"
-          }
-          require('onedark').load()
-        '';
-      }
-    );
+  config = mkIf cfg.enable ({
+    vim.startPlugins = [ pkgs.neovimPlugins.${cfg.name} ];
+    vim.luaConfigRC = cfg.extraConfig
+      + supported_themes.${cfg.name}.setup { style = cfg.style; };
+  });
 }
