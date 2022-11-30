@@ -11,7 +11,29 @@ in {
   options.vim.lsp = {
     enable = mkEnableOption "neovim lsp support";
     formatOnSave = mkEnableOption "Format on save";
-    nix = mkEnableOption "Nix LSP";
+    nix = {
+      enable = mkEnableOption "Nix LSP";
+      server = mkOption {
+        type = with types; enum ["rnix" "nil"];
+        default = "nil";
+        description = "Which LSP to use";
+      };
+
+      pkg = mkOption {
+        type = types.package;
+        default =
+          if (cfg.nix.server == "rnix")
+          then pkgs.rnix-lsp
+          else pkgs.nil;
+        description = "The LSP package to use";
+      };
+
+      formatter = mkOption {
+        type = with types; enum ["nixpkgs-fmt" "alejandra"];
+        default = "alejandra";
+        description = "Which nix formatter to use";
+      };
+    };
     rust = {
       enable = mkEnableOption "Rust LSP";
       rustAnalyzerOpts = mkOption {
@@ -99,7 +121,7 @@ in {
         }
 
         ${
-          if cfg.nix
+          if cfg.nix.enable
           then ''
             autocmd filetype nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
           ''
@@ -147,10 +169,12 @@ in {
               command = "${pkgs.black}/bin/black",
             }),
           ''}
+
           -- Commented out for now
           --${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
           --  null_ls.builtins.code_actions.gitsigns,
           --''}
+
           ${writeIf cfg.sql
           ''
             null_helpers.make_builtin({
@@ -174,7 +198,11 @@ in {
               extra_args = {"--dialect", "postgres"}
             }),
           ''}
-          ${writeIf cfg.nix
+
+          ${writeIf
+          (cfg.nix.enable
+            && cfg.nix.server == "rnix"
+            && cfg.nix.formatter == "alejandra")
           ''
             null_ls.builtins.formatting.alejandra.with({
               command = "${pkgs.alejandra}/bin/alejandra"
@@ -278,16 +306,50 @@ in {
           }
         ''}
 
-        ${writeIf cfg.nix ''
-          -- Nix config
-          lspconfig.rnix.setup{
-            capabilities = capabilities;
-            on_attach = function(client, bufnr)
-              attach_keymaps(client, bufnr)
-            end,
-            cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"}
-          }
-        ''}
+        ${writeIf cfg.nix.enable (
+          (writeIf (cfg.nix.server == "rnix") ''
+            -- Nix (rnix) config
+            lspconfig.rnix.setup{
+              capabilities = capabilities,
+              ${writeIf (cfg.nix.formatter == "alejandra")
+              ''
+                on_attach = function(client, bufnr)
+                  attach_keymaps(client, bufnr)
+                end,
+              ''}
+              ${writeIf (cfg.nix.formatter == "nixpkgs-fmt")
+              ''
+                on_attach = default_on_attach,
+              ''}
+              cmd = {"${cfg.nix.pkg}/bin/rnix-lsp"},
+            }
+          '')
+          + (writeIf (cfg.nix.server == "nil") ''
+            -- Nix (nil) config
+            lspconfig.nil_ls.setup{
+              capabilities = capabilities,
+              on_attach=default_on_attach,
+              cmd = {"${cfg.nix.pkg}/bin/nil"},
+              settings = {
+                ["nil"] = {
+              ${writeIf (cfg.nix.formatter == "alejandra")
+              ''
+                formatting = {
+                  command = {"${pkgs.alejandra}/bin/alejandra", "--quiet"},
+                },
+              ''}
+              ${writeIf (cfg.nix.formatter == "nixpkgs-fmt")
+              ''
+                formatting = {
+                  command = {"${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt"},
+                },
+              ''}
+                },
+              };
+            }
+          '')
+        )}
+
 
         ${writeIf cfg.clang.enable ''
           -- CCLS (clang) config

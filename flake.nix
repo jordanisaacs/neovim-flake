@@ -2,6 +2,7 @@
   description = "Jordan's Neovim Configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
 
     jdpkgs = {
       url = "github:jordanisaacs/jdpkgs";
@@ -10,7 +11,9 @@
 
     # LSP plugins
     nvim-lspconfig = {
-      url = "github:neovim/nvim-lspconfig?ref=v0.1.3";
+      # url = "github:neovim/nvim-lspconfig?ref=v0.1.3";
+      # Use master for nil_ls
+      url = "github:neovim/nvim-lspconfig";
       flake = false;
     };
     nvim-treesitter = {
@@ -77,6 +80,11 @@
 
     # Langauge server (use master instead of nixpkgs)
     rnix-lsp.url = "github:nix-community/rnix-lsp";
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
 
     # Filetrees
     nvim-tree-lua = {
@@ -289,6 +297,7 @@
         (final: prev: {
           rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
           tree-sitter-hare = jdpkgs.packages.${system}.tree-sitter-hare;
+          nil = inputs.nil.packages.${system}.default;
         })
       ];
     };
@@ -318,7 +327,10 @@
           nvimCodeActionMenu.enable = true;
           trouble.enable = true;
           lspSignature.enable = true;
-          nix = true;
+          nix = {
+            enable = true;
+            formatter = "alejandra";
+          };
           rust.enable = isMaximal;
           python = isMaximal;
           clang.enable = isMaximal;
@@ -386,6 +398,10 @@
         program = "${packages.${system}.default}/bin/nvim";
       };
       tidal = {
+        type = "app";
+        program = "${packages.${system}.neovimTidal}/bin/nvim";
+      };
+      nixpkgs = {
         type = "app";
         program = "${packages.${system}.neovimTidal}/bin/nvim";
       };
