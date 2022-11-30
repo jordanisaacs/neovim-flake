@@ -401,11 +401,6 @@
         type = "app";
         program = "${packages.${system}.neovimTidal}/bin/nvim";
       };
-      nixpkgs = {
-        type = "app";
-        program = "${packages.${system}.neovimTidal}/bin/nvim";
-      };
-
       default = nvim;
     };
 
