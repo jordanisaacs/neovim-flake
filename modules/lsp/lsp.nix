@@ -101,26 +101,6 @@ in {
 
       vim.configRC = ''
         ${
-          if cfg.rust.enable
-          then ''
-            function! MapRustTools()
-              nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-              nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-              nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-              nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-              nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-            endfunction
-
-            autocmd filetype rust nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-            autocmd filetype rust nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-            autocmd filetype rust nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-            autocmd filetype rust nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-            autocmd filetype rust nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-          ''
-          else ""
-        }
-
-        ${
           if cfg.nix.enable
           then ''
             autocmd filetype nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -269,6 +249,19 @@ in {
 
         ${writeIf cfg.rust.enable ''
           -- Rust config
+          local rt = require('rust-tools')
+
+          rust_on_attach = function(client, bufnr)
+            default_on_attach(client, bufnr)
+            local opts = { noremap=true, silent=true, buffer = bufnr }
+            vim.keymap.set("n", "<leader>ris", rt.inlay_hints.set, opts)
+            vim.keymap.set("n", "<leader>riu", rt.inlay_hints.unset, opts)
+            vim.keymap.set("n", "<leader>rr", rt.runnables.runnables, opts)
+            vim.keymap.set("n", "<leader>rp", rt.parent_module.parent_module, opts)
+            vim.keymap.set("n", "<leader>rm", rt.expand_macro.expand_macro, opts)
+            vim.keymap.set("n", "<leader>rc", rt.open_cargo_toml.open_cargo_toml, opts)
+            vim.keymap.set("n", "<leader>rg", function() rt.crate_graph.view_crate_graph("x11", nil) end, opts)
+          end
 
           local rustopts = {
             tools = {
@@ -280,7 +273,7 @@ in {
             },
             server = {
               capabilities = capabilities,
-              on_attach = default_on_attach,
+              on_attach = rust_on_attach,
               cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},
               settings = {
                 ${cfg.rust.rustAnalyzerOpts}
@@ -294,7 +287,7 @@ in {
               name = "crates.nvim",
             }
           }
-          require('rust-tools').setup(rustopts)
+          rt.setup(rustopts)
         ''}
 
         ${writeIf cfg.python ''
