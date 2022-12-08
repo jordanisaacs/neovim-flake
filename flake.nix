@@ -337,6 +337,7 @@
           sql = isMaximal;
           ts = isMaximal;
           go = isMaximal;
+          zig.enable = isMaximal;
           hare = isMaximal;
         };
         vim.visuals = {
