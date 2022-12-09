@@ -208,26 +208,6 @@
         "type": "github"
       }
     },
-    "jdpkgs": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1650916274,
-        "narHash": "sha256-TmA78JJqw4mhret5DFVZN+H8vR1eg6w/JxjGCuERZjs=",
-        "owner": "jordanisaacs",
-        "repo": "jdpkgs",
-        "rev": "eb6d3e9fd75ef4cf9f3e11a015c26f579151eb10",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jordanisaacs",
-        "repo": "jdpkgs",
-        "type": "github"
-      }
-    },
     "kommentary": {
       "flake": false,
       "locked": {
@@ -724,7 +704,6 @@
         "glow-nvim": "glow-nvim",
         "hare-vim": "hare-vim",
         "indent-blankline": "indent-blankline",
-        "jdpkgs": "jdpkgs",
         "kommentary": "kommentary",
         "lsp-signature": "lsp-signature",
         "lspkind": "lspkind",

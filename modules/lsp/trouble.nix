@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf (cfg.enable && cfg.trouble.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [trouble];
+    vim.startPlugins = ["trouble"];
 
     vim.nnoremap = {
       "<leader>xx" = "<cmd>TroubleToggle<CR>";

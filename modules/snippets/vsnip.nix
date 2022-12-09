@@ -13,6 +13,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    vim.startPlugins = with pkgs.neovimPlugins; [vim-vsnip];
+    vim.startPlugins = ["vim-vsnip"];
   };
 }

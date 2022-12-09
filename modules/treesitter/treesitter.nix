@@ -10,18 +10,30 @@ with builtins; let
 in {
   options.vim.treesitter = {
     enable = mkOption {
+      default = false;
       type = types.bool;
       description = "enable tree-sitter [nvim-treesitter]";
     };
 
     fold = mkOption {
+      default = true;
       type = types.bool;
       description = "enable fold with tree-sitter";
     };
 
     autotagHtml = mkOption {
+      default = false;
       type = types.bool;
       description = "enable autoclose and rename html tag [nvim-ts-autotag]";
+    };
+
+    grammars = mkOption {
+      type = with types; listOf package;
+      default = [];
+      description = ''
+        List of treesitter grammars to install.
+        When enabling a language, its treesitter grammar is added for you.
+      '';
     };
   };
 
@@ -32,11 +44,11 @@ in {
         then msg
         else "";
     in {
-      vim.startPlugins = with pkgs.neovimPlugins; [
-        nvim-treesitter
+      vim.startPlugins = [
+        "nvim-treesitter"
         (
           if cfg.autotagHtml
-          then nvim-ts-autotag
+          then "nvim-ts-autotag"
           else null
         )
       ];

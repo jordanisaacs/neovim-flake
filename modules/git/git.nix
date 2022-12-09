@@ -29,9 +29,9 @@ in {
           then "1"
           else "0";
       in {
-        vim.startPlugins = with pkgs.neovimPlugins;
+        vim.startPlugins =
           if (cfg.gitsigns.enable)
-          then [gitsigns-nvim]
+          then ["gitsigns-nvim"]
           else [];
 
         vim.luaConfigRC = mkIf (cfg.gitsigns.enable) ''

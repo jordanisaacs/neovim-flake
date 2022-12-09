@@ -25,7 +25,7 @@ in {
   };
 
   config = mkIf (cfg.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [
+    vim.startPlugins = [
       # From tidalcycles flake
       pkgs.vimPlugins.vim-tidal
     ];

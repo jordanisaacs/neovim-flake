@@ -1,8 +1,12 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 with lib.attrsets;
-with builtins;
-let
+with builtins; let
   cfg = config.vim.theme;
   supported_themes = import ./supported_themes.nix;
 in {
@@ -21,15 +25,17 @@ in {
       type = with types; enum supported_themes.${cfg.name}.styles;
       description = "Specific style for theme if it supports it";
     };
+
     extraConfig = mkOption {
       type = with types; lines;
       description = "Additional lua configuration to add before setup";
     };
   };
 
-  config = mkIf cfg.enable ({
-    vim.startPlugins = [ pkgs.neovimPlugins.${cfg.name} ];
-    vim.luaConfigRC = cfg.extraConfig
-      + supported_themes.${cfg.name}.setup { style = cfg.style; };
-  });
+  config = mkIf cfg.enable {
+    vim.startPlugins = [cfg.name];
+    vim.luaConfigRC =
+      cfg.extraConfig
+      + supported_themes.${cfg.name}.setup {style = cfg.style;};
+  };
 }

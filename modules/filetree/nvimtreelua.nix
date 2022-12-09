@@ -131,9 +131,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    vim.startPlugins = with pkgs.neovimPlugins; [
-      nvim-tree-lua
-    ];
+    vim.startPlugins = ["nvim-tree-lua"];
 
     vim.nnoremap = {
       "<C-n>" = ":NvimTreeToggle<CR>";

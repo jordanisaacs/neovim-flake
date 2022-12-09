@@ -67,25 +67,25 @@ in {
   config =
     mkIf cfg.enable
     {
-      vim.startPlugins = with pkgs.neovimPlugins; [
+      vim.startPlugins = [
         (
           if cfg.nvimWebDevicons.enable
-          then nvim-web-devicons
+          then "nvim-web-devicons"
           else null
         )
         (
           if cfg.lspkind.enable
-          then pkgs.neovimPlugins.lspkind
+          then "lspkind"
           else null
         )
         (
           if cfg.cursorWordline.enable
-          then nvim-cursorline
+          then "nvim-cursorline"
           else null
         )
         (
           if cfg.indentBlankline.enable
-          then indent-blankline
+          then "indent-blankline"
           else null
         )
       ];

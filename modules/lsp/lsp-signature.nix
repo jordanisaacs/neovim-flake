@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf (cfg.enable && cfg.lspSignature.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [lsp-signature];
+    vim.startPlugins = ["lsp-signature"];
 
     vim.luaConfigRC = ''
       -- Enable lsp signature viewer

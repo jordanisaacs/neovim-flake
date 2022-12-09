@@ -7,7 +7,7 @@
 with lib;
 with builtins; let
   cfg = config.vim.statusline.lualine;
-  supported_themes = import ./supported_lualine_themes.nix ;
+  supported_themes = import ./supported_lualine_themes.nix;
 in {
   options.vim.statusline.lualine = {
     enable = mkOption {
@@ -163,7 +163,7 @@ in {
       #  })
       #];
 
-      vim.startPlugins = with pkgs.neovimPlugins; [lualine];
+      vim.startPlugins = ["lualine"];
       vim.luaConfigRC = ''
         require'lualine'.setup {
           options = {

@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf (cfg.enable && cfg.lightbulb.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [nvim-lightbulb];
+    vim.startPlugins = ["nvim-lightbulb"];
 
     vim.configRC = ''
       autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()

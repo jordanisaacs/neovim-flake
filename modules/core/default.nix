@@ -52,16 +52,14 @@ in {
       default = "";
     };
 
-    startPlugins = mkOption {
-      description = "List of plugins to startup";
+    startPlugins = nvim.types.pluginsOpt {
       default = [];
-      type = with types; listOf (nullOr package);
+      description = "List of plugins to startup.";
     };
 
-    optPlugins = mkOption {
-      description = "List of plugins to optionally load";
+    optPlugins = nvim.types.pluginsOpt {
       default = [];
-      type = with types; listOf package;
+      description = "List of plugins to optionally load";
     };
 
     globals = mkOption {

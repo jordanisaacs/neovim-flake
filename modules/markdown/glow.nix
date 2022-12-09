@@ -19,10 +19,10 @@ in {
   };
 
   config = mkIf (cfg.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [
+    vim.startPlugins = [
       (
         if cfg.glow.enable
-        then glow-nvim
+        then "glow-nvim"
         else null
       )
     ];

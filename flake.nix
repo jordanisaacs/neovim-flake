@@ -4,11 +4,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    jdpkgs = {
-      url = "github:jordanisaacs/jdpkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # LSP plugins
     nvim-lspconfig = {
       # url = "github:neovim/nvim-lspconfig?ref=v0.1.3";
@@ -238,76 +233,26 @@
 
   outputs = {
     nixpkgs,
-    jdpkgs,
     flake-utils,
     ...
   } @ inputs: let
-    system = "x86_64-linux";
+    modulesWithInputs = import ./modules {inherit inputs;};
 
-    # Plugin must be same as input name
-    plugins = [
-      "nvim-treesitter-context"
-      "gitsigns-nvim"
-      "plenary-nvim"
-      "nvim-lspconfig"
-      "nvim-treesitter"
-      "lspsaga"
-      "lspkind"
-      "nvim-lightbulb"
-      "lsp-signature"
-      "nvim-tree-lua"
-      "nvim-bufferline-lua"
-      "lualine"
-      "nvim-compe"
-      "nvim-autopairs"
-      "nvim-ts-autotag"
-      "nvim-web-devicons"
-      "tokyonight"
-      "bufdelete-nvim"
-      "nvim-cmp"
-      "cmp-nvim-lsp"
-      "cmp-buffer"
-      "cmp-vsnip"
-      "cmp-path"
-      "cmp-treesitter"
-      "crates-nvim"
-      "vim-vsnip"
-      "nvim-code-action-menu"
-      "trouble"
-      "null-ls"
-      "which-key"
-      "indent-blankline"
-      "nvim-cursorline"
-      "sqls-nvim"
-      "glow-nvim"
-      "telescope"
-      "rust-tools"
-      "onedark"
-      "hare-vim"
-    ];
+    neovimConfiguration = {
+      modules ? [],
+      pkgs,
+      lib ? pkgs.lib,
+      check ? true,
+      extraSpecialArgs ? {},
+    }:
+      modulesWithInputs {
+        inherit pkgs lib check extraSpecialArgs;
+        configuration = {...}: {
+          imports = modules;
+        };
+      };
 
-    pluginOverlay = lib.buildPluginOverlay;
-
-    pkgs = import nixpkgs {
-      inherit system;
-      config = {allowUnfree = true;};
-      overlays = [
-        pluginOverlay
-        inputs.tidalcycles.overlays.default
-        (final: prev: {
-          rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
-          tree-sitter-hare = jdpkgs.packages.${system}.tree-sitter-hare;
-          nil = inputs.nil.packages.${system}.default;
-        })
-      ];
-    };
-
-    lib =
-      import
-      ./lib
-      {inherit pkgs inputs plugins;};
-
-    neovimBuilder = lib.neovimBuilder;
+    nvimBin = pkg: "${pkg}/bin/nvim";
 
     tidalConfig = {
       config = {
@@ -315,7 +260,7 @@
       };
     };
 
-    configBuilder = isMaximal: {
+    mainConfig = isMaximal: {
       config = {
         vim.viAlias = false;
         vim.vimAlias = true;
@@ -392,39 +337,109 @@
         };
       };
     };
-  in rec {
-    apps.${system} = rec {
-      nvim = {
-        type = "app";
-        program = "${packages.${system}.default}/bin/nvim";
-      };
-      tidal = {
-        type = "app";
-        program = "${packages.${system}.neovimTidal}/bin/nvim";
-      };
-      default = nvim;
-    };
 
-    devShells.${system} = {
-      default = pkgs.mkShell {
-        buildInputs = [(neovimBuilder (configBuilder false))];
+    minimalConfig = mainConfig false;
+    maximalConfig = mainConfig true;
+  in
+    {
+      lib = {
+        nvim = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
+        inherit neovimConfiguration;
       };
-      tidal = pkgs.mkShell {
-        buildInputs = [(neovimBuilder tidalConfig)];
+
+      overlays.default = final: prev: {
+        inherit neovimConfiguration;
+        neovim-minimal =
+          (final.neovimConfiguration {
+            pkgs = prev;
+            modules = [minimalConfig];
+          })
+          .neovim;
+        neovim-maximal =
+          (final.neovimConfiguration {
+            pkgs = prev;
+            modules = [maximalConfig];
+          })
+          .neovim;
+        neovim-tidal =
+          (final.neovimConfiguration {
+            pkgs = prev;
+            modules = [tidalConfig];
+          })
+          .neovim;
       };
-    };
+    }
+    // (flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          inputs.tidalcycles.overlays.default
+          (final: prev: {
+            rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
+            nil = inputs.nil.packages.${system}.default;
+          })
+        ];
+      };
 
-    overlays.default = final: prev: {
-      inherit neovimBuilder;
-      neovimJD = packages.${system}.neovimJD;
-      neovimTidal = packages.${system}.neovimTidal;
-      neovimPlugins = pkgs.neovimPlugins;
-    };
+      # Just tidal
+      tidalPkg =
+        (neovimConfiguration {
+          inherit pkgs;
+          modules = [tidalConfig];
+        })
+        .neovim;
 
-    packages.${system} = rec {
-      default = neovimJD;
-      neovimJD = neovimBuilder (configBuilder true);
-      neovimTidal = neovimBuilder tidalConfig;
-    };
-  };
+      # Just enables nix
+      minimalPkg =
+        (neovimConfiguration {
+          inherit pkgs;
+          modules = [minimalConfig];
+        })
+        .neovim;
+
+      # Enables everything *a lot*
+      maximalPkg =
+        (neovimConfiguration {
+          inherit pkgs;
+          modules = [maximalConfig];
+        })
+        .neovim;
+    in {
+      apps =
+        rec {
+          minimal = {
+            type = "app";
+            program = nvimBin minimalPkg;
+          };
+          maximal = {
+            type = "app";
+            program = nvimBin maximalPkg;
+          };
+          default = minimal;
+        }
+        // (
+          if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+          then {
+            tidal = {
+              type = "app";
+              program = nvimBin tidalPkg;
+            };
+          }
+          else {}
+        );
+
+      packages =
+        {
+          default = minimalPkg;
+          minimal = minimalPkg;
+          maximal = maximalPkg;
+        }
+        // (
+          if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+          then {
+            inherit tidalPkg;
+          }
+          else {}
+        );
+    }));
 }

@@ -23,9 +23,9 @@ in {
         '';
       };
     in {
-      vim.startPlugins = with pkgs.neovimPlugins; [
-        (assert config.vim.visuals.nvimWebDevicons.enable == true; nvim-bufferline-lua)
-        bufdelete-nvim
+      vim.startPlugins = [
+        (assert config.vim.visuals.nvimWebDevicons.enable == true; "nvim-bufferline-lua")
+        "bufdelete-nvim"
       ];
 
       vim.nnoremap = {

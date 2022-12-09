@@ -17,9 +17,7 @@ in {
   };
 
   config = mkIf (cfg.enable && cfg.whichKey.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [
-      which-key
-    ];
+    vim.startPlugins = ["which-key"];
 
     vim.startLuaConfigRC = ''
       -- Set variable so other plugins can register mappings

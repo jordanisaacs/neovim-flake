@@ -71,31 +71,26 @@ in {
         then msg
         else "";
     in {
-      vim.startPlugins = with pkgs.neovimPlugins;
+      vim.startPlugins =
         [
-          nvim-lspconfig
-          null-ls
+          "nvim-lspconfig"
+          "null-ls"
           (
             if (config.vim.autocomplete.enable && (config.vim.autocomplete.type == "nvim-cmp"))
-            then cmp-nvim-lsp
+            then "cmp-nvim-lsp"
             else null
           )
           (
             if cfg.sql
-            then sqls-nvim
+            then "sqls-nvim"
             else null
           )
         ]
         ++ (
           if cfg.rust.enable
           then [
-            crates-nvim
-            rust-tools
-            (
-              if cfg.hare
-              then hare-vim
-              else null
-            )
+            "crates-nvim"
+            "rust-tools"
           ]
           else []
         );

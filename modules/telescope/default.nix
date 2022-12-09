@@ -13,8 +13,8 @@ in {
   };
 
   config = mkIf (cfg.enable) {
-    vim.startPlugins = with pkgs.neovimPlugins; [
-      telescope
+    vim.startPlugins = [
+      "telescope"
     ];
 
     vim.nnoremap =
