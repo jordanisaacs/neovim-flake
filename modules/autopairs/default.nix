@@ -29,7 +29,7 @@ in {
     {
       vim.startPlugins = ["nvim-autopairs"];
 
-      vim.luaConfigRC = ''
+      vim.luaConfigRC.autopairs = nvim.dag.entryAnywhere ''
         require("nvim-autopairs").setup{}
         ${optionalString (config.vim.autocomplete.type == "nvim-compe") ''
           require('nvim-autopairs.completion.compe').setup({

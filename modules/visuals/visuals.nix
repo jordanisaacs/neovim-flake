@@ -90,7 +90,7 @@ in {
         )
       ];
 
-      vim.luaConfigRC = ''
+      vim.luaConfigRC.visuals = nvim.dag.entryAnywhere ''
         ${
           if cfg.lspkind.enable
           then "require'lspkind'.init()"

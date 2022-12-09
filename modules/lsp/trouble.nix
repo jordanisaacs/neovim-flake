@@ -26,7 +26,7 @@ in {
       "<leader>xl" = "<cmd>TroubleToggle loclist<CR>";
     };
 
-    vim.luaConfigRC = ''
+    vim.luaConfigRC.trouble = nvim.dag.entryAnywhere ''
       -- Enable trouble diagnostics viewer
       require("trouble").setup {}
     '';

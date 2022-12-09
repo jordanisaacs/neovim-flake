@@ -53,7 +53,7 @@ in {
         else {}
       );
 
-    vim.luaConfigRC = ''
+    vim.luaConfigRC.telescope = nvim.dag.entryAnywhere ''
       require("telescope").setup {
         defaults = {
           vimgrep_arguments = {

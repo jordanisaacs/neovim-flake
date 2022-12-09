@@ -53,14 +53,14 @@ in {
         )
       ];
 
-      vim.configRC = writeIf cfg.fold ''
+      vim.configRC.treesitter = writeIf cfg.fold (nvim.dag.entryAnywhere ''
         " Tree-sitter based folding
         set foldmethod=expr
         set foldexpr=nvim_treesitter#foldexpr()
         set nofoldenable
-      '';
+      '');
 
-      vim.luaConfigRC = ''
+      vim.luaConfigRC.treesitter = nvim.dag.entryAnywhere ''
         -- Treesitter config
         require'nvim-treesitter.configs'.setup {
           highlight = {

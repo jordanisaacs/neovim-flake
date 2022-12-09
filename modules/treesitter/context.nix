@@ -18,7 +18,7 @@ in {
       "nvim-treesitter-context"
     ];
 
-    vim.luaConfigRC = ''
+    vim.luaConfigRC.treesitter-context = nvim.dag.entryAnywhere ''
       -- Treesitter Context config
       require'treesitter-context'.setup {
         enable = true,

@@ -140,7 +140,7 @@ in {
       "<leader>tf" = ":NvimTreeFocus<CR>";
     };
 
-    vim.luaConfigRC = ''
+    vim.luaConfigRC.nvimtreelua = nvim.dag.entryAnywhere ''
       require'nvim-tree'.setup({
         disable_netrw = ${boolToString cfg.disableNetRW},
         hijack_netrw = ${boolToString cfg.hijackNetRW},

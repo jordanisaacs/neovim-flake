@@ -48,7 +48,7 @@ in {
         "<silent><leader>b9" = "<Cmd>BufferLineGoToBuffer 9<CR>";
       };
 
-      vim.luaConfigRC = ''
+      vim.luaConfigRC.nvimBufferline = nvim.dag.entryAnywhere ''
         require("bufferline").setup{
            options = {
               numbers = "both",

@@ -95,7 +95,7 @@ in {
           else []
         );
 
-      vim.configRC = ''
+      vim.configRC.lsp = nvim.dag.entryAnywhere ''
         ${
           if cfg.nix.enable
           then ''
@@ -114,7 +114,7 @@ in {
           else ""
         }
       '';
-      vim.luaConfigRC = ''
+      vim.luaConfigRC.lsp = nvim.dag.entryAnywhere ''
 
         local attach_keymaps = function(client, bufnr)
           local opts = { noremap=true, silent=true }

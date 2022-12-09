@@ -68,7 +68,7 @@
     viAlias = vimOptions.viAlias;
     vimAlias = vimOptions.vimAlias;
     configure = {
-      customRC = vimOptions.configRC;
+      customRC = vimOptions.builtConfigRC;
 
       packages.myVimPackage = {
         start = buildConfigPlugins vimOptions.startPlugins;

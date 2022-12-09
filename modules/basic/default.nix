@@ -149,7 +149,7 @@ in {
 
     vim.nnoremap = mkIf cfg.mapLeaderSpace {"<space>" = "<nop>";};
 
-    vim.configRC = ''
+    vim.configRC.basic = nvim.dag.entryAfter ["globalsScript"] ''
       " Settings that are set for everything
       set encoding=utf-8
       set mouse=${cfg.mouseSupport}

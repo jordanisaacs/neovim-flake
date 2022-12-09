@@ -31,8 +31,8 @@ in {
       "glow_binary_path" = "${pkgs.glow}/bin";
     };
 
-    vim.configRC = mkIf (cfg.glow.enable) ''
+    vim.configRC.glow = mkIf (cfg.glow.enable) (nvim.dag.entryAnywhere ''
       autocmd FileType markdown noremap <leader>p :Glow<CR>
-    '';
+    '');
   };
 }

@@ -36,20 +36,20 @@ in {
 
     configRC = mkOption {
       description = "vimrc contents";
-      type = types.lines;
-      default = "";
-    };
-
-    startLuaConfigRC = mkOption {
-      description = "start of vim lua config";
-      type = types.lines;
-      default = "";
+      type = nvim.types.dagOf types.lines;
+      default = {};
     };
 
     luaConfigRC = mkOption {
       description = "vim lua config";
+      type = nvim.types.dagOf types.lines;
+      default = {};
+    };
+
+    builtConfigRC = mkOption {
+      internal = true;
       type = types.lines;
-      default = "";
+      description = "The built config for neovim after resolving the DAG";
     };
 
     startPlugins = nvim.types.pluginsOpt {
@@ -168,28 +168,58 @@ in {
     cnoremap = mapVimBinding "cnoremap" config.vim.cnoremap;
     onoremap = mapVimBinding "onoremap" config.vim.onoremap;
     tnoremap = mapVimBinding "tnoremap" config.vim.tnoremap;
+
+    resolveDag = {
+      name,
+      dag,
+      mapResult,
+    }: let
+      sortedDag = nvim.dag.topoSort dag;
+      result =
+        if sortedDag ? result
+        then mapResult sortedDag.result
+        else abort ("Dependency cycle in ${name}: " + toJSON sortedConfig);
+    in
+      result;
   in {
-    vim.configRC = ''
-      ${concatStringsSep "\n" globalsScript}
-      " Lua config from vim.luaConfigRC
-      ${wrapLuaConfig
-        (concatStringsSep "\n" [cfg.startLuaConfigRC cfg.luaConfigRC])}
-        ${builtins.concatStringsSep "\n" nmap}
-        ${builtins.concatStringsSep "\n" imap}
-        ${builtins.concatStringsSep "\n" vmap}
-        ${builtins.concatStringsSep "\n" xmap}
-        ${builtins.concatStringsSep "\n" smap}
-        ${builtins.concatStringsSep "\n" cmap}
-        ${builtins.concatStringsSep "\n" omap}
-        ${builtins.concatStringsSep "\n" tmap}
-        ${builtins.concatStringsSep "\n" nnoremap}
-        ${builtins.concatStringsSep "\n" inoremap}
-        ${builtins.concatStringsSep "\n" vnoremap}
-        ${builtins.concatStringsSep "\n" xnoremap}
-        ${builtins.concatStringsSep "\n" snoremap}
-        ${builtins.concatStringsSep "\n" cnoremap}
-        ${builtins.concatStringsSep "\n" onoremap}
-        ${builtins.concatStringsSep "\n" tnoremap}
-    '';
+    vim = {
+      configRC = {
+        globalsScript = nvim.dag.entryAnywhere (concatStringsSep "\n" globalsScript);
+
+        luaScript = let
+          mkSection = r: ''
+            -- SECTION: ${r.name}
+            ${r.data}
+          '';
+          mapResult = r: (wrapLuaConfig (concatStringsSep "\n" (map mkSection r)));
+          luaConfig = resolveDag {
+            name = "lua config script";
+            dag = cfg.luaConfigRC;
+            inherit mapResult;
+          };
+        in
+          nvim.dag.entryAfter ["globalsScript"] luaConfig;
+
+        mappings = let
+          maps = [nmap imap vmap xmap smap cmap omap tmap nnoremap inoremap vnoremap xnoremap snoremap cnoremap onoremap tnoremap];
+          mapConfig = concatStringsSep "\n" (map (v: concatStringsSep "\n" v) maps);
+        in
+          nvim.dag.entryAfter ["globalsScript"] mapConfig;
+      };
+
+      builtConfigRC = let
+        mkSection = r: ''
+          " SECTION: ${r.name}
+          ${r.data}
+        '';
+        mapResult = r: (concatStringsSep "\n" (map mkSection r));
+        vimConfig = resolveDag {
+          name = "vim config script";
+          dag = cfg.configRC;
+          inherit mapResult;
+        };
+      in
+        vimConfig;
+    };
   };
 }
