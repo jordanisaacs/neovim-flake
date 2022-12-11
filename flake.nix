@@ -249,6 +249,12 @@
 
     nvimBin = pkg: "${pkg}/bin/nvim";
 
+    buildPkg = pkgs: modules:
+      (neovimConfiguration {
+        inherit pkgs modules;
+      })
+      .neovim;
+
     tidalConfig = {
       config = {
         vim.tidal.enable = true;
@@ -332,7 +338,7 @@
       };
     };
 
-    minimalConfig = mainConfig false;
+    nixConfig = mainConfig false;
     maximalConfig = mainConfig true;
   in
     {
@@ -343,24 +349,9 @@
 
       overlays.default = final: prev: {
         inherit neovimConfiguration;
-        neovim-minimal =
-          (final.neovimConfiguration {
-            pkgs = prev;
-            modules = [minimalConfig];
-          })
-          .neovim;
-        neovim-maximal =
-          (final.neovimConfiguration {
-            pkgs = prev;
-            modules = [maximalConfig];
-          })
-          .neovim;
-        neovim-tidal =
-          (final.neovimConfiguration {
-            pkgs = prev;
-            modules = [tidalConfig];
-          })
-          .neovim;
+        neovim-nix = buildPkg prev [nixConfig];
+        neovim-maximal = buildPkg prev [maximalConfig];
+        neovim-tidal = buildPkg prev [tidalConfig];
       };
     }
     // (flake-utils.lib.eachDefaultSystem (system: let
@@ -380,41 +371,21 @@
         nmdSrc = inputs.nmd;
       };
 
-      # Just tidal
-      tidalPkg =
-        (neovimConfiguration {
-          inherit pkgs;
-          modules = [tidalConfig];
-        })
-        .neovim;
-
-      # Just enables nix
-      minimalPkg =
-        (neovimConfiguration {
-          inherit pkgs;
-          modules = [minimalConfig];
-        })
-        .neovim;
-
-      # Enables everything *a lot*
-      maximalPkg =
-        (neovimConfiguration {
-          inherit pkgs;
-          modules = [maximalConfig];
-        })
-        .neovim;
+      tidalPkg = buildPkg pkgs [tidalConfig];
+      nixPkg = buildPkg pkgs [nixConfig];
+      maximalPkg = buildPkg pkgs [maximalConfig];
     in {
       apps =
         rec {
-          minimal = {
+          nix = {
             type = "app";
-            program = nvimBin minimalPkg;
+            program = nvimBin nixPkg;
           };
           maximal = {
             type = "app";
             program = nvimBin maximalPkg;
           };
-          default = minimal;
+          default = nix;
         }
         // (
           if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
@@ -432,14 +403,14 @@
           docs-html = docs.manual.html;
           docs-manpages = docs.manPages;
           docs-json = docs.options.json;
-          default = minimalPkg;
-          minimal = minimalPkg;
+          default = nixPkg;
+          nix = nixPkg;
           maximal = maximalPkg;
         }
         // (
           if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
           then {
-            inherit tidalPkg;
+            tidal = tidalPkg;
           }
           else {}
         );

@@ -14,12 +14,7 @@ https://github.com/jordanisaacs[jordanisaacs]:
 +
 If you are contributing and adding a new plugin, add the plugin name to `availablePlugins` in https://github.com/jordanisaacs/neovim-flake/blob/20cec032bd74bc3d20ac17ce36cd84786a04fd3e/modules/lib/types-plugin.nix[types-plugin.nix].
 
-* `neovimBuilder` has been removed for configuration. Using an overlay is no longer required. Example empty configuration (TODO):
-+
-[source,nix]
-----
-builder = {};
-----
+* `neovimBuilder` has been removed for configuration. Using an overlay is no longer required. See the manual for the new way to configuration.
 
 * Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Packages can be found under the `tree-sitter-grammars` namespace on https://search.nixos.org/packages?channel=22.11&from=0&size=50&sort=relevance&type=packages&query=tree-sitter-grammars[nixpkgs].
 
