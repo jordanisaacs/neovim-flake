@@ -2,13 +2,13 @@
 
 A highly configurable nix flake for neovim.
 
-Come joine the Matrix room if you have any questions or need help: [#neovim-flake:matrix.org](https://matrix.to/#/#neovim-flake:matrix.org)
+Come join the Matrix room if you have any questions or need help: [#neovim-flake:matrix.org](https://matrix.to/#/#neovim-flake:matrix.org)
 
 ## Documentation
 
 See the [neovim-flake Manual](https://jordanisaacs.github.io/neovim-flake/) for documentation, available options, and release notes.
 
-If you want to dive right into trying neovim-flake you can get a fully featured configuration with `nix` language support by running
+If you want to dive right into trying neovim-flake you can get a fully featured configuration with `nix` language support by running:
 
 ```
 nix run github:jordanisaacs/neovim-flake
