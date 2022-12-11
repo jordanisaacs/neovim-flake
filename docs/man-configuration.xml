@@ -14,8 +14,23 @@
  <refsection>
   <title>Description</title>
   <para>
-   TODO
+    Custom configuration is done with the neovim-flake.lib.neovimConfiguration function. It takes in the configuration as a module.
+    <programlisting>
+      neovim-flake.lib.neovimConfiguration {
+        inherit pkgs;
+        modules = [{config = xxx;}];
+      };
+    </programlisting>
+    The output of the configuration function is an attrset.
   </para>
+  <programlisting>
+    {
+      options = "The options that were available to configure";
+      config = "The outputted configuration";
+      pkgs = "The package set used to evaluate the module";
+      neovim = "The built neovim package";
+    }
+  </programlisting>
  </refsection>
  <refsection>
   <title>Options</title>
