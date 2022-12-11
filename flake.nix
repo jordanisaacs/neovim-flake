@@ -177,6 +177,11 @@
       flake = false;
     };
 
+    catppuccin = {
+      url = "github:catppuccin/nvim";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";

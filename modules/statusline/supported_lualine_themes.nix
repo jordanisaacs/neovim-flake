@@ -1,4 +1,5 @@
 [
   "tokyonight"
   "onedark"
+  "catppuccin"
 ]

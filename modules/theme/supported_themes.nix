@@ -18,4 +18,16 @@
     '';
     styles = [ "day" "night" "storm" ];
   };
+
+  catppuccin = {
+    setup = { style ? "mocha" }: ''
+      -- Catppuccin theme
+      require('catppuccin').setup {
+        flavour = "${style}"
+      }
+      -- setup must be called before loading
+      vim.cmd.colorscheme "catppuccin"
+    '';
+    styles = [ "latte" "frappe" "macchiato" "mocha" ];
+  };
 }

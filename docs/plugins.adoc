@@ -77,6 +77,7 @@ The following are the neovim plugins used within neovim-flake. Some plugins are 
 
 * https://github.com/navarasu/onedark.nvim[onedark] a dark colorscheme with multiple options
 * https://github.com/folke/tokyonight.nvim[tokyonight-nvim] a neovim theme with multiple color options
+* https://github.com/catppuccin/nvim[catppuccin] a pastel theme with 4 color options
 
 [[sec-plugins-markdown]]
 === Markdown
