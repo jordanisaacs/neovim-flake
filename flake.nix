@@ -3,6 +3,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    # For generating documentation website
+    nmd = {
+      url = "gitlab:rycee/nmd";
+      flake = false;
+    };
 
     # LSP plugins
     nvim-lspconfig = {
@@ -381,6 +386,11 @@
         ];
       };
 
+      docs = import ./docs {
+        inherit pkgs;
+        nmdSrc = inputs.nmd;
+      };
+
       # Just tidal
       tidalPkg =
         (neovimConfiguration {
@@ -430,6 +440,9 @@
 
       packages =
         {
+          docs-html = docs.manual.html;
+          docs-manpages = docs.manPages;
+          docs-json = docs.options.json;
           default = minimalPkg;
           minimal = minimalPkg;
           maximal = maximalPkg;

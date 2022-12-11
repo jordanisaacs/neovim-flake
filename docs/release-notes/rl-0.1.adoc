@@ -1,0 +1,14 @@
+[[sec-release-0.1]]
+== Release 0.1
+
+This is the current master branch.
+
+[[sec-release-0.1-highlights]]
+=== Highlights
+
+TBD
+
+[[sec-release-0.1-modules-changes]]
+=== Modules Changes
+
+TBD
