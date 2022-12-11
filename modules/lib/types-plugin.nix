@@ -39,6 +39,7 @@ with lib; let
     "telescope"
     "rust-tools"
     "onedark"
+    "catppuccin"
   ];
 
   pluginsType = with types; listOf (nullOr (either (enum availablePlugins) package));
