@@ -26,7 +26,7 @@ Enables all the of neovim plugins, with language support for specifically Nix. T
 === Maximal
 
 [source,console]
-$ nix shell github:jordanisaacs/neovim-flake#shell test.nix
+$ nix shell github:jordanisaacs/neovim-flake#maximal test.nix
 
 It is the same fully configured neovim as with the <<sec-default-nix,Nix>> config, but with every supported language enabled.
 
