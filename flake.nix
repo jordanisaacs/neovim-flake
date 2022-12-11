@@ -398,6 +398,8 @@
           else {}
         );
 
+      devShells.default = pkgs.mkShell {nativeBuildInputs = [nixPkg];};
+
       packages =
         {
           docs-html = docs.manual.html;
