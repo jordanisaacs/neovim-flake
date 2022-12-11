@@ -10,6 +10,7 @@ with builtins; let
 in {
   options.vim.treesitter.context.enable = mkOption {
     type = types.bool;
+    default = false;
     description = "enable function context [nvim-treesitter-context]";
   };
 

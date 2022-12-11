@@ -16,7 +16,7 @@ in {
     };
 
     fold = mkOption {
-      default = true;
+      default = false;
       type = types.bool;
       description = "enable fold with tree-sitter";
     };
@@ -70,7 +70,8 @@ in {
         )
       ];
 
-      vim.configRC.treesitter = writeIf cfg.fold (nvim.dag.entryAnywhere ''
+      # For some reason treesitter highlighting does not work on start if this is set before syntax on
+      vim.configRC.treesitter = writeIf cfg.fold (nvim.dag.entryBefore ["basic"] ''
         " Tree-sitter based folding
         set foldmethod=expr
         set foldexpr=nvim_treesitter#foldexpr()
@@ -86,7 +87,7 @@ in {
           },
 
           auto_install = false,
-          ensure_isntalled = {},
+          ensure_installed = {},
 
           incremental_selection = {
             enable = true,
