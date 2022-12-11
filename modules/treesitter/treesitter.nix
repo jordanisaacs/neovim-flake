@@ -29,7 +29,24 @@ in {
 
     grammars = mkOption {
       type = with types; listOf package;
-      default = [];
+      default = with (pkgs.tree-sitter-grammars); [
+        tree-sitter-c
+        tree-sitter-cpp
+        tree-sitter-nix
+        tree-sitter-python
+        tree-sitter-rust
+        tree-sitter-markdown
+        tree-sitter-comment
+        tree-sitter-toml
+        tree-sitter-make
+        tree-sitter-tsx
+        tree-sitter-html
+        tree-sitter-javascript
+        tree-sitter-css
+        tree-sitter-graphql
+        tree-sitter-json
+        tree-sitter-zig
+      ];
       description = ''
         List of treesitter grammars to install.
         When enabling a language, its treesitter grammar is added for you.
@@ -86,15 +103,6 @@ in {
             enable = true,
           },
         ''}
-        }
-
-        local parser_config = require'nvim-treesitter.parsers'.get_parser_configs()
-        parser_config.hare = {
-          install_info = {
-            url = "",
-            files = { "" }
-          },
-          filetype = "ha",
         }
       '';
     }
