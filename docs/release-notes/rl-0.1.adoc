@@ -3,6 +3,8 @@
 
 This is the current master branch and information here is not final. These are changes from the v0.01 tag.
 
+Special thanks to https://github.com/nix-community/home-manager/[home-manager] for this release. Docs/manual generation, the new module evaluation system, and DAG implementation are from them.
+
 [[sec-release-0.1-changelog]]
 === Changelog
 
@@ -24,5 +26,3 @@ If you are contributing and adding a new plugin, add the plugin name to `availab
 ----
 vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 ----
-
-Special thanks to https://github.com/nix-community/home-manager/[home-manager] for this release. Docs/manual generation, the new module evaluation system, and DAG implementation are from them.
