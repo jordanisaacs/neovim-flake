@@ -39,7 +39,6 @@ with lib; let
     "telescope"
     "rust-tools"
     "onedark"
-    "hare-vim"
   ];
 
   pluginsType = with types; listOf (nullOr (either (enum availablePlugins) package));

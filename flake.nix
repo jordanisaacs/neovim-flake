@@ -224,16 +224,6 @@
       url = "github:nvim-lua/plenary.nvim";
       flake = false;
     };
-
-    hare-vim = {
-      url = "git+https://git.sr.ht/~sircmpwn/hare.vim";
-      flake = false;
-    };
-
-    tree-sitter-hare = {
-      url = "git+https://git.sr.ht/~ecmma/tree-sitter-hare";
-      flake = false;
-    };
   };
 
   outputs = {
@@ -288,7 +278,6 @@
           ts = isMaximal;
           go = isMaximal;
           zig.enable = isMaximal;
-          hare = isMaximal;
         };
         vim.visuals = {
           enable = true;

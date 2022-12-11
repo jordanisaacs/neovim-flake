@@ -176,22 +176,6 @@
         "type": "github"
       }
     },
-    "hare-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1651396741,
-        "narHash": "sha256-nHzcIkm2ZiqRkl+Ms6HNjjkifprYsA8geCLhpfMo9ao=",
-        "ref": "master",
-        "rev": "2500e389a8be4953a7618a531c6cd94bb2cd794c",
-        "revCount": 42,
-        "type": "git",
-        "url": "https://git.sr.ht/~sircmpwn/hare.vim"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.sr.ht/~sircmpwn/hare.vim"
-      }
-    },
     "indent-blankline": {
       "flake": false,
       "locked": {
@@ -718,7 +702,6 @@
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
         "glow-nvim": "glow-nvim",
-        "hare-vim": "hare-vim",
         "indent-blankline": "indent-blankline",
         "kommentary": "kommentary",
         "lsp-signature": "lsp-signature",
@@ -753,7 +736,6 @@
         "tidalcycles": "tidalcycles",
         "todo-comments": "todo-comments",
         "tokyonight": "tokyonight",
-        "tree-sitter-hare": "tree-sitter-hare",
         "trouble": "trouble",
         "vim-vsnip": "vim-vsnip",
         "which-key": "which-key"
@@ -920,22 +902,6 @@
         "owner": "folke",
         "repo": "tokyonight.nvim",
         "type": "github"
-      }
-    },
-    "tree-sitter-hare": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1618403902,
-        "narHash": "sha256-u8mqBVMxbaFQB6uQTcd5Cln6kRAZQ9blqa2TwPvJkUI=",
-        "ref": "master",
-        "rev": "bc26a6a949f2e0d98b7bfc437d459b250900a165",
-        "revCount": 8,
-        "type": "git",
-        "url": "https://git.sr.ht/~ecmma/tree-sitter-hare"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.sr.ht/~ecmma/tree-sitter-hare"
       }
     },
     "trouble": {

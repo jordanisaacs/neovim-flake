@@ -61,7 +61,6 @@ in {
     go = mkEnableOption "Go language LSP";
     ts = mkEnableOption "TS language LSP";
     zig.enable = mkEnableOption "Zig language LSP";
-    hare = mkEnableOption "Hare plugin (not LSP)";
   };
 
   config = mkIf cfg.enable (
