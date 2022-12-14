@@ -348,7 +348,7 @@
   in
     {
       lib = {
-        nvim = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
+        nvim = (import ./modules/lib/stdlib-extended.nix {lib = nixpkgs.lib;}).nvim;
         inherit neovimConfiguration;
       };
 

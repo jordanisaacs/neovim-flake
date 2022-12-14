@@ -1,10 +1,13 @@
 # From home-manager: https://github.com/nix-community/home-manager/blob/master/modules/lib/stdlib-extended.nix
 # Just a convenience function that returns the given Nixpkgs standard
 # library extended with the HM library.
-nixpkgsLib: let
+{
+  lib,
+  extraPluginNames ? [],
+}: let
   mkNvimLib = import ./.;
 in
-  nixpkgsLib.extend (self: super: {
+  lib.extend (self: super: {
     nvim = mkNvimLib {lib = self;};
 
     # For forward compatibility.

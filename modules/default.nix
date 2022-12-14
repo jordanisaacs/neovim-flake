@@ -4,12 +4,16 @@
   lib ? pkgs.lib,
   check ? true,
   extraSpecialArgs ? {},
+  extraInputs ? {},
 }: let
   inherit (pkgs) neovim-unwrapped wrapNeovim tree-sitter;
-  inherit (builtins) map filter isString toString getAttr;
+  inherit (builtins) map filter isString toString getAttr hasAttr attrNames;
   inherit (pkgs.vimUtils) buildVimPluginFrom2Nix;
 
-  extendedLib = import ./lib/stdlib-extended.nix lib;
+  extendedLib = import ./lib/stdlib-extended.nix {
+    inherit lib;
+    extraPluginNames = attrNames extraInputs;
+  };
 
   nvimModules = import ./modules.nix {
     inherit check pkgs;
@@ -39,7 +43,10 @@
     buildVimPluginFrom2Nix rec {
       pname = "nvim-treesitter";
       version = "master";
-      src = getAttr pname inputs;
+      src =
+        if hasAttr pname extraInputs
+        then getAttr pname extraInputs
+        else getAttr pname inputs;
       postPatch = ''
         rm -r parser
         ln -s ${treesitter} parser
