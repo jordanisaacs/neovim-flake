@@ -244,9 +244,10 @@
       lib ? pkgs.lib,
       check ? true,
       extraSpecialArgs ? {},
+      extraInputs ? {}
     }:
       modulesWithInputs {
-        inherit pkgs lib check extraSpecialArgs;
+        inherit pkgs lib check extraSpecialArgs extraInputs;
         configuration = {...}: {
           imports = modules;
         };

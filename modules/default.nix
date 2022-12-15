@@ -34,7 +34,7 @@
       pname = name;
       version = "master";
       src = assert lib.asserts.assertMsg (name != "nvim-treesitter") "Use buildTreesitterPlug for building nvim-treesitter.";
-        getAttr pname inputs;
+        getAttr pname (inputs // extraInputs);
     };
 
   buildTreesitterPlug = grammars: let
