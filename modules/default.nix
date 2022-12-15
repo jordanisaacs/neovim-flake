@@ -1,10 +1,10 @@
 {inputs}: {
   configuration,
   pkgs,
-  lib ? pkgs.lib,
-  check ? true,
-  extraSpecialArgs ? {},
-  extraInputs ? {},
+  lib,
+  check,
+  extraSpecialArgs,
+  extraInputs
 }: let
   inherit (pkgs) neovim-unwrapped wrapNeovim tree-sitter;
   inherit (builtins) map filter isString toString getAttr hasAttr attrNames;
