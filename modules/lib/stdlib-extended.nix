@@ -8,7 +8,7 @@
   mkNvimLib = import ./.;
 in
   lib.extend (self: super: {
-    nvim = mkNvimLib {lib = self;};
+    nvim = mkNvimLib {lib = self; inherit extraPluginNames;};
 
     # For forward compatibility.
     literalExpression = super.literalExpression or super.literalExample;
