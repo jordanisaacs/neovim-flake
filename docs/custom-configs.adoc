@@ -40,3 +40,66 @@ The following is an example of a barebones vim configuration with the default th
 }
 ----
 
+You can add your own plugins by using the `extraInputs` argument of `neovimConfiguration`.
+For example here we add the `leap` plugin with a custom module we have defined.
+
+[source,nix]
+----
+{
+  inputs.neovim-flake.url = "github:jordanisaacs/neovim-flake";
+  inputs.leap.url = "github:ggandor/leap.nvim";
+  inputs.leap.flake = false;
+
+
+  outputs = {nixpkgs, neovim-flake, ...}: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+    configModule = {
+      # Add any custom options (and feel free to upstream them!)
+      # options = ...
+
+      config.vim.theme.enable = true;
+    };
+
+    customNeovim = neovim-flake.lib.neovimConfiguration {
+      modules = [
+        configModule
+        ./modules/leap.nix
+      ];
+      inherit pkgs;
+      extraInputs = { inherit (inputs) leap; };
+    };
+  in {
+    packages.${system}.neovim = customNeovim.neovim;
+  };
+}
+----
+
+And the `leap.nix` module takes the following form
+
+[source,nix]
+----
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.leap;
+  writeIf = cond: message: if cond then message else "";
+in {
+  options.vim.leap = {
+    enable = mkEnableOption "enable leap";
+  };
+
+  config = mkIf cfg.enable {
+      vim.startPlugins = [ "leap" ];
+
+      vim.luaConfigRC.leap = nvim.dag.entryAnywhere ''
+        require('leap').add_default_mappings()
+      '';
+  };
+}
+----
