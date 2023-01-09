@@ -16,10 +16,6 @@
       url = "github:neovim/nvim-lspconfig";
       flake = false;
     };
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter";
-      flake = false;
-    };
     lspsaga = {
       url = "github:tami5/lspsaga.nvim";
       flake = false;

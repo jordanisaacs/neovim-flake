@@ -29,23 +29,23 @@ in {
 
     grammars = mkOption {
       type = with types; listOf package;
-      default = with (pkgs.tree-sitter-grammars); [
-        tree-sitter-c
-        tree-sitter-cpp
-        tree-sitter-nix
-        tree-sitter-python
-        tree-sitter-rust
-        tree-sitter-markdown
-        tree-sitter-comment
-        tree-sitter-toml
-        tree-sitter-make
-        tree-sitter-tsx
-        tree-sitter-html
-        tree-sitter-javascript
-        tree-sitter-css
-        tree-sitter-graphql
-        tree-sitter-json
-        tree-sitter-zig
+      default = with (pkgs.vimPlugins.nvim-treesitter.builtGrammars); [
+        c
+        cpp
+        nix
+        python
+        rust
+        markdown
+        comment
+        toml
+        make
+        tsx
+        html
+        javascript
+        css
+        graphql
+        json
+        zig
       ];
       description = ''
         List of treesitter grammars to install.
