@@ -769,11 +769,11 @@
     "rust-tools": {
       "flake": false,
       "locked": {
-        "lastModified": 1667710081,
-        "narHash": "sha256-7lmLg2ePoeBMHewfgRAt79HMNAF3HWns1PKTe46cJXk=",
+        "lastModified": 1673136837,
+        "narHash": "sha256-+/kK6MU2EiSBFbfqQJwLkJICXZpf8oiShbcvsls3V8A=",
         "owner": "simrat39",
         "repo": "rust-tools.nvim",
-        "rev": "99fd1238c6068d0637df30b6cee9a264334015e9",
+        "rev": "df584e84393ef255f5b8cbd709677d6a3a5bf42f",
         "type": "github"
       },
       "original": {
