@@ -21,6 +21,7 @@
     ./markdown
     ./telescope
     ./git
+    ./plantuml
   ];
 
   pkgsModule = {config, ...}: {

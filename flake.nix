@@ -225,6 +225,11 @@
       url = "github:nvim-lua/plenary.nvim";
       flake = false;
     };
+
+    plantuml-previewer = {
+      url = "/home/null/code/plantuml-previewer.vim/";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -336,6 +341,7 @@
           enable = true;
           gitsigns.enable = true;
         };
+        vim.plantuml.enable = true;
       };
     };
 

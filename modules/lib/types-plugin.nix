@@ -40,6 +40,7 @@ with lib; let
     "rust-tools"
     "onedark"
     "catppuccin"
+    "plantuml-previewer"
   ];
 
   pluginsType = with types; listOf (nullOr (either (enum availablePlugins) package));
