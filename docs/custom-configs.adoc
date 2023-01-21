@@ -40,3 +40,9 @@ The following is an example of a barebones vim configuration with the default th
 }
 ----
 
+Once you have a barebones configuration, you can run it with the following.
+
+[source, sh]
+---
+$ nix run .#neovim
+---
