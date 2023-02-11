@@ -225,6 +225,21 @@
       url = "github:nvim-lua/plenary.nvim";
       flake = false;
     };
+
+    open-browser = {
+      url = "github:tyru/open-browser.vim";
+      flake = false;
+    };
+
+    plantuml-syntax = {
+      url = "github:aklt/plantuml-syntax";
+      flake = false;
+    };
+
+    plantuml-previewer = {
+      url = "github:weirongxu/plantuml-previewer.vim";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -336,6 +351,7 @@
           enable = true;
           gitsigns.enable = true;
         };
+        vim.plantuml.enable = true;
       };
     };
 
