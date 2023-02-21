@@ -30,3 +30,8 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 https://github.com/MoritzBoehme[MoritzBoehme]:
 
 * `catppuccin` theme is now available as a neovim theme <<opt-vim.theme.style>> and lualine theme <<opt-vim.statusline.lualine.theme>>.
+
+
+https://github.com/wanderer[wanderer]:
+
+* Added a module for plantuml which utilizes https://github.com/weirongxu/plantuml-previewer.vim[plantuml-previewer] and https://github.com/aklt/plantuml-syntax[plantuml-syntax]. The options <<opt-vim.plantuml.plantumlPackage>> and <<opt-vim.plantuml.javaPackage>> can be used to configure which version of the corresponding packages are used.
