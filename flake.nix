@@ -358,10 +358,6 @@
           gitsigns.enable = true;
         };
         vim.plantuml.enable = true;
-        vim.tmux-navigator = {
-          enable = true;
-          autosave-on-leave = "wall";
-        };
       };
     };
 
