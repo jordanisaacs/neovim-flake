@@ -178,6 +178,12 @@
       flake = false;
     };
 
+    # tmux-navigator
+    tmux-navigator = {
+      url = "github:christoomey/vim-tmux-navigator";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";
@@ -352,6 +358,10 @@
           gitsigns.enable = true;
         };
         vim.plantuml.enable = true;
+        vim.tmux-navigator = {
+          enable = true;
+          autosave-on-leave = "wall";
+        };
       };
     };
 

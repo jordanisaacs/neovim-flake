@@ -22,6 +22,7 @@
     ./telescope
     ./git
     ./plantuml
+    ./tmux
   ];
 
   pkgsModule = {config, ...}: {
