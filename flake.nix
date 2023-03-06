@@ -255,12 +255,29 @@
       lib ? pkgs.lib,
       check ? true,
       extraSpecialArgs ? {},
-    }:
-      modulesWithInputs {
+    }: let
+      output = modulesWithInputs {
         inherit pkgs lib check extraSpecialArgs;
         configuration = {...}: {
           imports = modules;
         };
+      };
+    in
+      output
+      // {
+        neovim =
+          output.neovim
+          // {
+            extendConfiguration = args:
+              (neovimConfiguration {
+                modules = modules ++ (args.modules or []);
+                pkgs = args.pkgs or pkgs;
+                lib = args.lib or lib;
+                check = args.check or check;
+                extraSpecialArgs = extraSpecialArgs // (args.extraSpecialArgs or {});
+              })
+              .neovim;
+          };
       };
 
     nvimBin = pkg: "${pkg}/bin/nvim";
