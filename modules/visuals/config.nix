@@ -1,27 +1,28 @@
-{ pkgs
-, config
-, lib
-, ...
+{
+  pkgs,
+  config,
+  lib,
+  ...
 }:
 with lib; {
   config = {
     vim.visuals = {
-      enable = mkDefault false;
+      enable = mkOptionDefault false;
 
-      nvimWebDevicons.enable = mkDefault false;
-      lspkind.enable = mkDefault false;
+      nvimWebDevicons.enable = mkOptionDefault false;
+      lspkind.enable = mkOptionDefault false;
 
       cursorWordline = {
-        enable = mkDefault false;
-        lineTimeout = mkDefault 500;
+        enable = mkOptionDefault false;
+        lineTimeout = mkOptionDefault 500;
       };
 
       indentBlankline = {
-        enable = mkDefault false;
-        listChar = mkDefault "│";
-        fillChar = mkDefault "⋅";
-        eolChar = mkDefault "↴";
-        showCurrContext = mkDefault true;
+        enable = mkOptionDefault false;
+        listChar = mkOptionDefault "│";
+        fillChar = mkOptionDefault "⋅";
+        eolChar = mkOptionDefault "↴";
+        showCurrContext = mkOptionDefault true;
       };
     };
   };

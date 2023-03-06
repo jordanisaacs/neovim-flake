@@ -7,22 +7,22 @@
 with lib; {
   config = {
     vim.statusline.lualine = {
-      enable = mkDefault false;
+      enable = mkOptionDefault false;
 
-      icons = mkDefault true;
-      theme = mkDefault "auto";
+      icons = mkOptionDefault true;
+      theme = mkOptionDefault "auto";
       sectionSeparator = {
-        left = mkDefault "";
-        right = mkDefault "";
+        left = mkOptionDefault "";
+        right = mkOptionDefault "";
       };
 
       componentSeparator = {
-        left = mkDefault "⏽";
-        right = mkDefault "⏽";
+        left = mkOptionDefault "⏽";
+        right = mkOptionDefault "⏽";
       };
 
       activeSection = {
-        a = mkDefault "{'mode'}";
+        a = mkOptionDefault "{'mode'}";
         b = ''
           {
             {
@@ -32,8 +32,8 @@ with lib; {
             "diff",
           }
         '';
-        c = mkDefault "{'filename'}";
-        x = mkDefault ''
+        c = mkOptionDefault "{'filename'}";
+        x = mkOptionDefault ''
           {
             {
               "diagnostics",
@@ -48,17 +48,17 @@ with lib; {
             "encoding",
           }
         '';
-        y = mkDefault "{'progress'}";
-        z = mkDefault "{'location'}";
+        y = mkOptionDefault "{'progress'}";
+        z = mkOptionDefault "{'location'}";
       };
 
       inactiveSection = {
-        a = mkDefault "{}";
-        b = mkDefault "{}";
-        c = mkDefault "{'filename'}";
-        x = mkDefault "{'location'}";
-        y = mkDefault "{}";
-        z = mkDefault "{}";
+        a = mkOptionDefault "{}";
+        b = mkOptionDefault "{}";
+        c = mkOptionDefault "{'filename'}";
+        x = mkOptionDefault "{'location'}";
+        y = mkOptionDefault "{}";
+        z = mkOptionDefault "{}";
       };
     };
   };
