@@ -102,4 +102,17 @@ in {
 
   entryAfter = nvim.dag.entryBetween [];
   entryBefore = before: nvim.dag.entryBetween before [];
+
+  resolveDag = {
+    name,
+    dag,
+    mapResult,
+  }: let
+    sortedDag = nvim.dag.topoSort dag;
+    result =
+      if sortedDag ? result
+      then mapResult sortedDag.result
+      else abort ("Dependency cycle in ${name}: " + builtins.toJSON sortedDag);
+  in
+    result;
 }
