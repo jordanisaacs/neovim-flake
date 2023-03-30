@@ -6,9 +6,9 @@
 }:
 with lib;
 with builtins; let
-  cfg = config.vim.plantuml;
+  cfg = config.vim.languages.plantuml;
 in {
-  options.vim = {
+  options.vim.languages = {
     plantuml = {
       enable = mkOption {
         type = types.bool;

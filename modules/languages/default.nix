@@ -16,6 +16,9 @@ in {
     ./sql.nix
     ./ts.nix
     ./zig.nix
+    ./markdown.nix
+    ./plantuml.nix
+    ./tidal.nix
   ];
 
   options.vim.languages = {
