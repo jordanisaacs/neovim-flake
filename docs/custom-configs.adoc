@@ -1,15 +1,13 @@
 [[ch-custom-configuration]]
 == Custom Configuration
 
-Custom configuration is done with the `neovimConfiguration` function. It takes in the configuration as a module. The output of the configuration function is an attrset.
+Custom configuration is done with the `neovimConfiguration` function. It takes in the configuration as a list of modules. The output of the configuration function is the configured neovim package. Additionally, information about the module is given in the package's `meta` attributes.
 
 [source,nix]
 ----
 {
-  options = "The options that were available to configure";
-  config = "The outputted configuration";
-  pkgs = "The package set used to evaluate the module";
-  neovim = "The built neovim package";
+  meta.module.options = "The final module options";
+  meta.module.config = "The final module configuration";
 }
 ----
 
@@ -35,7 +33,7 @@ The following is an example of a barebones vim configuration with the default th
       inherit pkgs;
     };
   in {
-    packages.${system}.neovim = customNeovim.neovim;
+    packages.${system}.neovim = customNeovim;
   };
 }
 ----
