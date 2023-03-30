@@ -13,6 +13,7 @@
     ./filetree
     ./visuals
     ./lsp
+    ./languages
     ./treesitter
     ./tidal
     ./autopairs

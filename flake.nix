@@ -306,25 +306,37 @@
       config = {
         build.viAlias = false;
         build.vimAlias = true;
-        vim.lsp = {
+        vim.languages = {
+          enableLSP = true;
+          enableFormat = true;
+          enableTreesitter = true;
+          enableExtraDiagnostics = true;
+
+          nix.enable = true;
+          clang.enable = isMaximal;
+          sql.enable = isMaximal;
+          rust = {
+            enable = isMaximal;
+            crates.enable = true;
+          };
+          ts.enable = isMaximal;
+          go.enable = isMaximal;
+          zig.enable = isMaximal;
+          python.enable = isMaximal;
+        };
+        vim.plantuml.enable = isMaximal;
+        vim.markdown = {
           enable = true;
+          glow.enable = true;
+        };
+        vim.lsp = {
           formatOnSave = true;
+
           lightbulb.enable = true;
           lspsaga.enable = false;
           nvimCodeActionMenu.enable = true;
           trouble.enable = true;
           lspSignature.enable = true;
-          nix = {
-            enable = true;
-            formatter = "alejandra";
-          };
-          rust.enable = isMaximal;
-          python = isMaximal;
-          clang.enable = isMaximal;
-          sql = isMaximal;
-          ts = isMaximal;
-          go = isMaximal;
-          zig.enable = isMaximal;
         };
         vim.visuals = {
           enable = true;
@@ -357,26 +369,16 @@
         };
         vim.filetree.nvimTreeLua.enable = true;
         vim.tabline.nvimBufferline.enable = true;
-        vim.treesitter = {
-          enable = true;
-          context.enable = true;
-        };
+        vim.treesitter.context.enable = true;
         vim.keys = {
           enable = true;
           whichKey.enable = true;
         };
-        vim.telescope = {
-          enable = true;
-        };
-        vim.markdown = {
-          enable = true;
-          glow.enable = true;
-        };
+        vim.telescope.enable = true;
         vim.git = {
           enable = true;
           gitsigns.enable = true;
         };
-        vim.plantuml.enable = true;
       };
     };
 
@@ -435,16 +437,12 @@
           };
           default = nix;
         }
-        // (
-          if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
-          then {
-            tidal = {
-              type = "app";
-              program = nvimBin tidalPkg;
-            };
-          }
-          else {}
-        );
+        // pkgs.lib.optionalAttrs (!(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])) {
+          tidal = {
+            type = "app";
+            program = nvimBin tidalPkg;
+          };
+        };
 
       devShells.default = pkgs.mkShell {nativeBuildInputs = [nixPkg];};
 
@@ -457,12 +455,8 @@
           nix = nixPkg;
           maximal = maximalPkg;
         }
-        // (
-          if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
-          then {
-            tidal = tidalPkg;
-          }
-          else {}
-        );
+        // pkgs.lib.optionalAttrs (!(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])) {
+          tidal = tidalPkg;
+        };
     }));
 }
