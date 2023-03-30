@@ -64,6 +64,12 @@ in {
             },
           }
         '');
+
+        #   local ls_sources = { }
+        #     -- Commented out for now
+        #     --${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
+        #     --  null_ls.builtins.code_actions.gitsigns,
+        #     --''}
       }
     );
 }

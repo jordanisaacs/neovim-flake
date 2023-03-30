@@ -7,6 +7,8 @@
 with lib;
 with builtins; let
   cfg = config.vim.autocomplete;
+  builtSources =
+    concatMapStringsSep "\n" (x: "{ name = '${x}'},") cfg.sources;
 in {
   options.vim = {
     autocomplete = {
@@ -21,6 +23,12 @@ in {
         default = "nvim-cmp";
         description = "Set the autocomplete plugin. Options: [nvim-cmp]";
       };
+
+      sources = mkOption {
+        description = "List of source names for nvim-cmp";
+        type = with types; listOf str;
+        default = [];
+      };
     };
   };
 
@@ -30,7 +38,13 @@ in {
       "cmp-buffer"
       "cmp-vsnip"
       "cmp-path"
-      "cmp-treesitter"
+    ];
+
+    vim.autocomplete.sources = [
+      "nvim-cmp"
+      "vsnip"
+      "buffer"
+      "path"
     ];
 
     vim.luaConfigRC.completion = mkIf (cfg.type == "nvim-cmp") (nvim.dag.entryAnywhere ''
@@ -51,12 +65,7 @@ in {
           end,
         },
         sources = {
-          ${optionalString (config.vim.lsp.enable) "{ name = 'nvim_lsp' },"}
-          ${optionalString (config.vim.lsp.rust.enable) "{ name = 'crates' },"}
-          { name = 'vsnip' },
-          { name = 'treesitter' },
-          { name = 'path' },
-          { name = 'buffer' },
+          ${builtSources}
         },
         mapping = {
           ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
