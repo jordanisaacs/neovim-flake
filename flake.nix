@@ -11,9 +11,7 @@
 
     # LSP plugins
     nvim-lspconfig = {
-      # url = "github:neovim/nvim-lspconfig?ref=v0.1.3";
-      # Use master for nil_ls
-      url = "github:neovim/nvim-lspconfig";
+      url = "github:neovim/nvim-lspconfig?ref=v0.1.4";
       flake = false;
     };
     lspsaga = {
