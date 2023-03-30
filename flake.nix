@@ -176,6 +176,12 @@
       flake = false;
     };
 
+    # tmux-navigator
+    tmux-navigator = {
+      url = "github:christoomey/vim-tmux-navigator";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";

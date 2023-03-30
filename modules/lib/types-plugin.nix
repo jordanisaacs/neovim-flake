@@ -43,6 +43,7 @@ with lib; let
     "open-browser"
     "plantuml-syntax"
     "plantuml-previewer"
+    "tmux-navigator"
   ];
 
   pluginsType = with types; listOf (nullOr (either (enum availablePlugins) package));
