@@ -245,40 +245,67 @@
     flake-utils,
     ...
   } @ inputs: let
-    modulesWithInputs = import ./modules {inherit inputs;};
+    # Plugin must be same as input name
+    availablePlugins = [
+      "nvim-treesitter-context"
+      "gitsigns-nvim"
+      "plenary-nvim"
+      "nvim-lspconfig"
+      "lspsaga"
+      "lspkind"
+      "nvim-lightbulb"
+      "lsp-signature"
+      "nvim-tree-lua"
+      "nvim-bufferline-lua"
+      "lualine"
+      "nvim-compe"
+      "nvim-autopairs"
+      "nvim-ts-autotag"
+      "nvim-web-devicons"
+      "tokyonight"
+      "bufdelete-nvim"
+      "nvim-cmp"
+      "cmp-nvim-lsp"
+      "cmp-buffer"
+      "cmp-vsnip"
+      "cmp-path"
+      "cmp-treesitter"
+      "crates-nvim"
+      "vim-vsnip"
+      "nvim-code-action-menu"
+      "trouble"
+      "null-ls"
+      "which-key"
+      "indent-blankline"
+      "nvim-cursorline"
+      "sqls-nvim"
+      "glow-nvim"
+      "telescope"
+      "rust-tools"
+      "onedark"
+      "catppuccin"
+      "open-browser"
+      "plantuml-syntax"
+      "plantuml-previewer"
+    ];
+    rawPlugins = nvimLib.plugins.inputsToRaw inputs availablePlugins;
 
-    neovimConfiguration = {
-      modules ? [],
-      pkgs,
-      lib ? pkgs.lib,
-      check ? true,
-      extraSpecialArgs ? {},
-    }:
-      modulesWithInputs {
-        inherit pkgs lib check extraSpecialArgs;
-        configuration = {...}: {
-          imports = modules;
-        };
-      };
+    neovimConfiguration = {modules ? [], ...} @ args:
+      import ./modules
+      (args // {modules = [{config.build.rawPlugins = rawPlugins;}] ++ modules;});
 
     nvimBin = pkg: "${pkg}/bin/nvim";
 
-    buildPkg = pkgs: modules:
-      (neovimConfiguration {
-        inherit pkgs modules;
-      })
-      .neovim;
+    buildPkg = pkgs: modules: (neovimConfiguration {
+      inherit pkgs modules;
+    });
 
-    tidalConfig = {
-      config = {
-        vim.tidal.enable = true;
-      };
-    };
+    nvimLib = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
 
     mainConfig = isMaximal: {
       config = {
-        vim.viAlias = false;
-        vim.vimAlias = true;
+        build.viAlias = false;
+        build.vimAlias = true;
         vim.lsp = {
           enable = true;
           formatOnSave = true;
@@ -355,10 +382,16 @@
 
     nixConfig = mainConfig false;
     maximalConfig = mainConfig true;
+
+    tidalConfig = {
+      config = {
+        vim.tidal.enable = true;
+      };
+    };
   in
     {
       lib = {
-        nvim = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
+        nvim = nvimLib;
         inherit neovimConfiguration;
       };
 

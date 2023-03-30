@@ -22,18 +22,6 @@ with builtins; let
       // it);
 in {
   options.vim = {
-    viAlias = mkOption {
-      description = "Enable vi alias";
-      type = types.bool;
-      default = true;
-    };
-
-    vimAlias = mkOption {
-      description = "Enable vim alias";
-      type = types.bool;
-      default = true;
-    };
-
     configRC = mkOption {
       description = "vimrc contents";
       type = nvim.types.dagOf types.lines;
@@ -46,18 +34,14 @@ in {
       default = {};
     };
 
-    builtConfigRC = mkOption {
-      internal = true;
-      type = types.lines;
-      description = "The built config for neovim after resolving the DAG";
-    };
-
     startPlugins = nvim.types.pluginsOpt {
+      rawPlugins = config.build.rawPlugins;
       default = [];
       description = "List of plugins to startup.";
     };
 
     optPlugins = nvim.types.pluginsOpt {
+      rawPlugins = config.build.rawPlugins;
       default = [];
       description = "List of plugins to optionally load";
     };
@@ -168,19 +152,6 @@ in {
     cnoremap = mapVimBinding "cnoremap" config.vim.cnoremap;
     onoremap = mapVimBinding "onoremap" config.vim.onoremap;
     tnoremap = mapVimBinding "tnoremap" config.vim.tnoremap;
-
-    resolveDag = {
-      name,
-      dag,
-      mapResult,
-    }: let
-      sortedDag = nvim.dag.topoSort dag;
-      result =
-        if sortedDag ? result
-        then mapResult sortedDag.result
-        else abort ("Dependency cycle in ${name}: " + toJSON sortedConfig);
-    in
-      result;
   in {
     vim = {
       configRC = {
@@ -192,7 +163,7 @@ in {
             ${r.data}
           '';
           mapResult = r: (wrapLuaConfig (concatStringsSep "\n" (map mkSection r)));
-          luaConfig = resolveDag {
+          luaConfig = nvim.dag.resolveDag {
             name = "lua config script";
             dag = cfg.luaConfigRC;
             inherit mapResult;
@@ -206,20 +177,6 @@ in {
         in
           nvim.dag.entryAfter ["globalsScript"] mapConfig;
       };
-
-      builtConfigRC = let
-        mkSection = r: ''
-          " SECTION: ${r.name}
-          ${r.data}
-        '';
-        mapResult = r: (concatStringsSep "\n" (map mkSection r));
-        vimConfig = resolveDag {
-          name = "vim config script";
-          dag = cfg.configRC;
-          inherit mapResult;
-        };
-      in
-        vimConfig;
     };
   };
 }
