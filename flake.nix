@@ -302,6 +302,10 @@
 
     nvimLib = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
 
+    tidalConfig = {
+      config.vim.languages.tidal.enable = true;
+    };
+
     mainConfig = isMaximal: {
       config = {
         build.viAlias = false;
@@ -313,6 +317,7 @@
           enableExtraDiagnostics = true;
 
           nix.enable = true;
+          markdown.enable = true;
           clang.enable = isMaximal;
           sql.enable = isMaximal;
           rust = {
@@ -323,11 +328,10 @@
           go.enable = isMaximal;
           zig.enable = isMaximal;
           python.enable = isMaximal;
-        };
-        vim.plantuml.enable = isMaximal;
-        vim.markdown = {
-          enable = true;
-          glow.enable = true;
+          plantuml.enable = isMaximal;
+
+          # See tidal config
+          tidal.enable = false;
         };
         vim.lsp = {
           formatOnSave = true;
@@ -384,12 +388,6 @@
 
     nixConfig = mainConfig false;
     maximalConfig = mainConfig true;
-
-    tidalConfig = {
-      config = {
-        vim.tidal.enable = true;
-      };
-    };
   in
     {
       lib = {
