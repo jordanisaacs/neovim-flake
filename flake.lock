@@ -574,22 +574,6 @@
         "type": "github"
       }
     },
-    "nvim-treesitter": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1669808154,
-        "narHash": "sha256-DrAtcyn0InuYp3iAW9dxpoJ/Uzh/leXFvmekCTp1Pv4=",
-        "owner": "nvim-treesitter",
-        "repo": "nvim-treesitter",
-        "rev": "4b900527045c49af5f43291d2cb13ae27a3bc7be",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvim-treesitter",
-        "repo": "nvim-treesitter",
-        "type": "github"
-      }
-    },
     "nvim-treesitter-context": {
       "flake": false,
       "locked": {
@@ -651,6 +635,54 @@
       "original": {
         "owner": "navarasu",
         "repo": "onedark.nvim",
+        "type": "github"
+      }
+    },
+    "open-browser": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1665248470,
+        "narHash": "sha256-9QZgTv8W0BFlF0lsH1BPPAzjD6iXWXHXZf2zpouQH2s=",
+        "owner": "tyru",
+        "repo": "open-browser.vim",
+        "rev": "7d4c1d8198e889d513a030b5a83faa07606bac27",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tyru",
+        "repo": "open-browser.vim",
+        "type": "github"
+      }
+    },
+    "plantuml-previewer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1675741402,
+        "narHash": "sha256-2MPyR/5C/yVOE8tKDEzyjVB4KNokXk7/j3qju5BWcRs=",
+        "owner": "weirongxu",
+        "repo": "plantuml-previewer.vim",
+        "rev": "192cbc2349d4a5c772089b4ea72e085fa61790ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "weirongxu",
+        "repo": "plantuml-previewer.vim",
+        "type": "github"
+      }
+    },
+    "plantuml-syntax": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661550240,
+        "narHash": "sha256-LowGc66T47vOL4oAihrArNqGUZ+CCbyVXEROO83OTjQ=",
+        "owner": "aklt",
+        "repo": "plantuml-syntax",
+        "rev": "845abb56dcd3f12afa6eb47684ef5ba3055802b8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aklt",
+        "repo": "plantuml-syntax",
         "type": "github"
       }
     },
@@ -739,11 +771,13 @@
         "nvim-lspconfig": "nvim-lspconfig",
         "nvim-neoclip": "nvim-neoclip",
         "nvim-tree-lua": "nvim-tree-lua",
-        "nvim-treesitter": "nvim-treesitter",
         "nvim-treesitter-context": "nvim-treesitter-context",
         "nvim-ts-autotag": "nvim-ts-autotag",
         "nvim-web-devicons": "nvim-web-devicons",
         "onedark": "onedark",
+        "open-browser": "open-browser",
+        "plantuml-previewer": "plantuml-previewer",
+        "plantuml-syntax": "plantuml-syntax",
         "plenary-nvim": "plenary-nvim",
         "registers": "registers",
         "rnix-lsp": "rnix-lsp",
@@ -786,11 +820,11 @@
     "rust-tools": {
       "flake": false,
       "locked": {
-        "lastModified": 1667710081,
-        "narHash": "sha256-7lmLg2ePoeBMHewfgRAt79HMNAF3HWns1PKTe46cJXk=",
+        "lastModified": 1673136837,
+        "narHash": "sha256-+/kK6MU2EiSBFbfqQJwLkJICXZpf8oiShbcvsls3V8A=",
         "owner": "simrat39",
         "repo": "rust-tools.nvim",
-        "rev": "99fd1238c6068d0637df30b6cee9a264334015e9",
+        "rev": "df584e84393ef255f5b8cbd709677d6a3a5bf42f",
         "type": "github"
       },
       "original": {

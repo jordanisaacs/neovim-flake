@@ -18,7 +18,7 @@ If you are contributing and adding a new plugin, add the plugin name to `availab
 
 * `neovimBuilder` has been removed for configuration. Using an overlay is no longer required. See the manual for the new way to configuration.
 
-* Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Packages can be found under the `tree-sitter-grammars` namespace on https://search.nixos.org/packages?channel=22.11&from=0&size=50&sort=relevance&type=packages&query=tree-sitter-grammars[nixpkgs].
+* Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Utilizes the nixpkgs `nvim-treesitter` plugin rather than a custom input in order to take advantage of build support of pinned versions. See https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees[discourse] for more information. Packages can be found under the `vimPlugins.nvim-treesitter.builtGrammars` namespace.
 
 * <<opt-vim.configRC>> and <<opt-vim.luaConfigRC>> are now of type DAG lines. This allows for ordering of the config. Usage is the same is in home-manager's `home.activation` option.
 +
@@ -34,3 +34,7 @@ https://github.com/MoritzBoehme[MoritzBoehme]:
 https://github.com/antotocar34[antotocar34]:
 
 * Refactored supported theme definitions into a module. This allows any downstream users to define their own themes.
+
+https://github.com/wanderer[wanderer]:
+
+* Added a module for plantuml which utilizes https://github.com/weirongxu/plantuml-previewer.vim[plantuml-previewer] and https://github.com/aklt/plantuml-syntax[plantuml-syntax]. The options <<opt-vim.plantuml.plantumlPackage>> and <<opt-vim.plantuml.javaPackage>> can be used to configure which version of the corresponding packages are used.

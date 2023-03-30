@@ -5,8 +5,8 @@
   check ? true,
   extraSpecialArgs ? {},
 }: let
-  inherit (pkgs) neovim-unwrapped wrapNeovim tree-sitter;
-  inherit (builtins) map filter isString toString getAttr;
+  inherit (pkgs) neovim-unwrapped wrapNeovim vimPlugins;
+  inherit (builtins) map filter isString toString getAttr hasAttr attrNames;
   inherit (pkgs.vimUtils) buildVimPluginFrom2Nix;
 
   extendedLib = import ./lib/stdlib-extended.nix lib;
@@ -33,18 +33,7 @@
         getAttr pname inputs;
     };
 
-  buildTreesitterPlug = grammars: let
-    treesitter = tree-sitter.withPlugins (_: grammars);
-  in
-    buildVimPluginFrom2Nix rec {
-      pname = "nvim-treesitter";
-      version = "master";
-      src = getAttr pname inputs;
-      postPatch = ''
-        rm -r parser
-        ln -s ${treesitter} parser
-      '';
-    };
+  buildTreesitterPlug = grammars: vimPlugins.nvim-treesitter.withPlugins (_: grammars);
 
   vimOptions = module.config.vim;
 
