@@ -19,9 +19,9 @@ in {
     grammars = mkOption {
       type = with types; listOf package;
       default = [];
-      description = ''
+      description = nvim.nmd.asciiDoc ''
         List of treesitter grammars to install. For supported languages
-        use the `vim.language.<lang>.treesitter` option
+        use the `vim.languages.<language>.treesitter.enable` option
       '';
     };
   };
