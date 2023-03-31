@@ -318,6 +318,7 @@
 
           nix.enable = true;
           markdown.enable = true;
+          html.enable = isMaximal;
           clang.enable = isMaximal;
           sql.enable = isMaximal;
           rust = {
@@ -424,7 +425,7 @@
       nixPkg = buildPkg pkgs [nixConfig];
       maximalPkg = buildPkg pkgs [maximalConfig];
 
-      devPkg = buildPkg pkgs [nixConfig {config.vim.treesitter.grammars = [pkgs.vimPlugins.nvim-treesitter.builtGrammars.html];}];
+      devPkg = buildPkg pkgs [nixConfig {config.vim.languages.html.enable = pkgs.lib.mkForce true;}];
     in {
       apps =
         rec {

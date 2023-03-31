@@ -14,8 +14,6 @@ in {
 
     fold = mkEnableOption "fold with treesitter";
 
-    autotagHtml = mkEnableOption "autoclose and rename html tag";
-
     grammars = mkOption {
       type = with types; listOf package;
       default = [];
@@ -29,7 +27,6 @@ in {
   config = mkIf cfg.enable {
     vim.startPlugins =
       ["nvim-treesitter"]
-      ++ optional cfg.autotagHtml "nvim-ts-autotag"
       ++ optional usingNvimCmp "cmp-treesitter";
 
     vim.autocomplete.sources = ["treesitter"];
@@ -59,13 +56,7 @@ in {
             scope_incremental = "grc",
             node_decremental = "grm",
           },
-        },
-
-      ${optionalString cfg.autotagHtml ''
-        autotag = {
-          enable = true,
-        },
-      ''}
+        }
       }
     '';
   };
