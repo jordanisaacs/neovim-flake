@@ -11,6 +11,19 @@ in {
   options.vim.languages.markdown = {
     enable = mkEnableOption "Markdown language support";
 
+    treesitter = {
+      enable = mkOption {
+        description = "Enable Markdown treesitter";
+        type = types.bool;
+        default = config.vim.languages.enableTreesitter;
+      };
+      package = mkOption {
+        description = "Markdown treesitter grammar to use";
+        type = types.package;
+        default = pkgs.vimPlugins.nvim-treesitter.builtGrammars.markdown;
+      };
+    };
+
     glow.enable = mkOption {
       type = types.bool;
       default = true;
@@ -19,6 +32,10 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [
+    (mkIf cfg.treesitter.enable {
+      vim.treesitter.enable = true;
+      vim.treesitter.grammars = [cfg.treesitter.package];
+    })
     (mkIf cfg.glow.enable {
       vim.startPlugins = ["glow-nvim"];
 
