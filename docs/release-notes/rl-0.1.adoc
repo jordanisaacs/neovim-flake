@@ -18,7 +18,7 @@ If you are contributing and adding a new plugin, add the plugin name to `availab
 
 * `neovimBuilder` has been removed for configuration. Using an overlay is no longer required. See the manual for the new way to configuration.
 
-* Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Utilizes the nixpkgs `nvim-treesitter` plugin rather than a custom input in order to take advantage of build support of pinned versions. See https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees[discourse] for more information. Packages can be found under the `vimPlugins.nvim-treesitter.builtGrammars` namespace.
+* Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Utilizes the nixpkgs `nvim-treesitter` plugin rather than a custom input in order to take advantage of build support of pinned versions. See https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees[discourse] for more information. Packages can be found under the `pkgs.vimPlugins.nvim-treesitter.builtGrammars` attribute. Treesitter grammars for supported languages should be enabled within the module. By default no grammars are installed, thus the following grammars which do not have a language section are not included anymore: comment, toml, make, html, css, graphql, json.
 
 * <<opt-vim.configRC>> and <<opt-vim.luaConfigRC>> are now of type DAG lines. This allows for ordering of the config. Usage is the same is in home-manager's `home.activation` option.
 +
@@ -31,9 +31,18 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 
 * You can now add your own custom inputs as plugins. See <<opt-build.rawPlugins>>. They can be accessed in <<opt-vim.startPlugins>> & <<opt-vim.optPlugins>>
 
-* Settings aliases has been moved to the `config.build` namespace: <<opt-build.viAlias>> & <<opt-build.vimAlias>>
+* Setting aliases has been moved to the `config.build` attribute: <<opt-build.viAlias>> & <<opt-build.vimAlias>>
 
 * Internally, now using the modern https://github.com/NixOS/nixpkgs/blob/c47370e2cc335cb987577ff5fa26c9f29cc7774e/pkgs/applications/editors/neovim/utils.nix#L24[makeNeovimConfig] and https://github.com/NixOS/nixpkgs/blob/c47370e2cc335cb987577ff5fa26c9f29cc7774e/pkgs/applications/editors/neovim/wrapper.nix#L11[wrapNeovimUnstable] for building the final package, <<opt-built.package>>
+
+* A new section has been added for language support: `vim.languages.<language>`. The options <<opt-vim.languages.enableLSP>>, <<opt-vim.languages.enableTreesitter>>, etc. will enable the respective section for all languages that have been enabled.
+** All LSP languages have been moved here
+** `plantuml` and `markdown` have been moved here
+** A new section has been added for `html`. The old `vim.treesitter.autotagHtml` can be found at <<opt-vim.languages.html.treesitter.autotagHtml>>.
+
+* <<opt-vim.git.gitsigns.codeActions>> has been added allowing you to turn on gitsigns codeactions.
+
+* Removed the plugins document in the docs. Was too unwieldy to keep updated.
 
 https://github.com/MoritzBoehme[MoritzBoehme]:
 

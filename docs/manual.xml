@@ -18,7 +18,6 @@
  <xi:include href="default-configs.xml"/>
  <xi:include href="custom-configs.xml"/>
  <xi:include href="languages.xml"/>
- <xi:include href="plugins.xml"/>
  <appendix xml:id="ch-options">
   <title>Configuration Options</title>
   <xi:include href="./nmd-result/neovim-flake-options.xml" />
