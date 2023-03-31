@@ -423,6 +423,8 @@
       tidalPkg = buildPkg pkgs [tidalConfig];
       nixPkg = buildPkg pkgs [nixConfig];
       maximalPkg = buildPkg pkgs [maximalConfig];
+
+      devPkg = buildPkg pkgs [nixConfig {config.vim.treesitter.grammars = [pkgs.vimPlugins.nvim-treesitter.builtGrammars.html];}];
     in {
       apps =
         rec {
@@ -443,7 +445,7 @@
           };
         };
 
-      devShells.default = pkgs.mkShell {nativeBuildInputs = [nixPkg];};
+      devShells.default = pkgs.mkShell {nativeBuildInputs = [devPkg];};
 
       packages =
         {
