@@ -73,11 +73,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = mkOption {
-        description = "SQL treesitter grammar to use";
-        type = types.package;
-        default = pkgs.vimPlugins.nvim-treesitter.builtGrammars.sql;
-      };
+      package = nvim.types.mkGrammarOption pkgs "sql";
     };
 
     lsp = {
