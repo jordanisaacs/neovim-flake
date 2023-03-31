@@ -46,11 +46,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = mkOption {
-        description = "Python treesitter grammar to use";
-        type = types.package;
-        default = pkgs.vimPlugins.nvim-treesitter.builtGrammars.python;
-      };
+      package = nvim.types.mkGrammarOption pkgs "python";
     };
 
     lsp = {
