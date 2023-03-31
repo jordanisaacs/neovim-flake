@@ -400,11 +400,11 @@
     "null-ls": {
       "flake": false,
       "locked": {
-        "lastModified": 1669991088,
-        "narHash": "sha256-DZgonVEzkgayvLY9jkEH1O/Xny6LQktyi8rTNbQlkMk=",
+        "lastModified": 1680199095,
+        "narHash": "sha256-P4rQZnVuStgtkoeDLFrzn44LA5vRcvx5G2PjNDNNvUQ=",
         "owner": "jose-elias-alvarez",
         "repo": "null-ls.nvim",
-        "rev": "a67897283fdb0051ad5c72e840e1845e195b979b",
+        "rev": "d112a351ef8ff20060100fdc20e402a5880c4ef0",
         "type": "github"
       },
       "original": {
