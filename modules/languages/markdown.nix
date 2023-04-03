@@ -17,7 +17,8 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = nvim.types.mkGrammarOption pkgs "markdown";
+      mdPackage = nvim.types.mkGrammarOption pkgs "markdown";
+      mdInlinePackage = nvim.types.mkGrammarOption pkgs "markdown-inline";
     };
 
     glow.enable = mkOption {
@@ -30,7 +31,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.package];
+      vim.treesitter.grammars = [cfg.treesitter.mdPackage cfg.treesitter.mdInlinePackage];
     })
     (mkIf cfg.glow.enable {
       vim.startPlugins = ["glow-nvim"];
