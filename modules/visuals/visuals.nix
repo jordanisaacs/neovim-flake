@@ -64,72 +64,42 @@ in {
     };
   };
 
-  config =
-    mkIf cfg.enable
-    {
-      vim.startPlugins = [
-        (
-          if cfg.nvimWebDevicons.enable
-          then "nvim-web-devicons"
-          else null
-        )
-        (
-          if cfg.lspkind.enable
-          then "lspkind"
-          else null
-        )
-        (
-          if cfg.cursorWordline.enable
-          then "nvim-cursorline"
-          else null
-        )
-        (
-          if cfg.indentBlankline.enable
-          then "indent-blankline"
-          else null
-        )
-      ];
+  config = mkIf cfg.enable (mkMerge [
+    (mkIf cfg.lspkind.enable {
+      vim.startPlugins = ["lspkind"];
+      vim.luaConfigRC.lspkind = nvim.dag.entryAnywhere ''
+        require'lspkind'.init()
+      '';
+    })
+    (mkIf cfg.indentBlankline.enable {
+      vim.startPlugins = ["indent-blankline"];
+      vim.luaConfigRC.indent-blankline = nvim.dag.entryAnywhere ''
+        -- highlight error: https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
+        vim.wo.colorcolumn = "99999"
+        vim.opt.list = true
 
-      vim.luaConfigRC.visuals = nvim.dag.entryAnywhere ''
-        ${
-          if cfg.lspkind.enable
-          then "require'lspkind'.init()"
-          else ""
-        }
-        ${
-          if cfg.indentBlankline.enable
-          then ''
-            -- highlight error: https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
-            vim.wo.colorcolumn = "99999"
-            vim.opt.list = true
+        ${optionalString (cfg.indentBlankline.eolChar != "") ''
+          vim.opt.listchars:append({ eol = "${cfg.indentBlankline.eolChar}" })
+        ''}
+        ${optionalString (cfg.indentBlankline.fillChar != "") ''
+          vim.opt.listchars:append({ eol = "${cfg.indentBlankline.fillChar}" })
+        ''}
 
-
-            ${
-              if cfg.indentBlankline.eolChar == ""
-              then ""
-              else ''vim.opt.listchars:append({ eol = "${cfg.indentBlankline.eolChar}" })''
-            }
-
-            ${
-              if cfg.indentBlankline.fillChar == ""
-              then ""
-              else ''vim.opt.listchars:append({ space = "${cfg.indentBlankline.fillChar}"})''
-            }
-
-            require("indent_blankline").setup {
-              char = "${cfg.indentBlankline.listChar}",
-              show_current_context = ${boolToString cfg.indentBlankline.showCurrContext},
-              show_end_of_line = true,
-            }
-          ''
-          else ""
-        }
-
-        ${
-          if cfg.cursorWordline.enable
-          then "vim.g.cursorline_timeout = ${toString cfg.cursorWordline.lineTimeout}"
-          else ""
+        require("indent_blankline").setup {
+          char = "${cfg.indentBlankline.listChar}",
+          show_current_context = ${boolToString cfg.indentBlankline.showCurrContext},
+          show_end_of_line = true,
         }
       '';
-    };
+    })
+    (mkIf cfg.cursorWordline.enable {
+      vim.startPlugins = ["nvim-cursorline"];
+      vim.luaConfigRC.cursorline = nvim.dag.entryAnywhere ''
+        vim.g.cursorline_timeout = ${toString cfg.cursorWordline.lineTimeout}
+      '';
+    })
+    (mkIf cfg.nvimWebDevicons.enable {
+      vim.startPlugins = ["nvim-web-devicons"];
+    })
+  ]);
 }
