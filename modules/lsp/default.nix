@@ -13,6 +13,7 @@ in {
     ./lspconfig.nix
     ./null-ls.nix
 
+    ./lspkind.nix
     ./lspsaga.nix
     ./nvim-code-action-menu.nix
     ./trouble.nix
@@ -28,7 +29,7 @@ in {
   config = mkIf cfg.enable {
     vim.startPlugins = optional usingNvimCmp "cmp-nvim-lsp";
 
-    vim.autocomplete.sources = ["nvim_lsp"];
+    vim.autocomplete.sources = {"nvim_lsp" = "[LSP]";};
 
     vim.luaConfigRC.lsp-setup = ''
       vim.g.formatsave = ${boolToString cfg.formatOnSave};

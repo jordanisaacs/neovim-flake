@@ -336,7 +336,7 @@
         };
         vim.lsp = {
           formatOnSave = true;
-
+          lspkind.enable = false;
           lightbulb.enable = true;
           lspsaga.enable = false;
           nvimCodeActionMenu.enable = true;
@@ -346,7 +346,6 @@
         vim.visuals = {
           enable = true;
           nvimWebDevicons.enable = true;
-          lspkind.enable = true;
           indentBlankline = {
             enable = true;
             fillChar = "";

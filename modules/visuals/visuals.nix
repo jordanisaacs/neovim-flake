@@ -21,7 +21,7 @@ in {
 
     lspkind.enable = mkOption {
       type = types.bool;
-      description = "enable vscode-like pictograms for lsp [lspkind]";
+      description = "";
     };
 
     cursorWordline = {
@@ -65,12 +65,6 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (mkIf cfg.lspkind.enable {
-      vim.startPlugins = ["lspkind"];
-      vim.luaConfigRC.lspkind = nvim.dag.entryAnywhere ''
-        require'lspkind'.init()
-      '';
-    })
     (mkIf cfg.indentBlankline.enable {
       vim.startPlugins = ["indent-blankline"];
       vim.luaConfigRC.indent-blankline = nvim.dag.entryAnywhere ''
