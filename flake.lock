@@ -626,11 +626,11 @@
     "onedark": {
       "flake": false,
       "locked": {
-        "lastModified": 1666430920,
-        "narHash": "sha256-pacwQrYPRp2ZFe5ClVYQz2yFxiBmKZdqKQ/I2FdCRYM=",
+        "lastModified": 1679504944,
+        "narHash": "sha256-vwrffcwutr1HKKcNz2hGEO46EIJS1Fug17VCuWRNu/o=",
         "owner": "navarasu",
         "repo": "onedark.nvim",
-        "rev": "7aeca4713a922139b5e14c037b5faf34dc41c8d2",
+        "rev": "dd640f6cfb0e370cfd3db389f04b172508848bd3",
         "type": "github"
       },
       "original": {
