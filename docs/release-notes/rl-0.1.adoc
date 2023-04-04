@@ -44,6 +44,10 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 
 * Removed the plugins document in the docs. Was too unwieldy to keep updated.
 
+* `vim.visual.lspkind` has been moved to <<opt-vim.lsp.lspkind.enable>>
+
+* Improved handling of completion formatting. When setting <<opt-vim.autocomplete.sources>>, can also include optional menu mapping. And can provide your own function with <<opt-vim.autocomplete.formatting.format>>.
+
 https://github.com/MoritzBoehme[MoritzBoehme]:
 
 * `catppuccin` theme is now available as a neovim theme <<opt-vim.theme.style>> and lualine theme <<opt-vim.statusline.lualine.theme>>.

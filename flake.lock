@@ -243,11 +243,11 @@
     "lspkind": {
       "flake": false,
       "locked": {
-        "lastModified": 1650298271,
-        "narHash": "sha256-0103K5lnzWCyuT/qwiBUo5PJ7lUX7fo+zNeEnQClI7A=",
+        "lastModified": 1663824370,
+        "narHash": "sha256-WwUQ+O2rIfD4yl0GFx70GsZc9nnhS7b2KWfNdaXCLmM=",
         "owner": "onsails",
         "repo": "lspkind-nvim",
-        "rev": "57e5b5dfbe991151b07d272a06e365a77cc3d0e7",
+        "rev": "c68b3a003483cf382428a43035079f78474cd11e",
         "type": "github"
       },
       "original": {
