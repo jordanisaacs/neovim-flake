@@ -75,5 +75,12 @@ in
       '';
       styles = [ "latte" "frappe" "macchiato" "mocha" ];
     };
+
+    dracula = {
+      setup = ''
+        require('dracula').setup({});
+        require('dracula').load();
+      '';
+    };
   };
 }
