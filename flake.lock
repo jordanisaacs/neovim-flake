@@ -148,6 +148,22 @@
     "dracula": {
       "flake": false,
       "locked": {
+        "lastModified": 1671745750,
+        "narHash": "sha256-mKLU4xK3OggTJ8HDki/nj15OsxqAIS8C3lvnW54s5f4=",
+        "owner": "dracula",
+        "repo": "vim",
+        "rev": "eb577d47b0cfc9191bf04c414b4042d5f1a980f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dracula",
+        "repo": "vim",
+        "type": "github"
+      }
+    },
+    "dracula-mofiqul": {
+      "flake": false,
+      "locked": {
         "lastModified": 1680215271,
         "narHash": "sha256-f8zgWs0qmRjYAAfQsrNNYrmvFd2rjVnGwwdZu1pBJ58=",
         "owner": "Mofiqul",
@@ -766,6 +782,7 @@
         "cmp-vsnip": "cmp-vsnip",
         "crates-nvim": "crates-nvim",
         "dracula": "dracula",
+        "dracula-mofiqul": "dracula-mofiqul",
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
         "glow-nvim": "glow-nvim",

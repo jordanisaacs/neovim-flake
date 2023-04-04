@@ -76,10 +76,16 @@ in
       styles = [ "latte" "frappe" "macchiato" "mocha" ];
     };
 
-    dracula = {
+    dracula-mofiqul = {
       setup = ''
         require('dracula').setup({});
         require('dracula').load();
+      '';
+    };
+
+    dracula = {
+      setup = ''
+        vim.cmd[[colorscheme dracula]]
       '';
     };
   };

@@ -55,3 +55,8 @@ https://github.com/antotocar34[antotocar34]:
 https://github.com/wanderer[wanderer]:
 
 * Added a module for plantuml which utilizes https://github.com/weirongxu/plantuml-previewer.vim[plantuml-previewer] and https://github.com/aklt/plantuml-syntax[plantuml-syntax]. The options <<opt-vim.languages.plantuml.plantumlPackage>> and <<opt-vim.languages.plantuml.javaPackage>> can be used to configure which version of the corresponding packages are used.
+
+https://github.com/MonaMayrhofer[MonaMayrhofer]:
+
+* Add support for https://github.com/Mofiqul/dracula.nvim[Mofiqul/dracula.nvim]
+* Add support for https://github.com/dracula/vim[dracula/vim]
