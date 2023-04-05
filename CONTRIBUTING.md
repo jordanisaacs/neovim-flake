@@ -17,7 +17,7 @@ PRs can be multiple commits, and should be if making large changes.
 All documentation is done with [asciidoc](https://asciidoc.org/). The following tasks should be done when submitting a PR.
 
 1. Please document your updates in the latest release notes. Feel free to link to your github profile.
-2. If adding a new module option, it should have a clear description of what they do. You can use `description = nvim.md.asciiDoc "text"` for descriptions that need extra formatting.
+2. If adding a new module option, it should have a clear description of what they do. You can use `description = nvim.nmd.asciiDoc "text"` for descriptions that need extra formatting. And literal expressions can use `nvim.nmd.literalAsciiDoc`.
 
 ## Managing plugins
 
