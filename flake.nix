@@ -348,8 +348,8 @@
           nvimWebDevicons.enable = true;
           indentBlankline = {
             enable = true;
-            fillChar = "";
-            eolChar = "";
+            fillChar = null;
+            eolChar = null;
             showCurrContext = true;
           };
           cursorWordline = {

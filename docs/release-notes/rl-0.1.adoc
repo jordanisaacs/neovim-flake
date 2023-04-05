@@ -34,7 +34,6 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 * Setting aliases has been moved to the `config.build` attribute: <<opt-build.viAlias>> & <<opt-build.vimAlias>>
 
 * Internally, now using the modern https://github.com/NixOS/nixpkgs/blob/c47370e2cc335cb987577ff5fa26c9f29cc7774e/pkgs/applications/editors/neovim/utils.nix#L24[makeNeovimConfig] and https://github.com/NixOS/nixpkgs/blob/c47370e2cc335cb987577ff5fa26c9f29cc7774e/pkgs/applications/editors/neovim/wrapper.nix#L11[wrapNeovimUnstable] for building the final package, <<opt-built.package>>
-
 * A new section has been added for language support: `vim.languages.<language>`. The options <<opt-vim.languages.enableLSP>>, <<opt-vim.languages.enableTreesitter>>, etc. will enable the respective section for all languages that have been enabled.
 ** All LSP languages have been moved here
 ** `plantuml` and `markdown` have been moved here
@@ -47,6 +46,8 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 * `vim.visual.lspkind` has been moved to <<opt-vim.lsp.lspkind.enable>>
 
 * Improved handling of completion formatting. When setting <<opt-vim.autocomplete.sources>>, can also include optional menu mapping. And can provide your own function with <<opt-vim.autocomplete.formatting.format>>.
+
+* For <<opt-vim.visuals.indentBlankline.fillChar>> and <<opt-vim.visuals.indentBlankline.eolChar>> turning them off should use `null` rather than `""` now.
 
 https://github.com/MoritzBoehme[MoritzBoehme]:
 
