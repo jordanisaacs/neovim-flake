@@ -13,13 +13,13 @@ in {
     enable = mkEnableOption "context of current buffer contents [nvim-treesitter-context] ";
 
     maxLines = mkOption {
-      description = "How many lines the window should span. Values <= 0 mean no limit.";
+      description = "How many lines the window should span. Values &lt;=0 mean no limit.";
       type = types.int;
       default = 0;
     };
 
     minWindowHeight = mkOption {
-      description = "Minimum editor window height to enable context. Values <= 0 mean no limit.";
+      description = "Minimum editor window height to enable context. Values &lt;= 0 mean no limit.";
       type = types.int;
       default = 0;
     };
