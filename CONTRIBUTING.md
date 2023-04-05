@@ -29,6 +29,18 @@ All vim plugins should be specified as inputs to the flake, please do not use ni
 
 Please reference the [update tracking issue](https://github.com/jordanisaacs/neovim-flake/issues/33) in the commit message. Add `#33` to the commit.
 
+## Style
+
+Formatting is done with alejandra currently which will be automatically set up if you are using the devshell editor. Additionally, new options should use the `default` attribute in `mkOption` (not a `config.nix` which is being phased out because we now have auto-generated documentation). It should be ordered as follows.
+
+```nix
+mkOption {
+    description = "";
+    type = "";
+    default = "";
+}
+```
+
 # Flake Internals
 
 TODO: document how the flake is structure, how to use the library, best practices, etc.
