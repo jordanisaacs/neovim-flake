@@ -22,11 +22,12 @@
                 </a></code></td></tr></table></dd><dt><span class="term"><a id="opt-vim.autocomplete.enable"></a><a class="term" href="options.html#opt-vim.autocomplete.enable"><code class="option">vim.autocomplete.enable</code></a></span></dt><dd><p>enable autocomplete</p><p><span class="emphasis"><em>Type:</em></span> boolean</p><p><span class="emphasis"><em>Default:</em></span> <code class="literal">false</code></p><p><span class="emphasis"><em>Declared by:</em></span></p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="filename"><a class="filename" href="https://github.com/jordanisaacs/neovim-flake/blob/main/modules/completion#blob-path" target="_top">
                     &lt;neovim-flake/modules/completion&gt;
                 </a></code></td></tr></table></dd><dt><span class="term"><a id="opt-vim.autocomplete.formatting.format"></a><a class="term" href="options.html#opt-vim.autocomplete.formatting.format"><code class="option">vim.autocomplete.formatting.format</code></a></span></dt><dd><p class="simpara">The function used to customize the appearance of the completion menu.</p><p class="simpara">If <a class="xref" href="options.html#opt-vim.lsp.lspkind.enable"><code class="option">vim.lsp.lspkind.enable</code></a> is true, then the function 
-will be called before modifications from lspkind.</p><p class="simpara">Default is to call the menu mapping function.</p><p><span class="emphasis"><em>Type:</em></span> string</p><p><span class="emphasis"><em>Default:</em></span> <code class="literal">"nvim_cmp_menu_map"</code></p><p><span class="emphasis"><em>Example:</em></span> </p><pre class="programlisting">''
-  function(entry, vim_item)
-    return vim_item
-  end
-''</pre><p><span class="emphasis"><em>Declared by:</em></span></p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="filename"><a class="filename" href="https://github.com/jordanisaacs/neovim-flake/blob/main/modules/completion#blob-path" target="_top">
+will be called before modifications from lspkind.</p><p class="simpara">Default is to call the menu mapping function.</p><p><span class="emphasis"><em>Type:</em></span> string</p><p><span class="emphasis"><em>Default:</em></span> <code class="literal">"nvim_cmp_menu_map"</code></p><p><span class="emphasis"><em>Example:</em></span> </p><pre class="programlisting lua">--- 
+function(entry, vim_item) 
+  return vim_item 
+end 
+---</pre><p>
+</p><p><span class="emphasis"><em>Declared by:</em></span></p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="filename"><a class="filename" href="https://github.com/jordanisaacs/neovim-flake/blob/main/modules/completion#blob-path" target="_top">
                     &lt;neovim-flake/modules/completion&gt;
                 </a></code></td></tr></table></dd><dt><span class="term"><a id="opt-vim.autocomplete.sources"></a><a class="term" href="options.html#opt-vim.autocomplete.sources"><code class="option">vim.autocomplete.sources</code></a></span></dt><dd><p class="simpara">Attribute set of source names for nvim-cmp.</p><p class="simpara">If an attribute set is provided, then the menu value of 
 <code class="literal">vim_item</code> in the format will be set to the value (if 
