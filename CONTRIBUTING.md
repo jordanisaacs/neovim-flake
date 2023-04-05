@@ -21,13 +21,9 @@ All documentation is done with [asciidoc](https://asciidoc.org/). The following 
 
 ## Managing plugins
 
-### Adding
+Updating or adding plugins should reference the [update tracking issue](https://github.com/jordanisaacs/neovim-flake/issues/33) in the commit message. This is so the issue can serve as a quick feed of plugin update history. Add `#33` to the commit.
 
-All vim plugins should be specified as inputs to the flake, please do not use nixpkgs. This lets us keep plugins pinned so updating nixpkgs is easier.
-
-### Updating
-
-Please reference the [update tracking issue](https://github.com/jordanisaacs/neovim-flake/issues/33) in the commit message. Add `#33` to the commit.
+All new vim plugins should be specified as inputs to the flake, please do not use nixpkgs. Keeping the plugins pinned lets us painlessly update nixpkgs.
 
 ## Style
 
