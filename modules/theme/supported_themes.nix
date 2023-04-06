@@ -75,5 +75,18 @@ in
       '';
       styles = [ "latte" "frappe" "macchiato" "mocha" ];
     };
+
+    dracula-nvim = {
+      setup = ''
+        require('dracula').setup({});
+        require('dracula').load();
+      '';
+    };
+
+    dracula = {
+      setup = ''
+        vim.cmd[[colorscheme dracula]]
+      '';
+    };
   };
 }

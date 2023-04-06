@@ -176,6 +176,16 @@
       flake = false;
     };
 
+    dracula-nvim = {
+      url = "github:Mofiqul/dracula.nvim";
+      flake = false;
+    };
+
+    dracula = {
+      url = "github:dracula/vim";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";
@@ -284,6 +294,8 @@
       "rust-tools"
       "onedark"
       "catppuccin"
+      "dracula"
+      "dracula-nvim"
       "open-browser"
       "plantuml-syntax"
       "plantuml-previewer"

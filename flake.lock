@@ -145,6 +145,38 @@
         "type": "github"
       }
     },
+    "dracula": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1671745750,
+        "narHash": "sha256-mKLU4xK3OggTJ8HDki/nj15OsxqAIS8C3lvnW54s5f4=",
+        "owner": "dracula",
+        "repo": "vim",
+        "rev": "eb577d47b0cfc9191bf04c414b4042d5f1a980f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dracula",
+        "repo": "vim",
+        "type": "github"
+      }
+    },
+    "dracula-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1680215271,
+        "narHash": "sha256-f8zgWs0qmRjYAAfQsrNNYrmvFd2rjVnGwwdZu1pBJ58=",
+        "owner": "Mofiqul",
+        "repo": "dracula.nvim",
+        "rev": "8653e7699810b63bda8ef267055cb4d4237670ef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mofiqul",
+        "repo": "dracula.nvim",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1667395993,
@@ -749,6 +781,8 @@
         "cmp-treesitter": "cmp-treesitter",
         "cmp-vsnip": "cmp-vsnip",
         "crates-nvim": "crates-nvim",
+        "dracula": "dracula",
+        "dracula-nvim": "dracula-nvim",
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
         "glow-nvim": "glow-nvim",
