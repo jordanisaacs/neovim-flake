@@ -375,10 +375,7 @@
             lineTimeout = 0;
           };
         };
-        vim.statusline.lualine = {
-          enable = true;
-          theme = "onedark";
-        };
+        vim.statusline.lualine.enable = true;
         vim.theme = {
           enable = true;
           name = "onedark";
