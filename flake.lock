@@ -161,7 +161,7 @@
         "type": "github"
       }
     },
-    "dracula-mofiqul": {
+    "dracula-nvim": {
       "flake": false,
       "locked": {
         "lastModified": 1680215271,
@@ -782,7 +782,7 @@
         "cmp-vsnip": "cmp-vsnip",
         "crates-nvim": "crates-nvim",
         "dracula": "dracula",
-        "dracula-mofiqul": "dracula-mofiqul",
+        "dracula-nvim": "dracula-nvim",
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
         "glow-nvim": "glow-nvim",

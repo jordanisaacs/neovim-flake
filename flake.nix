@@ -176,7 +176,7 @@
       flake = false;
     };
 
-    dracula-mofiqul = {
+    dracula-nvim = {
       url = "github:Mofiqul/dracula.nvim";
       flake = false;
     };
@@ -295,7 +295,7 @@
       "onedark"
       "catppuccin"
       "dracula"
-      "dracula-mofiqul"
+      "dracula-nvim"
       "open-browser"
       "plantuml-syntax"
       "plantuml-previewer"

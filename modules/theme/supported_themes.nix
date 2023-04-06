@@ -76,7 +76,7 @@ in
       styles = [ "latte" "frappe" "macchiato" "mocha" ];
     };
 
-    dracula-mofiqul = {
+    dracula-nvim = {
       setup = ''
         require('dracula').setup({});
         require('dracula').load();
