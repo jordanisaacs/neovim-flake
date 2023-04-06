@@ -88,5 +88,20 @@ in
         vim.cmd[[colorscheme dracula]]
       '';
     };
+
+    gruvbox =
+    let
+      defaultStyle = "dark";
+    in
+    {
+      setup = ''
+        -- gruvbox theme
+        require('gruvbox').setup {
+        style = "${if (l.isNull style) then defaultStyle else style}"
+        }
+        require('gruvbox').load()
+      '';
+      styles = [ "dark" "light" ];
+    };
   };
 }

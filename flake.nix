@@ -186,6 +186,11 @@
       flake = false;
     };
 
+    gruvbox = {
+      url = "github:ellisonleao/gruvbox.nvim";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";
@@ -296,6 +301,7 @@
       "catppuccin"
       "dracula"
       "dracula-nvim"
+      "gruvbox"
       "open-browser"
       "plantuml-syntax"
       "plantuml-previewer"

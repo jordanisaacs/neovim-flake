@@ -3,4 +3,5 @@
   "onedark"
   "catppuccin"
   "dracula-nvim"
+  "gruvbox"
 ]
