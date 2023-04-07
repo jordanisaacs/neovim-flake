@@ -9,7 +9,23 @@ with lib; {
       type = types.functionTo types.anything;
       default = _: {};
     };
+    select = mkOption {
+      type = types.functionTo types.anything;
+      default = _: {};
+    };
     insert = mkOption {
+      type = types.functionTo types.anything;
+      default = _: {};
+    };
+    command = mkOption {
+      type = types.functionTo types.anything;
+      default = _: {};
+    };
+    terminal = mkOption {
+      type = types.functionTo types.anything;
+      default = _: {};
+    };
+    operatorPending = mkOption {
       type = types.functionTo types.anything;
       default = _: {};
     };
