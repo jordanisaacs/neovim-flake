@@ -15,10 +15,12 @@ with lib; {
     };
   };
 
-  mkVimAction = action: {
+  mkAction = type: action: {
     inherit action;
-    type = "vim";
+    inherit type;
   };
+
+  mkVimAction = action: lib.nvim.keymap.mkAction "vim" action;
 
   # mapping is a function: Actions -> AttrSet(keybind -> action)
   # actions is an Actions AttrSet
@@ -28,11 +30,13 @@ with lib; {
   #     type = "actionType";
   #   }
   # }
-  buildKeymap = mappingFn: actions: let
+
+  buildKeymap = lib.nvim.keymap.buildKeymapOf "vim";
+  buildKeymapOf = actionType: mappingFn: actions: let
     mapping = mappingFn (actions
       // {
         executeViml = viml: lib.nvim.keymap.mkVimAction viml;
       });
   in
-    lib.mapAttrs (_: v: v.action) (lib.filterAttrs (_: v: v.type == "vim") mapping);
+    lib.mapAttrs (_: v: v.action) (lib.filterAttrs (_: v: v.type == actionType) mapping);
 }
