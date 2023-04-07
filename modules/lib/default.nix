@@ -5,4 +5,5 @@
   languages = import ./languages.nix {inherit lib;};
   nmd = import ./nmd.nix;
   lua = import ./lua.nix {inherit lib;};
+  keymap = import ./keymap.nix {inherit lib;};
 }

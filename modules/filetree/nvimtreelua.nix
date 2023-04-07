@@ -128,17 +128,24 @@ in {
       description = "The command used to open a file with the associated default program";
       type = types.str;
     };
+
+    keymap = nvim.keymap.mkKeymapOptions;
   };
 
-  config = mkIf cfg.enable {
+  config = let
+    actions = with nvim.keymap; {
+
+      toggle = mkVimAction ":NvimTreeToggle<CR>";
+      refresh = mkVimAction ":NvimTreeRefresh<CR>";
+      findFile = mkVimAction ":NvimTreeFindFile<CR>";
+      focus = mkVimAction ":NvimTreeFocus<CR>";
+    };
+  in mkIf cfg.enable {
     vim.startPlugins = ["nvim-tree-lua"];
 
-    vim.nnoremap = {
-      "<C-n>" = ":NvimTreeToggle<CR>";
-      "<leader>tr" = ":NvimTreeRefresh<CR>";
-      "<leader>tg" = ":NvimTreeFindFile<CR>";
-      "<leader>tf" = ":NvimTreeFocus<CR>";
-    };
+    vim.nnoremap = nvim.keymap.buildKeymap cfg.keymap.normal actions;
+    vim.vnoremap = nvim.keymap.buildKeymap cfg.keymap.visual actions;
+    vim.inoremap = nvim.keymap.buildKeymap cfg.keymap.insert actions;
 
     vim.luaConfigRC.nvimtreelua = nvim.dag.entryAnywhere ''
       require'nvim-tree'.setup({

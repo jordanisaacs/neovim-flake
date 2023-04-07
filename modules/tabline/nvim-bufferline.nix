@@ -10,10 +10,24 @@ with builtins; let
 in {
   options.vim.tabline.nvimBufferline = {
     enable = mkEnableOption "nvim-bufferline-lua";
+
+    keymap = nvim.keymap.mkKeymapOptions;
   };
 
   config = mkIf cfg.enable (
     let
+      actions = with nvim.keymap; {
+        cycleNext = mkVimAction ":BufferLineCycleNext<CR>";
+        cyclePrev = mkVimAction ":BufferLineCyclePrev<CR>";
+        pick = mkVimAction ":BufferLinePick<CR>";
+        sortByExtension = mkVimAction ":BufferLineSortByExtension<CR>";
+        sortByDirectory = mkVimAction ":BufferLineSortByDirectory<CR>";
+        sortById = mkVimAction ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";
+        moveNext = mkVimAction ":BufferLineMoveNext<CR>";
+        movePrev = mkVimAction ":BufferLineMovePrev<CR>";
+        goToBuffer = bufferNumber: mkVimAction "<Cmd>BufferLineGoToBuffer ${bufferNumber}<CR>";
+      };
+
       mouse = {
         right = "'vertical sbuffer %d'";
         close = ''
@@ -28,25 +42,29 @@ in {
         "bufdelete-nvim"
       ];
 
-      vim.nnoremap = {
-        "<silent><leader>bn" = ":BufferLineCycleNext<CR>";
-        "<silent><leader>bp" = ":BufferLineCyclePrev<CR>";
-        "<silent><leader>bc" = ":BufferLinePick<CR>";
-        "<silent><leader>bse" = ":BufferLineSortByExtension<CR>";
-        "<silent><leader>bsd" = ":BufferLineSortByDirectory<CR>";
-        "<silent><leader>bsi" = ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";
-        "<silent><leader>bmn" = ":BufferLineMoveNext<CR>";
-        "<silent><leader>bmp" = ":BufferLineMovePrev<CR>";
-        "<silent><leader>b1" = "<Cmd>BufferLineGoToBuffer 1<CR>";
-        "<silent><leader>b2" = "<Cmd>BufferLineGoToBuffer 2<CR>";
-        "<silent><leader>b3" = "<Cmd>BufferLineGoToBuffer 3<CR>";
-        "<silent><leader>b4" = "<Cmd>BufferLineGoToBuffer 4<CR>";
-        "<silent><leader>b5" = "<Cmd>BufferLineGoToBuffer 5<CR>";
-        "<silent><leader>b6" = "<Cmd>BufferLineGoToBuffer 6<CR>";
-        "<silent><leader>b7" = "<Cmd>BufferLineGoToBuffer 7<CR>";
-        "<silent><leader>b8" = "<Cmd>BufferLineGoToBuffer 8<CR>";
-        "<silent><leader>b9" = "<Cmd>BufferLineGoToBuffer 9<CR>";
-      };
+      vim.nnoremap = nvim.keymap.buildKeymap (cfg.keymap.normal) actions;
+      vim.inoremap = nvim.keymap.buildKeymap (cfg.keymap.insert) actions;
+      vim.vnoremap = nvim.keymap.buildKeymap (cfg.keymap.visual) actions;
+
+      #vim.nnoremap = {
+      #  "<silent><leader>bn" = ":BufferLineCycleNext<CR>";
+      #  "<silent><leader>bp" = ":BufferLineCyclePrev<CR>";
+      #  "<silent><leader>bc" = ":BufferLinePick<CR>";
+      #  "<silent><leader>bse" = ":BufferLineSortByExtension<CR>";
+      #  "<silent><leader>bsd" = ":BufferLineSortByDirectory<CR>";
+      #  "<silent><leader>bsi" = ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>";
+      #  "<silent><leader>bmn" = ":BufferLineMoveNext<CR>";
+      #  "<silent><leader>bmp" = ":BufferLineMovePrev<CR>";
+      #  "<silent><leader>b1" = "<Cmd>BufferLineGoToBuffer 1<CR>";
+      #  "<silent><leader>b2" = "<Cmd>BufferLineGoToBuffer 2<CR>";
+      #  "<silent><leader>b3" = "<Cmd>BufferLineGoToBuffer 3<CR>";
+      #  "<silent><leader>b4" = "<Cmd>BufferLineGoToBuffer 4<CR>";
+      #  "<silent><leader>b5" = "<Cmd>BufferLineGoToBuffer 5<CR>";
+      #  "<silent><leader>b6" = "<Cmd>BufferLineGoToBuffer 6<CR>";
+      #  "<silent><leader>b7" = "<Cmd>BufferLineGoToBuffer 7<CR>";
+      #  "<silent><leader>b8" = "<Cmd>BufferLineGoToBuffer 8<CR>";
+      #  "<silent><leader>b9" = "<Cmd>BufferLineGoToBuffer 9<CR>";
+      #};
 
       vim.luaConfigRC.nvimBufferline = nvim.dag.entryAnywhere ''
         require("bufferline").setup{
