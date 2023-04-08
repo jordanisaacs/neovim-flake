@@ -19,6 +19,7 @@ in {
     ./trouble.nix
     ./lsp-signature.nix
     ./lightbulb.nix
+    ./fidget.nix
   ];
 
   options.vim.lsp = {

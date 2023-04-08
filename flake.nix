@@ -34,6 +34,10 @@
       url = "github:kosayoda/nvim-lightbulb";
       flake = false;
     };
+    fidget = {
+      url = "github:j-hui/fidget.nvim";
+      flake = false;
+    };
 
     nvim-code-action-menu = {
       url = "github:weilbith/nvim-code-action-menu";
@@ -269,6 +273,7 @@
       "lspsaga"
       "lspkind"
       "nvim-lightbulb"
+      "fidget"
       "lsp-signature"
       "nvim-tree-lua"
       "nvim-bufferline-lua"

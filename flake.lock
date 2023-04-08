@@ -177,6 +177,22 @@
         "type": "github"
       }
     },
+    "fidget": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1679938700,
+        "narHash": "sha256-rmJgfrEr/PYBq0S7j3tzRZvxi7PMMaAo0k528miXOQc=",
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "rev": "0ba1e16d07627532b6cae915cc992ecac249fb97",
+        "type": "github"
+      },
+      "original": {
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1667395993,
@@ -799,6 +815,7 @@
         "crates-nvim": "crates-nvim",
         "dracula": "dracula",
         "dracula-nvim": "dracula-nvim",
+        "fidget": "fidget",
         "flake-utils": "flake-utils",
         "gitsigns-nvim": "gitsigns-nvim",
         "glow-nvim": "glow-nvim",

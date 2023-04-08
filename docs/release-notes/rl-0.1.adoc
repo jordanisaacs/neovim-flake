@@ -65,6 +65,7 @@ https://github.com/MonaMayrhofer[MonaMayrhofer]:
 
 * Add support for https://github.com/Mofiqul/dracula.nvim[Mofiqul/dracula.nvim]
 * Add support for https://github.com/dracula/vim[dracula/vim]
+* Add support for https://github.com/j-hui/fidget.nvim[fidget.nvim]
 
 https://github.com/volfyd[volfyd]:
 
