@@ -4,76 +4,68 @@
   lib,
   ...
 }:
-let
-  l = lib // builtins;
-  t = l.types;
+with lib;
+with builtins; let
   themeSubmodule.options = {
-    setup = l.mkOption {
-      type = t.str;
+    setup = mkOption {
       description = "Lua code to initialize theme";
+      type = types.str;
     };
-    styles = l.mkOption {
-      type = t.nullOr (t.listOf t.str);
+    styles = mkOption {
+      description = "The available styles for the theme";
+      type = with types; nullOr (listOf str);
       default = null;
     };
-  };
-in
-{
-  options.vim.theme = {
-    supportedThemes = l.mkOption {
-      type = t.attrsOf (t.submodule themeSubmodule);
-      description = "Supported themes";
+    defaultStyle = mkOption {
+      description = "The default style for the theme";
+      type = types.str;
     };
   };
 
-  config.vim.theme.supportedThemes = 
-  let
-    cfg = config.vim.theme;
-    style = cfg.style;
-  in
-  {
-    onedark = 
-    let
-      defaultStyle = "dark";
-    in
-    {
+  cfg = config.vim.theme;
+  style = cfg.style;
+in {
+  options.vim.theme = {
+    supportedThemes = mkOption {
+      description = "Supported themes";
+      type = with types; attrsOf (submodule themeSubmodule);
+    };
+  };
+
+  config.vim.theme.supportedThemes = {
+    onedark = {
       setup = ''
         -- OneDark theme
         require('onedark').setup {
-        style = "${if (l.isNull style) then defaultStyle else style}"
+          style = "${cfg.style}"
         }
         require('onedark').load()
       '';
-      styles = [ "dark" "darker" "cool" "deep" "warm" "warmer" ];
+      styles = ["dark" "darker" "cool" "deep" "warm" "warmer"];
+      defaultStyle = "dark";
     };
 
-    tokyonight = 
-    let
-      defaultStyle = "night";
-    in
-    {
+    tokyonight = {
       setup = ''
         -- need to set style before colorscheme to apply
-        vim.g.tokyonight_style = '${if (l.isNull style) then defaultStyle else style}'
+        vim.g.tokyonight_style = '${cfg.style}'
         vim.cmd[[colorscheme tokyonight]]
       '';
-      styles = [ "day" "night" "storm" ];
+      styles = ["day" "night" "storm"];
+      defaultStyle = "night";
     };
 
-    catppuccin = 
-    let
-      defaultStyle = "mocha";
-    in
-      {
+    catppuccin = {
       setup = ''
         -- Catppuccin theme
         require('catppuccin').setup {
-        flavour = "${if (l.isNull style) then defaultStyle else style}"
+          flavour = "${cfg.style}"
         }
         -- setup must be called before loading
         vim.cmd.colorscheme "catppuccin"
       '';
-      styles = [ "latte" "frappe" "macchiato" "mocha" ];
+      styles = ["latte" "frappe" "macchiato" "mocha"];
+      defaultStyle = "mocha";
     };
 
     dracula-nvim = {
@@ -89,19 +81,16 @@ in
       '';
     };
 
-    gruvbox =
-    let
-      defaultStyle = "dark";
-    in
-    {
+    gruvbox = {
       setup = ''
         -- gruvbox theme
         require('gruvbox').setup {
-        style = "${if (l.isNull style) then defaultStyle else style}"
+          style = "${cfg.style}"
         }
         require('gruvbox').load()
       '';
-      styles = [ "dark" "light" ];
+      styles = ["dark" "light"];
+      defaultStyle = "dark";
     };
   };
 }
