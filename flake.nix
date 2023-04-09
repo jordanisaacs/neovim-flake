@@ -34,6 +34,10 @@
       url = "github:kosayoda/nvim-lightbulb";
       flake = false;
     };
+    fidget = {
+      url = "github:j-hui/fidget.nvim";
+      flake = false;
+    };
 
     nvim-code-action-menu = {
       url = "github:weilbith/nvim-code-action-menu";
@@ -186,6 +190,11 @@
       flake = false;
     };
 
+    gruvbox = {
+      url = "github:ellisonleao/gruvbox.nvim";
+      flake = false;
+    };
+
     # Rust crates
     crates-nvim = {
       url = "github:Saecki/crates.nvim";
@@ -264,6 +273,7 @@
       "lspsaga"
       "lspkind"
       "nvim-lightbulb"
+      "fidget"
       "lsp-signature"
       "nvim-tree-lua"
       "nvim-bufferline-lua"
@@ -296,6 +306,7 @@
       "catppuccin"
       "dracula"
       "dracula-nvim"
+      "gruvbox"
       "open-browser"
       "plantuml-syntax"
       "plantuml-previewer"
@@ -369,10 +380,7 @@
             lineTimeout = 0;
           };
         };
-        vim.statusline.lualine = {
-          enable = true;
-          theme = "onedark";
-        };
+        vim.statusline.lualine.enable = true;
         vim.theme = {
           enable = true;
           name = "onedark";
