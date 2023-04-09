@@ -17,6 +17,7 @@
     specialArgs =
       {
         modulesPath = builtins.toString ./.;
+        currentModules = modules;
       }
       // extraSpecialArgs;
   };

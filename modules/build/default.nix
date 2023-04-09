@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  currentModules,
   ...
 }:
 with lib;
@@ -136,6 +137,22 @@ in {
             wrapRc = true;
           }))
         .overrideAttrs (oldAttrs: {
+          passthru =
+            oldAttrs
+            // {
+              extendConfig = {
+                modules ? [],
+                pkgs ? config._module.args.pkgs,
+                lib ? pkgs.lib,
+                extraSpecialArgs ? {},
+                check ? config._module.args.check,
+              }:
+                import ../../modules {
+                  modules = currentModules ++ modules;
+                  extraSpecialArgs = config._module.specialArgs // extraSpecialArgs;
+                  inherit pkgs lib;
+                };
+            };
           meta =
             oldAttrs.meta
             // {
