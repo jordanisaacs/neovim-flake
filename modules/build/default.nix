@@ -140,7 +140,7 @@ in {
           passthru =
             oldAttrs
             // {
-              extendConfig = {
+              extendConfiguration = {
                 modules ? [],
                 pkgs ? config._module.args.pkgs,
                 lib ? pkgs.lib,
