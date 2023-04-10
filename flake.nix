@@ -383,10 +383,7 @@
           };
         };
         vim.statusline.lualine.enable = overrideable true;
-        vim.theme = {
-          enable = overrideable true;
-          style = "darker";
-        };
+        vim.theme.enable = true;
         vim.autopairs.enable = overrideable true;
         vim.autocomplete = {
           enable = overrideable true;
