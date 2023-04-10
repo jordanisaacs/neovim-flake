@@ -50,8 +50,8 @@
     };
 
     baseNeovim = neovim-flake.packages.${system}.maximal;
-    neovimExtended = baseNeovim.extendConfig {modules = [configModule];};
-    finalNeovim = neovimExtended.extendConfig {
+    neovimExtended = baseNeovim.extendConfiguration {modules = [configModule];};
+    finalNeovim = neovimExtended.extendConfiguration {
       modules = [configModule2];
       inherit pkgs;
     };
