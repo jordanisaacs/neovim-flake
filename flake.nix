@@ -329,80 +329,78 @@
       config.vim.languages.tidal.enable = true;
     };
 
-    mainConfig = isMaximal: {
+    mainConfig = isMaximal: let
+      overrideable = nixpkgs.lib.mkOverride 1200; # between mkOptionDefault and mkDefault
+    in {
       config = {
-        build.viAlias = false;
-        build.vimAlias = true;
+        build.viAlias = overrideable false;
+        build.vimAlias = overrideable true;
         vim.languages = {
-          enableLSP = true;
-          enableFormat = true;
-          enableTreesitter = true;
-          enableExtraDiagnostics = true;
+          enableLSP = overrideable true;
+          enableFormat = overrideable true;
+          enableTreesitter = overrideable true;
+          enableExtraDiagnostics = overrideable true;
 
-          nix.enable = true;
-          markdown.enable = true;
-          html.enable = isMaximal;
-          clang.enable = isMaximal;
-          sql.enable = isMaximal;
+          nix.enable = overrideable true;
+          markdown.enable = overrideable true;
+          html.enable = overrideable isMaximal;
+          clang.enable = overrideable isMaximal;
+          sql.enable = overrideable isMaximal;
           rust = {
-            enable = isMaximal;
-            crates.enable = true;
+            enable = overrideable isMaximal;
+            crates.enable = overrideable true;
           };
-          ts.enable = isMaximal;
-          go.enable = isMaximal;
-          zig.enable = isMaximal;
-          python.enable = isMaximal;
-          plantuml.enable = isMaximal;
+          ts.enable = overrideable isMaximal;
+          go.enable = overrideable isMaximal;
+          zig.enable = overrideable isMaximal;
+          python.enable = overrideable isMaximal;
+          plantuml.enable = overrideable isMaximal;
 
           # See tidal config
-          tidal.enable = false;
+          tidal.enable = overrideable false;
         };
         vim.lsp = {
-          formatOnSave = true;
-          lspkind.enable = false;
-          lightbulb.enable = true;
-          lspsaga.enable = false;
-          nvimCodeActionMenu.enable = true;
-          trouble.enable = true;
-          lspSignature.enable = true;
+          formatOnSave = overrideable true;
+          lspkind.enable = overrideable false;
+          lightbulb.enable = overrideable true;
+          lspsaga.enable = overrideable false;
+          nvimCodeActionMenu.enable = overrideable true;
+          trouble.enable = overrideable true;
+          lspSignature.enable = overrideable true;
         };
         vim.visuals = {
-          enable = true;
-          nvimWebDevicons.enable = true;
+          enable = overrideable true;
+          nvimWebDevicons.enable = overrideable true;
           indentBlankline = {
-            enable = true;
-            fillChar = null;
-            eolChar = null;
-            showCurrContext = true;
+            enable = overrideable true;
+            fillChar = overrideable null;
+            eolChar = overrideable null;
+            showCurrContext = overrideable true;
           };
           cursorWordline = {
-            enable = true;
-            lineTimeout = 0;
+            enable = overrideable true;
+            lineTimeout = overrideable 0;
           };
         };
-        vim.statusline.lualine.enable = true;
-        vim.theme = {
-          enable = true;
-          name = "onedark";
-          style = "darker";
-        };
-        vim.autopairs.enable = true;
+        vim.statusline.lualine.enable = overrideable true;
+        vim.theme.enable = true;
+        vim.autopairs.enable = overrideable true;
         vim.autocomplete = {
-          enable = true;
-          type = "nvim-cmp";
+          enable = overrideable true;
+          type = overrideable "nvim-cmp";
         };
-        vim.filetree.nvimTreeLua.enable = true;
-        vim.tabline.nvimBufferline.enable = true;
-        vim.treesitter.context.enable = true;
+        vim.filetree.nvimTreeLua.enable = overrideable true;
+        vim.tabline.nvimBufferline.enable = overrideable true;
+        vim.treesitter.context.enable = overrideable true;
         vim.keys = {
-          enable = true;
-          whichKey.enable = true;
+          enable = overrideable true;
+          whichKey.enable = overrideable true;
         };
-        vim.telescope.enable = true;
+        vim.telescope.enable = overrideable true;
         vim.git = {
-          enable = true;
-          gitsigns.enable = true;
-          gitsigns.codeActions = true;
+          enable = overrideable true;
+          gitsigns.enable = overrideable true;
+          gitsigns.codeActions = overrideable true;
         };
       };
     };

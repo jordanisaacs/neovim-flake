@@ -1,13 +1,16 @@
 [[ch-custom-configuration]]
 == Custom Configuration
 
-Custom configuration is done with the `neovimConfiguration` function. It takes in the configuration as a list of modules. The output of the configuration function is the configured neovim package. Additionally, information about the module is given in the package's `meta` attributes.
+=== From Scratch
+
+Custom configuration is done with the `neovimConfiguration` function. It takes in the configuration as a list of modules. The output of the configuration function is the configured neovim package. Additionally, information about the module is given in the package's `meta` attributes. Once you have created a configuration from scratch, you can additionally use the `extendConfiguration` passthru function provided.
 
 [source,nix]
 ----
 {
   meta.module.options = "The final module options";
   meta.module.config = "The final module configuration";
+  passthru.extendConfiguration = "The function to extend configuration, see below";
 }
 ----
 
@@ -38,7 +41,49 @@ The following is an example of a barebones vim configuration with the default th
 }
 ----
 
-Once you have a barebones configuration, you can run it with the following.
+=== Extending Configurations
+
+All of the default configurations provided by the flake are overrideable. Additionally, as noted above, the output package of the `neovimConfiguration` function also provides a passthru: `extendConfiguration` which you can use to extend configs. Thus, you can chain together configurations as seen below:
+
+
+[source,nix]
+----
+{
+  inputs.neovim-flake.url = "github:jordanisaacs/neovim-flake";
+
+  outputs = {
+    nixpkgs,
+    neovim-flake,
+    ...
+  }: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+    lib = nixpkgs.lib;
+    configModule = {
+      config.vim.theme.name = "dracula-nvim";
+      config.vim.languages.nix.enable = false;
+    };
+
+    configModule2 = {
+      config.vim.theme.name = lib.mkForce "catppuccin";
+      config.vim.languages.nix.enable = lib.mkForce true;
+    };
+
+    baseNeovim = neovim-flake.packages.${system}.maximal;
+    neovimExtended = baseNeovim.extendConfiguration {modules = [configModule];};
+    finalNeovim = neovimExtended.extendConfiguration {
+      modules = [configModule2];
+      inherit pkgs;
+    };
+  in {
+    packages.${system}.neovim = finalNeovim;
+  };
+}
+----
+
+=== Running neovim
+
+Once you have a configuration you like, you can run it with the following.
 
 [source, sh]
 ---
