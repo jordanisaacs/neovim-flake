@@ -10,8 +10,6 @@ with builtins; let
 in {
   options.vim.telescope = {
     enable = mkEnableOption "enable telescope";
-
-    keymap = nvim.keymap.mkKeymapOptions;
   };
 
   config = let
@@ -52,13 +50,11 @@ in {
       );
   in
     mkIf (cfg.enable) {
+      nvim-flake.keymapActions = {telescope = actions;};
+
       vim.startPlugins = [
         "telescope"
       ];
-
-      vim.nnoremap = nvim.keymap.buildKeymap cfg.keymap.normal actions;
-      vim.vnoremap = nvim.keymap.buildKeymap cfg.keymap.visual actions;
-      vim.inoremap = nvim.keymap.buildKeymap cfg.keymap.insert actions;
 
       #vim.nnoremap =
       #  {

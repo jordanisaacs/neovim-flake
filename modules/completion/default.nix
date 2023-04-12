@@ -82,7 +82,6 @@ in {
           '';
         };
       };
-      keymap = nvim.keymap.mkKeymapOptions;
     };
   };
 
@@ -150,32 +149,19 @@ in {
       makeString = binding: atoms: ''
         ['${binding}'] = cmp.mapping({
           ${
-          strings.concatStringsSep ",\n" (mapAttrsToList (mode: atoms: "${mode} = ${(singleElement atoms).mapping}") (groupBy (atom: atom.mode) atoms))
+          strings.concatStringsSep ",\n" (mapAttrsToList (mode: atoms: "${nvim.keymap.modeChar mode} = ${(singleElement atoms).action}") (groupBy (atom: atom.mode) atoms))
         }
         })
       '';
 
-      makeAtom = mode: binding: mapping: {
-        inherit mode;
-        inherit binding;
-        inherit mapping;
-      };
-      makeAtoms = mode: mapping: (mapAttrsToList (makeAtom mode) (nvim.keymap.buildKeymapOf "cmp" mapping actions));
-      # [ {mode, binding, mapping}]
-      atoms =
-        (makeAtoms "n" cfg.keymap.normal)
-        ++ (makeAtoms "i" cfg.keymap.insert)
-        ++ (makeAtoms "v" cfg.keymap.visual)
-        ++ (makeAtoms "s" cfg.keymap.select)
-        ++ (makeAtoms "c" cfg.keymap.command)
-        ++ (makeAtoms "t" cfg.keymap.terminal)
-        ++ (makeAtoms "o" cfg.keymap.operatorPending);
+      atoms = nvim.keymap.keymappingsOfType "cmp" config.nvim-flake.keymappings;
 
-      bindingStringList = mapAttrsToList makeString (groupBy (atom: atom.binding) atoms);
+      bindingStringList = mapAttrsToList makeString (groupBy (atom: atom.binding) (traceSeq {atoms = atoms;} atoms));
     in
       strings.concatStringsSep ",\n" bindingStringList;
   in
     mkIf cfg.enable {
+      nvim-flake.keymapActions = {autocomplete = actions;};
       vim.startPlugins = [
         "nvim-cmp"
         "cmp-buffer"
@@ -225,7 +211,7 @@ in {
             ${builtSources}
           },
           mapping = {
-            ${traceVal keymapString}
+            ${keymapString}
           },
           completion = {
             completeopt = 'menu,menuone,noinsert',

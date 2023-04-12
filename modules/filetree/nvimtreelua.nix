@@ -141,11 +141,9 @@ in {
       focus = mkVimAction ":NvimTreeFocus<CR>";
     };
   in mkIf cfg.enable {
+    nvim-flake.keymapActions = {nvimTreeLua = actions;};
     vim.startPlugins = ["nvim-tree-lua"];
 
-    vim.nnoremap = nvim.keymap.buildKeymap cfg.keymap.normal actions;
-    vim.vnoremap = nvim.keymap.buildKeymap cfg.keymap.visual actions;
-    vim.inoremap = nvim.keymap.buildKeymap cfg.keymap.insert actions;
 
     vim.luaConfigRC.nvimtreelua = nvim.dag.entryAnywhere ''
       require'nvim-tree'.setup({

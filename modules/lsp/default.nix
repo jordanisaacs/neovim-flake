@@ -47,17 +47,16 @@ in {
       rename = mkSpecialAction "<cmd>lua vim.lsp.buf.rename()<CR>";
     };
 
+    atoms = nvim.keymap.keymappingsOfType "lsp" config.nvim-flake.keymappings;
+
     keymapString = let
-      makeString = mode: binding: mapping: 
-      "vim.api.nvim_buf_set_keymap(bufnr, '${mode}', '${binding}', '${mapping}', {noremap=true, silent=true})";
-      makeStrings = mode: mapping: 
-        (mapAttrsToList (makeString mode) (nvim.keymap.buildKeymapOf "lsp" mapping actions));
+      makeString = mode: binding: action: "vim.api.nvim_buf_set_keymap(bufnr, '${nvim.keymap.modeChar mode}', '${binding}', '${action}', {noremap=true, silent=true})";
+      # makeStrings = mode: mapping: (mapAttrsToList (makeString mode) (nvim.keymap.buildKeymapOf "lsp" mapping actions));
     in
       strings.concatStringsSep "\n" (
-        (makeStrings "n" cfg.keymap.normal) ++ 
-        (makeStrings "i" cfg.keymap.insert) ++ 
-        (makeStrings "v" cfg.keymap.visual)
+        map (atom: makeString atom.mode atom.binding atom.action) atoms
       );
+
 
    #defaultKeymap = ''
    #    local opts = { noremap=true, silent=true }

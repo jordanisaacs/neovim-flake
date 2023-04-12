@@ -55,4 +55,21 @@ with lib; {
       });
   in
     lib.mapAttrs (_: v: v.action) (lib.filterAttrs (_: v: v.type == actionType) mapping);
+
+  modeChar = mode:
+    {
+      "normal" = "n";
+      "insert" = "i";
+      "visual" = "v";
+      "command" = "c";
+      "operatorPending" = "o";
+      "terminal" = "t";
+      "select" = "s";
+    }
+    .${mode};
+
+  keymappingsOfType = type: atoms:
+    if hasAttr type atoms
+    then getAttr type atoms
+    else [];
 }

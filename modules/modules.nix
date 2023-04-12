@@ -21,6 +21,7 @@
     ./telescope
     ./git
     ./build
+    ./keymap.nix
   ];
 
   pkgsModule = {config, ...}: {

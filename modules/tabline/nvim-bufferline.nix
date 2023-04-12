@@ -10,8 +10,6 @@ with builtins; let
 in {
   options.vim.tabline.nvimBufferline = {
     enable = mkEnableOption "nvim-bufferline-lua";
-
-    keymap = nvim.keymap.mkKeymapOptions;
   };
 
   config = mkIf cfg.enable (
@@ -37,14 +35,12 @@ in {
         '';
       };
     in {
+      nvim-flake.keymapActions = {nvimBufferline = actions;};
+
       vim.startPlugins = [
         (assert config.vim.visuals.nvimWebDevicons.enable == true; "nvim-bufferline-lua")
         "bufdelete-nvim"
       ];
-
-      vim.nnoremap = nvim.keymap.buildKeymap (cfg.keymap.normal) actions;
-      vim.inoremap = nvim.keymap.buildKeymap (cfg.keymap.insert) actions;
-      vim.vnoremap = nvim.keymap.buildKeymap (cfg.keymap.visual) actions;
 
       #vim.nnoremap = {
       #  "<silent><leader>bn" = ":BufferLineCycleNext<CR>";
