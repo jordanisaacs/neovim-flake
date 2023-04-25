@@ -134,58 +134,58 @@ in {
 
   config = let
     actions = with nvim.keymap; {
-
       toggle = mkVimAction ":NvimTreeToggle<CR>";
       refresh = mkVimAction ":NvimTreeRefresh<CR>";
       findFile = mkVimAction ":NvimTreeFindFile<CR>";
+      findFileToggle = mkVimAction ":NvimTreeFindFileToggle<CR>";
       focus = mkVimAction ":NvimTreeFocus<CR>";
     };
-  in mkIf cfg.enable {
-    nvim-flake.keymapActions = {nvimTreeLua = actions;};
-    vim.startPlugins = ["nvim-tree-lua"];
+  in
+    mkIf cfg.enable {
+      nvim-flake.keymapActions = {nvimTreeLua = actions;};
+      vim.startPlugins = ["nvim-tree-lua"];
 
-
-    vim.luaConfigRC.nvimtreelua = nvim.dag.entryAnywhere ''
-      require'nvim-tree'.setup({
-        disable_netrw = ${boolToString cfg.disableNetRW},
-        hijack_netrw = ${boolToString cfg.hijackNetRW},
-        open_on_tab = ${boolToString cfg.openTreeOnNewTab},
-        open_on_setup = ${boolToString cfg.openOnSetup},
-        open_on_setup_file = ${boolToString cfg.openOnSetup},
-        system_open = {
-          cmd = ${"'" + cfg.systemOpenCmd + "'"},
-        },
-        diagnostics = {
-          enable = ${boolToString cfg.lspDiagnostics},
-        },
-        view  = {
-          width = ${toString cfg.treeWidth},
-          side = ${"'" + cfg.treeSide + "'"},
-        },
-        renderer = {
-          indent_markers = {
-            enable = ${boolToString cfg.indentMarkers},
+      vim.luaConfigRC.nvimtreelua = nvim.dag.entryAnywhere ''
+        require'nvim-tree'.setup({
+          disable_netrw = ${boolToString cfg.disableNetRW},
+          hijack_netrw = ${boolToString cfg.hijackNetRW},
+          open_on_tab = ${boolToString cfg.openTreeOnNewTab},
+          open_on_setup = ${boolToString cfg.openOnSetup},
+          open_on_setup_file = ${boolToString cfg.openOnSetup},
+          system_open = {
+            cmd = ${"'" + cfg.systemOpenCmd + "'"},
           },
-          add_trailing = ${boolToString cfg.trailingSlash},
-          group_empty = ${boolToString cfg.groupEmptyFolders},
-        },
-        actions = {
-          open_file = {
-            quit_on_open = ${boolToString cfg.closeOnFileOpen},
-            resize_window = ${boolToString cfg.resizeOnFileOpen},
+          diagnostics = {
+            enable = ${boolToString cfg.lspDiagnostics},
           },
-        },
-        git = {
-          enable = true,
-          ignore = ${boolToString cfg.hideIgnoredGitFiles},
-        },
-        filters = {
-          dotfiles = ${boolToString cfg.hideDotFiles},
-          custom = {
-            ${builtins.concatStringsSep "\n" (builtins.map (s: "\"" + s + "\",") cfg.hideFiles)}
+          view  = {
+            width = ${toString cfg.treeWidth},
+            side = ${"'" + cfg.treeSide + "'"},
           },
-        },
-      })
-    '';
-  };
+          renderer = {
+            indent_markers = {
+              enable = ${boolToString cfg.indentMarkers},
+            },
+            add_trailing = ${boolToString cfg.trailingSlash},
+            group_empty = ${boolToString cfg.groupEmptyFolders},
+          },
+          actions = {
+            open_file = {
+              quit_on_open = ${boolToString cfg.closeOnFileOpen},
+              resize_window = ${boolToString cfg.resizeOnFileOpen},
+            },
+          },
+          git = {
+            enable = true,
+            ignore = ${boolToString cfg.hideIgnoredGitFiles},
+          },
+          filters = {
+            dotfiles = ${boolToString cfg.hideDotFiles},
+            custom = {
+              ${builtins.concatStringsSep "\n" (builtins.map (s: "\"" + s + "\",") cfg.hideFiles)}
+            },
+          },
+        })
+      '';
+    };
 }

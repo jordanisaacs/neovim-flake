@@ -42,6 +42,7 @@ in {
       removeWorkspaceFolder = mkSpecialAction "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>";
       listWorkspaceFolder = mkSpecialAction "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>";
 
+      codeAction = mkSpecialAction "<cmd>lua vim.lsp.buf.code_action()<CR>";
       hover = mkSpecialAction "<cmd>lua vim.lsp.buf.hover()<CR>";
       signatureHelp = mkSpecialAction "<cmd>lua vim.lsp.buf.signature_help()<CR>";
       rename = mkSpecialAction "<cmd>lua vim.lsp.buf.rename()<CR>";
@@ -77,6 +78,7 @@ in {
    #'';
   in 
   mkIf cfg.enable {
+    nvim-flake.keymapActions = {lsp = actions;};
     vim.startPlugins = optional usingNvimCmp "cmp-nvim-lsp";
 
     vim.autocomplete.sources = {"nvim_lsp" = "[LSP]";};
@@ -85,7 +87,8 @@ in {
       vim.g.formatsave = ${boolToString cfg.formatOnSave};
 
       local attach_keymaps = function(client, bufnr)
-        ${traceVal keymapString}
+
+        ${traceSeq {inherit keymapString;} keymapString}
       end
 
       -- Enable formatting
