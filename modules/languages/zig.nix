@@ -28,7 +28,7 @@ in {
       package = mkOption {
         description = "ZLS package";
         type = types.package;
-        default = pkgs.nodePackages.pyright;
+        default = pkgs.zls;
       };
       zigPackage = mkOption {
         description = "Zig package used by ZLS";
