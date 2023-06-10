@@ -48,8 +48,7 @@ in {
     tokyonight = {
       setup = ''
         -- need to set style before colorscheme to apply
-        vim.g.tokyonight_style = '${cfg.style}'
-        vim.cmd[[colorscheme tokyonight]]
+        vim.cmd[[colorscheme tokyonight-${cfg.style}]]
       '';
       styles = ["day" "night" "storm"];
       defaultStyle = "night";
@@ -84,9 +83,7 @@ in {
     gruvbox = {
       setup = ''
         -- gruvbox theme
-        require('gruvbox').setup {
-          style = "${cfg.style}"
-        }
+        vim.o.background = "${cfg.style}"
         require('gruvbox').load()
       '';
       styles = ["dark" "light"];
