@@ -14,8 +14,8 @@ with builtins; let
       package = pkgs.nodePackages.typescript-language-server;
       lspConfig = ''
         lspconfig.tsserver.setup {
-          capabilities = capabilities;
-          on_attach = attach_keymaps,
+          capabilities = lsp.capabilities;
+          on_attach = lsp.attach_keymaps,
           cmd = { "${cfg.lsp.package}/bin/typescript-language-server", "--stdio" }
         }
       '';
@@ -55,7 +55,7 @@ with builtins; let
   };
 in {
   options.vim.languages.ts = {
-    enable = mkEnableOption "SQL language support";
+    enable = mkEnableOption "TypeScript language support";
 
     treesitter = {
       enable = mkOption {

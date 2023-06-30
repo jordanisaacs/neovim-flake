@@ -17,7 +17,7 @@ with builtins; let
         lspconfig.sqls.setup {
           on_attach = function(client)
             client.server_capabilities.execute_command = true
-            on_attach_keymaps(client, bufnr)
+            lsp.on_attach_keymaps(client, bufnr)
             require'sqls'.setup{}
           end,
           cmd = { "${cfg.lsp.package}/bin/sqls", "-config", string.format("%s/config.yml", vim.fn.getcwd()) }

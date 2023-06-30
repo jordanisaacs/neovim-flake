@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib;
@@ -33,9 +32,15 @@ in {
     vim.autocomplete.sources = {"nvim_lsp" = "[LSP]";};
 
     vim.luaConfigRC.lsp-setup = ''
-      vim.g.formatsave = ${boolToString cfg.formatOnSave};
+      local lsp = require('flake/lsp')
 
-      local attach_keymaps = function(client, bufnr)
+      vim.g.formatsave = ${boolToString cfg.formatOnSave};
+    '';
+
+    vim.lua.modules."flake/lsp" = ''
+      local lsp = {}
+
+      function lsp.attach_keymaps(client, bufnr)
         local opts = { noremap=true, silent=true }
 
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lgD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -54,7 +59,7 @@ in {
       end
 
       -- Enable formatting
-      format_callback = function(client, bufnr)
+      function lsp.format_callback(client, bufnr)
         vim.api.nvim_create_autocmd("BufWritePre", {
           group = augroup,
           buffer = bufnr,
@@ -69,13 +74,16 @@ in {
         })
       end
 
-      default_on_attach = function(client, bufnr)
-        attach_keymaps(client, bufnr)
-        format_callback(client, bufnr)
+      function lsp.default_on_attach(client, bufnr)
+        lsp.attach_keymaps(client, bufnr)
+        lsp.format_callback(client, bufnr)
       end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       ${optionalString usingNvimCmp "capabilities = require('cmp_nvim_lsp').default_capabilities()"}
+      lsp.capabilities = capabilities
+
+      return lsp
     '';
   };
 }

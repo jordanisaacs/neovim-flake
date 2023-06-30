@@ -3,7 +3,6 @@
 #   -- Enable null-ls
 # '';
 {
-  pkgs,
   config,
   lib,
   ...
@@ -39,7 +38,7 @@ in {
           debounce = 250,
           default_timeout = 5000,
           sources = ls_sources,
-          on_attach=default_on_attach
+          on_attach = require('flake/lsp').default_on_attach
         })
       '';
     }

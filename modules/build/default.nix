@@ -112,6 +112,61 @@ in {
       plugins = normalizedPlugins;
       customRC = cfgBuilt.configRC;
     };
+
+    neovimFlakeConfig =
+      let
+        modules = pkgs.lib.mapAttrs'
+          (module: contents: {
+            name = builtins.replaceStrings ["." "/"] ["_" "_"] module;
+            value = {
+              path = builtins.replaceStrings ["."] ["/"] module;
+              inherit contents;
+            };
+          })
+          cfgVim.lua.modules;
+
+        ftplugins = pkgs.lib.mapAttrs'
+          (lang: contents: {
+            name = "ftplugin_${lang}";
+            value = { inherit lang contents; };
+          })
+          cfgVim.ftplugins;
+      in pkgs.runCommand "neovim-flake"
+      (pkgs.lib.mapAttrs (_: v: v.contents) modules
+        // pkgs.lib.mapAttrs (_: v: v.contents) ftplugins
+        // {
+          inherit (neovimConfig) neovimRcContent;
+          passAsFile = ["neovimRcContent"] ++ builtins.attrNames modules ++ builtins.attrNames ftplugins;
+        }
+      ) (''
+        nvimDir=$out/nvim
+        mkdir -p $nvimDir
+        mv "$neovimRcContentPath" $nvimDir/init.vim
+
+        luaDir=$nvimDir/lua
+        ${pkgs.lib.concatStringsSep "\n"
+          (pkgs.lib.mapAttrsToList
+            (name: { path, ...}: ''
+              mkdir -p $luaDir/${builtins.dirOf path}
+              mv "''$${name}Path" $luaDir/${path}.lua
+            '')
+            modules
+          )
+        }
+
+      '' + pkgs.lib.optionalString (ftplugins != {}) ''
+        mkdir -p $nvimDir/ftplugin
+
+        ${pkgs.lib.concatStringsSep "\n"
+          (pkgs.lib.mapAttrsToList
+            (name: { lang, ...}: ''
+              mv "''$${name}Path" $nvimDir/ftplugin/${lang}.lua
+            '')
+            ftplugins
+          )
+        }
+      '');
+
   in {
     built = {
       configRC = let
@@ -134,7 +189,9 @@ in {
       package =
         (pkgs.wrapNeovimUnstable cfgBuild.package (neovimConfig
           // {
-            wrapRc = true;
+            wrapRc = false;
+            wrapperArgs = neovimConfig.wrapperArgs ++
+              ["--prefix" "XDG_CONFIG_DIRS" ":" "${neovimFlakeConfig.out}"];
           }))
         .overrideAttrs (oldAttrs: {
           passthru =

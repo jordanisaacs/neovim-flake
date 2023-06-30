@@ -8,8 +8,8 @@ with lib;
 with builtins; let
   cfg = config.vim.languages.nix;
 
-  useFormat = "on_attach = default_on_attach";
-  noFormat = "on_attach = attach_keymaps";
+  useFormat = "on_attach = lsp.default_on_attach";
+  noFormat = "on_attach = lsp.attach_keymaps";
 
   defaultServer = "nil";
   servers = {
@@ -17,8 +17,9 @@ with builtins; let
       package = pkgs.rnix-lsp;
       internalFormatter = cfg.format.type == "nixpkgs-fmt";
       lspConfig = ''
-        lspconfig.rnix.setup{
-          capabilities = capabilities,
+        local lsp = require('flake/lsp')
+        require('lspconfig').rnix.setup{
+          capabilities = lsp.capabilities,
         ${
           if (cfg.format.enable && cfg.format.type == "nixpkgs-fmt")
           then useFormat
@@ -33,8 +34,9 @@ with builtins; let
       package = pkgs.nil;
       internalFormatter = true;
       lspConfig = ''
-        lspconfig.nil_ls.setup{
-          capabilities = capabilities,
+        local lsp = require('flake/lsp')
+        require('lspconfig').nil_ls.setup{
+          capabilities = lsp.capabilities,
         ${
           if cfg.format.enable
           then useFormat
@@ -146,7 +148,7 @@ in {
 
     (mkIf cfg.lsp.enable {
       vim.lsp.lspconfig.enable = true;
-      vim.lsp.lspconfig.sources.nix-lsp = servers.${cfg.lsp.server}.lspConfig;
+      vim.ftplugins.nix = servers.${cfg.lsp.server}.lspConfig;
     })
 
     (mkIf (cfg.format.enable && !servers.${cfg.lsp.server}.internalFormatter) {
