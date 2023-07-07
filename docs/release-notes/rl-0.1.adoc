@@ -98,3 +98,7 @@ https://github.com/volfyd[volfyd]:
 https://github.com/sedlund[sedlund]:
 
 * Add support for https://github.com/jackMort/ChatGPT.nvim[ChatGPT.nvim]. The option <<opt-vim.chatgpt.config>> should be used to configure a command to get an api key.  See https://github.com/jackMort/ChatGPT.nvim#configuration for details.
+
+https://github.com/mraethel[mraethel]:
+
+* Add support for https://github.com/davidgranstrom/scnvim[davidgranstrom/scnvim]

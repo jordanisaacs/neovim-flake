@@ -20,6 +20,7 @@ in
     ./markdown.nix
     ./plantuml.nix
     ./tidal.nix
+    ./sclang.nix
     ./html.nix
     ./bash.nix
   ];

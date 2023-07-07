@@ -196,6 +196,10 @@
     plugin-glow-nvim.url = "github:ellisonleao/glow.nvim";
     plugin-glow-nvim.flake = false;
 
+    # SCNvim
+    plugin-scnvim.url = "github:davidgranstrom/scnvim";
+    plugin-scnvim.flake = false;
+
     # Plenary (required by crates-nvim)
     plugin-plenary-nvim.url = "github:nvim-lua/plenary.nvim";
     plugin-plenary-nvim.flake = false;

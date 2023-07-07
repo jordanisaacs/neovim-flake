@@ -881,6 +881,22 @@
         "type": "github"
       }
     },
+    "plugin-scnvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1687884269,
+        "narHash": "sha256-z0r8M0L5aZ2ugqjAfHAUPWaVVfn91B7xNG3oXJiIcl0=",
+        "owner": "davidgranstrom",
+        "repo": "scnvim",
+        "rev": "c44d57aeadc4b01888bc10a249f8867df8d1a461",
+        "type": "github"
+      },
+      "original": {
+        "owner": "davidgranstrom",
+        "repo": "scnvim",
+        "type": "github"
+      }
+    },
     "plugin-sqls-nvim": {
       "flake": false,
       "locked": {
@@ -1086,6 +1102,7 @@
         "plugin-plenary-nvim": "plugin-plenary-nvim",
         "plugin-registers": "plugin-registers",
         "plugin-rust-tools": "plugin-rust-tools",
+        "plugin-scnvim": "plugin-scnvim",
         "plugin-sqls-nvim": "plugin-sqls-nvim",
         "plugin-telescope": "plugin-telescope",
         "plugin-telescope-file-browser": "plugin-telescope-file-browser",
