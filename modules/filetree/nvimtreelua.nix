@@ -8,6 +8,12 @@ with lib;
 with builtins; let
   cfg = config.vim.filetree.nvimTreeLua;
 in {
+  imports = [
+    (mkRemovedOptionModule ["openOnSetup"] ''
+      `open_on_setup*` options have been removed from nvim-tree-lua.
+      see https://github.com/nvim-tree/nvim-tree.lua/issues/1669
+    '')
+  ];
   options.vim.filetree.nvimTreeLua = {
     enable = mkOption {
       type = types.bool;
@@ -36,12 +42,6 @@ in {
     hideIgnoredGitFiles = mkOption {
       default = false;
       description = "Hide files ignored by git";
-      type = types.bool;
-    };
-
-    openOnSetup = mkOption {
-      default = true;
-      description = "Open when vim is started on a directory";
       type = types.bool;
     };
 
@@ -144,9 +144,6 @@ in {
       require'nvim-tree'.setup({
         disable_netrw = ${boolToString cfg.disableNetRW},
         hijack_netrw = ${boolToString cfg.hijackNetRW},
-        open_on_tab = ${boolToString cfg.openTreeOnNewTab},
-        open_on_setup = ${boolToString cfg.openOnSetup},
-        open_on_setup_file = ${boolToString cfg.openOnSetup},
         system_open = {
           cmd = ${"'" + cfg.systemOpenCmd + "'"},
         },
@@ -156,6 +153,11 @@ in {
         view  = {
           width = ${toString cfg.treeWidth},
           side = ${"'" + cfg.treeSide + "'"},
+        },
+        tab = {
+          sync = {
+            open = ${boolToString cfg.openTreeOnNewTab}
+          },
         },
         renderer = {
           indent_markers = {
