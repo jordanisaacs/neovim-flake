@@ -7,55 +7,7 @@
     nmd.url = "gitlab:rycee/nmd";
     nmd.flake = false;
 
-    # LSP plugins
-    nvim-lspconfig.url = "github:neovim/nvim-lspconfig";
-    nvim-lspconfig.flake = false;
-
-    lspsaga.url = "github:tami5/lspsaga.nvim";
-    lspsaga.flake = false;
-
-    lspkind.url = "github:onsails/lspkind-nvim";
-    lspkind.flake = false;
-
-    trouble.url = "github:folke/trouble.nvim";
-    trouble.flake = false;
-
-    nvim-treesitter-context.url = "github:nvim-treesitter/nvim-treesitter-context";
-    nvim-treesitter-context.flake = false;
-
-    nvim-lightbulb.url = "github:kosayoda/nvim-lightbulb";
-    nvim-lightbulb.flake = false;
-
-    fidget.url = "github:j-hui/fidget.nvim";
-    fidget.flake = false;
-
-    nvim-code-action-menu.url = "github:weilbith/nvim-code-action-menu";
-    nvim-code-action-menu.flake = false;
-
-    lsp-signature.url = "github:ray-x/lsp_signature.nvim";
-    lsp-signature.flake = false;
-
-    null-ls.url = "github:jose-elias-alvarez/null-ls.nvim";
-    null-ls.flake = false;
-
-    sqls-nvim.url = "github:nanotee/sqls.nvim";
-    sqls-nvim.flake = false;
-
-    rust-tools.url = "github:simrat39/rust-tools.nvim";
-    rust-tools.flake = false;
-
-    # Copying/Registers
-    registers.url = "github:tversteeg/registers.nvim";
-    registers.flake = false;
-
-    nvim-neoclip.url = "github:AckslD/nvim-neoclip.lua";
-    nvim-neoclip.flake = false;
-
-    # Telescope
-    telescope.url = "github:nvim-telescope/telescope.nvim";
-    telescope.flake = false;
-
-    # Langauge server (use master instead of nixpkgs)
+    # Language server (use master instead of nixpkgs)
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     rnix-lsp.inputs.nixpkgs.follows = "flake-utils";
     rnix-lsp.inputs.utils.follows = "flake-utils";
@@ -64,119 +16,173 @@
     nil.inputs.nixpkgs.follows = "nixpkgs";
     nil.inputs.flake-utils.follows = "flake-utils";
 
-    # Filetrees
-    nvim-tree-lua.url = "github:kyazdani42/nvim-tree.lua";
-    nvim-tree-lua.flake = false;
-
-    # Tablines
-    nvim-bufferline-lua.url = "github:akinsho/nvim-bufferline.lua?ref=v4.3.0";
-    nvim-bufferline-lua.flake = false;
-
-    # Statuslines
-    lualine.url = "github:hoob3rt/lualine.nvim";
-    lualine.flake = false;
-
-    # Autocompletes
-    nvim-cmp.url = "github:hrsh7th/nvim-cmp";
-    nvim-cmp.flake = false;
-
-    cmp-buffer.url = "github:hrsh7th/cmp-buffer";
-    cmp-buffer.flake = false;
-
-    cmp-nvim-lsp.url = "github:hrsh7th/cmp-nvim-lsp";
-    cmp-nvim-lsp.flake = false;
-
-    cmp-vsnip.url = "github:hrsh7th/cmp-vsnip";
-    cmp-vsnip.flake = false;
-
-    cmp-path.url = "github:hrsh7th/cmp-path";
-    cmp-path.flake = false;
-
-    cmp-treesitter.url = "github:ray-x/cmp-treesitter";
-    cmp-treesitter.flake = false;
-
-    # snippets
-    vim-vsnip.url = "github:hrsh7th/vim-vsnip";
-    vim-vsnip.flake = false;
-
-    # Autopairs
-    nvim-autopairs.url = "github:windwp/nvim-autopairs";
-    nvim-autopairs.flake = false;
-
-    nvim-ts-autotag.url = "github:windwp/nvim-ts-autotag";
-    nvim-ts-autotag.flake = false;
-
-    # Commenting
-    kommentary.url = "github:b3nj5m1n/kommentary";
-    kommentary.flake = false;
-
-    todo-comments.url = "github:folke/todo-comments.nvim";
-    todo-comments.flake = false;
-
-    # Buffer tools
-    bufdelete-nvim.url = "github:famiu/bufdelete.nvim";
-    bufdelete-nvim.flake = false;
-
-    # Themes
-    tokyonight.url = "github:folke/tokyonight.nvim";
-    tokyonight.flake = false;
-
-    onedark.url = "github:navarasu/onedark.nvim";
-    onedark.flake = false;
-
-    catppuccin.url = "github:catppuccin/nvim";
-    catppuccin.flake = false;
-
-    dracula-nvim.url = "github:Mofiqul/dracula.nvim";
-    dracula-nvim.flake = false;
-
-    dracula.url = "github:dracula/vim";
-    dracula.flake = false;
-
-    gruvbox.url = "github:ellisonleao/gruvbox.nvim";
-    gruvbox.flake = false;
-
-    # Rust crates
-    crates-nvim.url = "github:Saecki/crates.nvim";
-    crates-nvim.flake = false;
-
-    # Visuals
-    nvim-cursorline.url = "github:yamatsum/nvim-cursorline";
-    nvim-cursorline.flake = false;
-
-    indent-blankline.url = "github:lukas-reineke/indent-blankline.nvim";
-    indent-blankline.flake = false;
-
-    nvim-web-devicons.url = "github:kyazdani42/nvim-web-devicons";
-    nvim-web-devicons.flake = false;
-
-    gitsigns-nvim.url = "github:lewis6991/gitsigns.nvim";
-    gitsigns-nvim.flake = false;
-
-    # Key binding help
-    which-key.url = "github:folke/which-key.nvim";
-    which-key.flake = false;
-
-    # Markdown
-    glow-nvim.url = "github:ellisonleao/glow.nvim";
-    glow-nvim.flake = false;
-
     # Tidal cycles
     tidalcycles.url = "github:mitchmindtree/tidalcycles.nix";
     tidalcycles.inputs.vim-tidal-src.url = "github:tidalcycles/vim-tidal";
 
+    ## Plugins (must begin with plugin-)
+
+    # LSP plugins
+    plugin-nvim-lspconfig.url = "github:neovim/nvim-lspconfig";
+    plugin-nvim-lspconfig.flake = false;
+
+    plugin-lspsaga.url = "github:tami5/lspsaga.nvim";
+    plugin-lspsaga.flake = false;
+
+    plugin-lspkind.url = "github:onsails/lspkind-nvim";
+    plugin-lspkind.flake = false;
+
+    plugin-trouble.url = "github:folke/trouble.nvim";
+    plugin-trouble.flake = false;
+
+    plugin-nvim-treesitter-context.url = "github:nvim-treesitter/nvim-treesitter-context";
+    plugin-nvim-treesitter-context.flake = false;
+
+    plugin-nvim-lightbulb.url = "github:kosayoda/nvim-lightbulb";
+    plugin-nvim-lightbulb.flake = false;
+
+    plugin-fidget.url = "github:j-hui/fidget.nvim";
+    plugin-fidget.flake = false;
+
+    plugin-nvim-code-action-menu.url = "github:weilbith/nvim-code-action-menu";
+    plugin-nvim-code-action-menu.flake = false;
+
+    plugin-lsp-signature.url = "github:ray-x/lsp_signature.nvim";
+    plugin-lsp-signature.flake = false;
+
+    plugin-null-ls.url = "github:jose-elias-alvarez/null-ls.nvim";
+    plugin-null-ls.flake = false;
+
+    plugin-sqls-nvim.url = "github:nanotee/sqls.nvim";
+    plugin-sqls-nvim.flake = false;
+
+    plugin-rust-tools.url = "github:simrat39/rust-tools.nvim";
+    plugin-rust-tools.flake = false;
+
+    # Debug
+    plugin-nvim-dap.url = "github:mfussenegger/nvim-dap";
+    plugin-nvim-dap.flake = false;
+
+    # Copying/Registers
+    plugin-registers.url = "github:tversteeg/registers.nvim";
+    plugin-registers.flake = false;
+
+    plugin-nvim-neoclip.url = "github:AckslD/nvim-neoclip.lua";
+    plugin-nvim-neoclip.flake = false;
+
+    # Telescope
+    plugin-telescope.url = "github:nvim-telescope/telescope.nvim";
+    plugin-telescope.flake = false;
+
+    # Filetrees
+    plugin-nvim-tree-lua.url = "github:kyazdani42/nvim-tree.lua";
+    plugin-nvim-tree-lua.flake = false;
+
+    # Tablines
+    plugin-nvim-bufferline-lua.url = "github:akinsho/nvim-bufferline.lua?ref=v4.3.0";
+    plugin-nvim-bufferline-lua.flake = false;
+
+    # Statuslines
+    plugin-lualine.url = "github:hoob3rt/lualine.nvim";
+    plugin-lualine.flake = false;
+
+    # Autocompletes
+    plugin-nvim-cmp.url = "github:hrsh7th/nvim-cmp";
+    plugin-nvim-cmp.flake = false;
+
+    plugin-cmp-buffer.url = "github:hrsh7th/cmp-buffer";
+    plugin-cmp-buffer.flake = false;
+
+    plugin-cmp-nvim-lsp.url = "github:hrsh7th/cmp-nvim-lsp";
+    plugin-cmp-nvim-lsp.flake = false;
+
+    plugin-cmp-vsnip.url = "github:hrsh7th/cmp-vsnip";
+    plugin-cmp-vsnip.flake = false;
+
+    plugin-cmp-path.url = "github:hrsh7th/cmp-path";
+    plugin-cmp-path.flake = false;
+
+    plugin-cmp-treesitter.url = "github:ray-x/cmp-treesitter";
+    plugin-cmp-treesitter.flake = false;
+
+    # snippets
+    plugin-vim-vsnip.url = "github:hrsh7th/vim-vsnip";
+    plugin-vim-vsnip.flake = false;
+
+    # Autopairs
+    plugin-nvim-autopairs.url = "github:windwp/nvim-autopairs";
+    plugin-nvim-autopairs.flake = false;
+
+    plugin-nvim-ts-autotag.url = "github:windwp/nvim-ts-autotag";
+    plugin-nvim-ts-autotag.flake = false;
+
+    # Commenting
+    plugin-kommentary.url = "github:b3nj5m1n/kommentary";
+    plugin-kommentary.flake = false;
+
+    plugin-todo-comments.url = "github:folke/todo-comments.nvim";
+    plugin-todo-comments.flake = false;
+
+    # Buffer tools
+    plugin-bufdelete-nvim.url = "github:famiu/bufdelete.nvim";
+    plugin-bufdelete-nvim.flake = false;
+
+    # Themes
+    plugin-tokyonight.url = "github:folke/tokyonight.nvim";
+    plugin-tokyonight.flake = false;
+
+    plugin-onedark.url = "github:navarasu/onedark.nvim";
+    plugin-onedark.flake = false;
+
+    plugin-catppuccin.url = "github:catppuccin/nvim";
+    plugin-catppuccin.flake = false;
+
+    plugin-dracula-nvim.url = "github:Mofiqul/dracula.nvim";
+    plugin-dracula-nvim.flake = false;
+
+    plugin-dracula.url = "github:dracula/vim";
+    plugin-dracula.flake = false;
+
+    plugin-gruvbox.url = "github:ellisonleao/gruvbox.nvim";
+    plugin-gruvbox.flake = false;
+
+    # Rust crates
+    plugin-crates-nvim.url = "github:Saecki/crates.nvim";
+    plugin-crates-nvim.flake = false;
+
+    # Visuals
+    plugin-nvim-cursorline.url = "github:yamatsum/nvim-cursorline";
+    plugin-nvim-cursorline.flake = false;
+
+    plugin-indent-blankline.url = "github:lukas-reineke/indent-blankline.nvim";
+    plugin-indent-blankline.flake = false;
+
+    plugin-nvim-web-devicons.url = "github:kyazdani42/nvim-web-devicons";
+    plugin-nvim-web-devicons.flake = false;
+
+    plugin-gitsigns-nvim.url = "github:lewis6991/gitsigns.nvim";
+    plugin-gitsigns-nvim.flake = false;
+
+    # Key binding help
+    plugin-which-key.url = "github:folke/which-key.nvim";
+    plugin-which-key.flake = false;
+
+    # Markdown
+    plugin-glow-nvim.url = "github:ellisonleao/glow.nvim";
+    plugin-glow-nvim.flake = false;
+
     # Plenary (required by crates-nvim)
-    plenary-nvim.url = "github:nvim-lua/plenary.nvim";
-    plenary-nvim.flake = false;
+    plugin-plenary-nvim.url = "github:nvim-lua/plenary.nvim";
+    plugin-plenary-nvim.flake = false;
 
-    open-browser.url = "github:tyru/open-browser.vim";
-    open-browser.flake = false;
+    plugin-open-browser.url = "github:tyru/open-browser.vim";
+    plugin-open-browser.flake = false;
 
-    plantuml-syntax.url = "github:aklt/plantuml-syntax";
-    plantuml-syntax.flake = false;
+    plugin-plantuml-syntax.url = "github:aklt/plantuml-syntax";
+    plugin-plantuml-syntax.flake = false;
 
-    plantuml-previewer.url = "github:weirongxu/plantuml-previewer.vim";
-    plantuml-previewer.flake = false;
+    plugin-plantuml-previewer.url = "github:weirongxu/plantuml-previewer.vim";
+    plugin-plantuml-previewer.flake = false;
   };
 
   outputs = {
@@ -184,53 +190,7 @@
     flake-utils,
     ...
   } @ inputs: let
-    # Plugin must be same as input name
-    availablePlugins = [
-      "nvim-treesitter-context"
-      "gitsigns-nvim"
-      "plenary-nvim"
-      "nvim-lspconfig"
-      "lspsaga"
-      "lspkind"
-      "nvim-lightbulb"
-      "fidget"
-      "lsp-signature"
-      "nvim-tree-lua"
-      "nvim-bufferline-lua"
-      "lualine"
-      "nvim-autopairs"
-      "nvim-ts-autotag"
-      "nvim-web-devicons"
-      "tokyonight"
-      "bufdelete-nvim"
-      "nvim-cmp"
-      "cmp-nvim-lsp"
-      "cmp-buffer"
-      "cmp-vsnip"
-      "cmp-path"
-      "cmp-treesitter"
-      "crates-nvim"
-      "vim-vsnip"
-      "nvim-code-action-menu"
-      "trouble"
-      "null-ls"
-      "which-key"
-      "indent-blankline"
-      "nvim-cursorline"
-      "sqls-nvim"
-      "glow-nvim"
-      "telescope"
-      "rust-tools"
-      "onedark"
-      "catppuccin"
-      "dracula"
-      "dracula-nvim"
-      "gruvbox"
-      "open-browser"
-      "plantuml-syntax"
-      "plantuml-previewer"
-    ];
-    rawPlugins = nvimLib.plugins.inputsToRaw inputs availablePlugins;
+    rawPlugins = nvimLib.plugins.fromInputs inputs "plugin-";
 
     neovimConfiguration = {modules ? [], ...} @ args:
       import ./modules
