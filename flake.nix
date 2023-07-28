@@ -280,7 +280,7 @@
         };
         vim.lsp = {
           formatOnSave = overrideable true;
-          lspkind.enable = overrideable false;
+          lspkind.enable = overrideable true;
           lightbulb.enable = overrideable true;
           lspsaga.enable = overrideable false;
           nvimCodeActionMenu.enable = overrideable true;
