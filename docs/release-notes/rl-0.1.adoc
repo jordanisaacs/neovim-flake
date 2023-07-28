@@ -53,6 +53,8 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 
 * Removed the deprecated `openOnStartup` option from nvim-tree-lua
 
+* Added support for `statix` and `deadnix` through <<opt-vim.languages.nix.extraDiagnostics.types>>
+
 https://github.com/MoritzBoehme[MoritzBoehme]:
 
 * `catppuccin` theme is now available as a neovim theme <<opt-vim.theme.style>> and lualine theme <<opt-vim.statusline.lualine.theme>>.
