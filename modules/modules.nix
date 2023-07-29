@@ -21,6 +21,7 @@
     ./telescope
     ./git
     ./build
+    ./debugger
   ];
 
   pkgsModule = {config, ...}: {

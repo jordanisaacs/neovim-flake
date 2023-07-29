@@ -105,6 +105,9 @@
     plugin-cmp-treesitter.url = "github:ray-x/cmp-treesitter";
     plugin-cmp-treesitter.flake = false;
 
+    plugin-cmp-dap.url = "github:rcarriga/cmp-dap";
+    plugin-cmp-dap.flake = false;
+
     # snippets
     plugin-vim-vsnip.url = "github:hrsh7th/vim-vsnip";
     plugin-vim-vsnip.flake = false;
@@ -219,6 +222,7 @@
           enableFormat = overrideable true;
           enableTreesitter = overrideable true;
           enableExtraDiagnostics = overrideable true;
+          enableDebugger = overrideable true;
 
           nix.enable = overrideable true;
           markdown.enable = overrideable true;

@@ -27,5 +27,6 @@ in {
     enableTreesitter = mkEnable "treesitter";
     enableFormat = mkEnable "formatting";
     enableExtraDiagnostics = mkEnable "extra diagnostics";
+    enableDebugger = mkEnable "debuggers";
   };
 }
