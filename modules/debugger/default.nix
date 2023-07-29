@@ -37,11 +37,11 @@ in {
         local codelldb_bin = "${cfg.package}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb"
         local codelldb_lib = "${cfg.package}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/liblldb.so"
         local codelldb = {
-          type = 'server',
-          port = "${truePort}",
+          type = "server",
+          port = "$${port}",
           executable = {
             command = codelldb_bin,
-            args = {"--liblldb", codelldb_lib, "--port", "${truePort}"},
+            args = {"--liblldb", codelldb_lib, "--port", "$${truePort}"},
           }
         }
 
