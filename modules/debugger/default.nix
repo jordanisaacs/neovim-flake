@@ -7,6 +7,11 @@
 with lib;
 with builtins; let
   cfg = config.vim.debugger;
+
+  truePort =
+    if cfg.port == null
+    then "\${port}"
+    else toString cfg.port;
 in {
   options.vim.debugger = {
     enable = mkEnableOption "LSP, also enabled automatically through null-ls and lspconfig options";
@@ -19,8 +24,8 @@ in {
 
     port = mkOption {
       description = "Port to start the debugger on";
-      type = types.int;
-      default = 13000;
+      type = with types; nullOr int;
+      default = null;
     };
 
     enrichConfig = mkOption {
@@ -44,18 +49,17 @@ in {
 
       local codelldb_bin = "${cfg.package}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb"
       local codelldb_lib = "${cfg.package}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/liblldb.so"
-
-      dap.adapters.codelldb = {
+      local codelldb = {
         type = 'server',
-        port = "${toString cfg.port}",
+        port = "${truePort}",
         executable = {
           command = codelldb_bin,
-          args = {"--liblldb", codelldb_lib, "--port", "${toString cfg.port}"},
-          enrich_config = function(config, on_config)
-            ${cfg.enrichConfig}
-          end,
+          args = {"--liblldb", codelldb_lib, "--port", "${truePort}"},
         }
       }
+
+      dap.adapters.lldb = codelldb;
+      dap.adapters.rt_lldb = codelldb;
 
       vim.keymap.set("n", "<leader>do", ":lua require'dap'.repl.open()<CR>")
 
