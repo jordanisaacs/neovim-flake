@@ -99,7 +99,7 @@ in {
           vim.keymap.set("n", "<leader>ris", rt.inlay_hints.set, opts)
           vim.keymap.set("n", "<leader>riu", rt.inlay_hints.unset, opts)
           vim.keymap.set("n", "<leader>rr", rt.runnables.runnables, opts)
-          vim.keymap.set("n", "<leader>rd", rt.runnables.debuggables, opts)
+          vim.keymap.set("n", "<leader>rd", rt.debuggables.debuggables, opts)
           vim.keymap.set("n", "<leader>rp", rt.parent_module.parent_module, opts)
           vim.keymap.set("n", "<leader>rm", rt.expand_macro.expand_macro, opts)
           vim.keymap.set("n", "<leader>rc", rt.open_cargo_toml.open_cargo_toml, opts)

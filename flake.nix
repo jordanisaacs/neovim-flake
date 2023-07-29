@@ -66,6 +66,9 @@
     plugin-nvim-dap-ui.url = "github:rcarriga/nvim-dap-ui";
     plugin-nvim-dap-ui.flake = false;
 
+    plugin-nvim-dap-virtual-text.url = "github:theHamsta/nvim-dap-virtual-text";
+    plugin-nvim-dap-virtual-text.flake = false;
+
     # Copying/Registers
     plugin-registers.url = "github:tversteeg/registers.nvim";
     plugin-registers.flake = false;

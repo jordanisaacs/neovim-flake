@@ -7,11 +7,6 @@
 with lib;
 with builtins; let
   cfg = config.vim.debugger;
-
-  truePort =
-    if cfg.port == null
-    then "\${port}"
-    else toString cfg.port;
 in {
   options.vim.debugger = {
     enable = mkEnableOption "DAP debugger, also enabled automatically through language options";
@@ -24,7 +19,15 @@ in {
 
     ui = {
       enable = mkEnableOption "a UI for nvim-dap (nvim-dap-ui)";
+
+      autoOpen = mkOption {
+        description = "automa open/close the ui when dap starts/ends";
+        type = types.bool;
+        default = true;
+      };
     };
+
+    virtual-text.enable = mkEnableOption "virtual text for dap";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -38,36 +41,56 @@ in {
         local codelldb_lib = "${cfg.package}/share/vscode/extensions/vadimcn.vscode-lldb/lldb/lib/liblldb.so"
         local codelldb = {
           type = "server",
-          port = "$${port}",
+          port = "''${port}",
           executable = {
             command = codelldb_bin,
-            args = {"--liblldb", codelldb_lib, "--port", "$${truePort}"},
+            args = {"--liblldb", codelldb_lib, "--port", "''${port}"},
           }
         }
 
         dap.adapters.lldb = codelldb;
         dap.adapters.rt_lldb = codelldb;
 
-        vim.keymap.set("n", "<leader>do", require'dap'.repl.open)
+        vim.keymap.set("n", "<leader>do", dap.repl.open)
 
-        vim.keymap.set("n", "<leader>dc", require'dap'.continue)
-        vim.keymap.set("n", "<leader>dsn", require'dap'.step_over)
-        vim.keymap.set("n", "<leader>dsi", require'dap'.step_into)
-        vim.keymap.set("n", "<leader>dso", require'dap'.step_out)
+        vim.keymap.set("n", "<leader>dc", dap.continue)
+        vim.keymap.set("n", "<leader>dsn", dap.step_over)
+        vim.keymap.set("n", "<leader>dsi", dap.step_into)
+        vim.keymap.set("n", "<leader>dso", dap.step_out)
 
-        vim.keymap.set("n", "<leader>db", require'dap'.toggle_breakpoint)
+        vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
         vim.keymap.set("n", "<leader>dB", function() require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end)
         vim.keymap.set("n", "<leader>dp", function() require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
       '';
     }
+    (mkIf cfg.virtual-text.enable {
+      vim.startPlugins = ["nvim-dap-virtual-text"];
+
+      vim.luaConfigRC.dap-virtual-text = nvim.dag.entryAnywhere ''
+        require("nvim-dap-virtual-text").setup()
+      '';
+    })
     (mkIf cfg.ui.enable {
       vim.startPlugins = ["nvim-dap-ui"];
 
-      vim.luaConfigRC.dap-ui = nvim.dag.entryAnywhere ''
-        require("dapui").setup()
+      vim.luaConfigRC.dap-ui = nvim.dag.entryAfter ["dap-setup"] (''
+          local dapui = require"dapui"
 
-        vim.keymap.set("n", "<leader>dp", require'dap'.toggle)
-      '';
+          dapui.setup()
+          vim.keymap.set("n", "<leader>du", dapui.toggle)
+        ''
+        + (optionalString cfg.ui.autoOpen ''
+          -- TODO: move these into generic events
+          dap.listeners.after.event_initialized["dapui_config"] = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated["dapui_config"] = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited["dapui_config"] = function()
+            dapui.close()
+          end
+        ''));
     })
   ]);
 }
