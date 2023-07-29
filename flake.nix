@@ -59,9 +59,12 @@
     plugin-rust-tools.url = "github:simrat39/rust-tools.nvim";
     plugin-rust-tools.flake = false;
 
-    # Debug
+    # Debugger
     plugin-nvim-dap.url = "github:mfussenegger/nvim-dap";
     plugin-nvim-dap.flake = false;
+
+    plugin-nvim-dap-ui.url = "github:rcarriga/nvim-dap-ui";
+    plugin-nvim-dap-ui.flake = false;
 
     # Copying/Registers
     plugin-registers.url = "github:tversteeg/registers.nvim";
@@ -272,6 +275,7 @@
           enable = overrideable true;
           type = overrideable "nvim-cmp";
         };
+        vim.debugger.ui.enable = overrideable true;
         vim.filetree.nvimTreeLua.enable = overrideable true;
         vim.tabline.nvimBufferline.enable = overrideable true;
         vim.treesitter.context.enable = overrideable true;
