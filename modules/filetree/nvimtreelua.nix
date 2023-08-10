@@ -149,9 +149,6 @@ in {
         require'nvim-tree'.setup({
           disable_netrw = ${boolToString cfg.disableNetRW},
           hijack_netrw = ${boolToString cfg.hijackNetRW},
-          open_on_tab = ${boolToString cfg.openTreeOnNewTab},
-          open_on_setup = ${boolToString cfg.openOnSetup},
-          open_on_setup_file = ${boolToString cfg.openOnSetup},
           system_open = {
             cmd = ${"'" + cfg.systemOpenCmd + "'"},
           },
