@@ -19,6 +19,29 @@ with builtins; let
   };
 in {
   options = {
+    assertions = lib.mkOption {
+      type = types.listOf types.unspecified;
+      internal = true;
+      default = [];
+      example = [
+        {
+          assertion = false;
+          message = "you can't enable this for that reason";
+        }
+      ];
+    };
+
+    warnings = mkOption {
+      internal = true;
+      default = [];
+      type = types.listOf types.str;
+      example = ["The `foo' service is deprecated and will go away soon!"];
+      description = lib.mdDoc ''
+        This option allows modules to show warnings to users during
+        the evaluation of the system configuration.
+      '';
+    };
+
     build = {
       viAlias = mkOption {
         description = "Enable vi alias";
@@ -112,8 +135,15 @@ in {
       plugins = normalizedPlugins;
       customRC = cfgBuilt.configRC;
     };
+
+    failedAssertions = map (x: x.message) (filter (x: !x.assertion) config.assertions);
+
+    baseSystemAssertWarn =
+      if failedAssertions != []
+      then throw "\nFailed assertions:\n${concatStringsSep "\n" (map (x: "- ${x}") failedAssertions)}"
+      else lib.showWarnings config.warnings;
   in {
-    built = {
+    built = baseSystemAssertWarn {
       configRC = let
         mkSection = r: ''
           " SECTION: ${r.name}

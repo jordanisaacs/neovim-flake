@@ -56,9 +56,9 @@ with builtins; let
                 command = {"${cfg.format.package}/bin/nixpkgs-fmt"},
               },
             ''}
-        ''}
             },
           };
+        ''}
         }
       '';
     };
@@ -80,6 +80,32 @@ with builtins; let
     nixpkgs-fmt = {
       package = pkgs.nixpkgs-fmt;
       # Never need to use null-ls for nixpkgs-fmt
+    };
+  };
+
+  defaultDiagnostics = ["statix" "deadnix"];
+  diagnostics = {
+    statix = {
+      package = pkgs.statix;
+      nullConfig = pkg: ''
+        table.insert(
+          ls_sources,
+          null_ls.builtins.diagnostics.statix.with({
+            command = "${pkg}/bin/statix",
+          })
+        )
+      '';
+    };
+    deadnix = {
+      package = pkgs.deadnix;
+      nullConfig = pkg: ''
+        table.insert(
+          ls_sources,
+          null_ls.builtins.diagnostics.deadnix.with({
+            command = "${pkg}/bin/deadnix",
+          })
+        )
+      '';
     };
   };
 in {
@@ -130,6 +156,19 @@ in {
         default = formats.${cfg.format.type}.package;
       };
     };
+
+    extraDiagnostics = {
+      enable = mkOption {
+        description = "Enable extra Nix diagnostics";
+        type = types.bool;
+        default = config.vim.languages.enableExtraDiagnostics;
+      };
+      types = lib.nvim.types.diagnostics {
+        langDesc = "Nix";
+        inherit diagnostics;
+        inherit defaultDiagnostics;
+      };
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -152,6 +191,15 @@ in {
     (mkIf (cfg.format.enable && !servers.${cfg.lsp.server}.internalFormatter) {
       vim.lsp.null-ls.enable = true;
       vim.lsp.null-ls.sources.nix-format = formats.${cfg.format.type}.nullConfig;
+    })
+
+    (mkIf cfg.extraDiagnostics.enable {
+      vim.lsp.null-ls.enable = true;
+      vim.lsp.null-ls.sources = lib.nvim.languages.diagnosticsToLua {
+        lang = "nix";
+        config = cfg.extraDiagnostics.types;
+        inherit diagnostics;
+      };
     })
   ]);
 }
