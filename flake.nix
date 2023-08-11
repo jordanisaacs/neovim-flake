@@ -41,7 +41,7 @@
     plugin-nvim-lightbulb.url = "github:kosayoda/nvim-lightbulb";
     plugin-nvim-lightbulb.flake = false;
 
-    plugin-fidget.url = "github:j-hui/fidget.nvim";
+    plugin-fidget.url = "github:j-hui/fidget.nvim/legacy";
     plugin-fidget.flake = false;
 
     plugin-nvim-code-action-menu.url = "github:weilbith/nvim-code-action-menu";
