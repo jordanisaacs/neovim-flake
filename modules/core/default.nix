@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib;
@@ -29,8 +28,20 @@ in {
     };
 
     luaConfigRC = mkOption {
-      description = "vim lua config";
+      description = "nvim lua config";
       type = nvim.types.dagOf types.lines;
+      default = {};
+    };
+
+    ftplugins = mkOption {
+      description = "ftplugin sources";
+      type = with types; attrsOf str;
+      default = {};
+    };
+
+    lua.modules = mkOption {
+      description = "vim lua modules";
+      type = with types; attrsOf str;
       default = {};
     };
 

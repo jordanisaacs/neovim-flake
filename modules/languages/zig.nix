@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.vim.languages.zig;
 in {
   options.vim.languages.zig = {
-    enable = mkEnableOption "SQL language support";
+    enable = mkEnableOption "Zig language support";
 
     treesitter = {
       enable = mkOption {
@@ -48,8 +48,8 @@ in {
       vim.lsp.lspconfig.enable = true;
       vim.lsp.lspconfig.sources.zig-lsp = ''
         lspconfig.zls.setup {
-          capabilities = capabilities,
-          on_attach=default_on_attach,
+          capabilities = lsp.capabilities,
+          on_attach = lsp.default_on_attach,
           cmd = {"${cfg.lsp.package}/bin/zls"},
           settings = {
             ["zls"] = {

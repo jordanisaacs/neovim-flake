@@ -14,8 +14,8 @@ with builtins; let
       package = pkgs.gopls;
       lspConfig = ''
         lspconfig.gopls.setup {
-          capabilities = capabilities;
-          on_attach = default_on_attach;
+          capabilities = lsp.capabilities;
+          on_attach = lsp.default_on_attach;
           cmd = {"${cfg.lsp.package}/bin/gopls", "serve"},
         }
       '';

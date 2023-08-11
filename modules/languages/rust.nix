@@ -76,7 +76,7 @@ in {
         local rt = require('rust-tools')
 
         rust_on_attach = function(client, bufnr)
-          default_on_attach(client, bufnr)
+          lsp.default_on_attach(client, bufnr)
           local opts = { noremap=true, silent=true, buffer = bufnr }
           vim.keymap.set("n", "<leader>ris", rt.inlay_hints.set, opts)
           vim.keymap.set("n", "<leader>riu", rt.inlay_hints.unset, opts)
@@ -96,7 +96,7 @@ in {
             }
           },
           server = {
-            capabilities = capabilities,
+            capabilities = lsp.capabilities,
             on_attach = rust_on_attach,
             cmd = {"${cfg.lsp.package}/bin/rust-analyzer"},
             settings = {
