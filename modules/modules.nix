@@ -4,6 +4,7 @@
   check ? true,
 }: let
   modules = [
+    ./chatgpt
     ./completion
     ./theme
     ./core

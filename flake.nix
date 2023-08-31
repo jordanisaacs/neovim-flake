@@ -116,6 +116,10 @@
     plugin-nvim-ts-autotag.url = "github:windwp/nvim-ts-autotag";
     plugin-nvim-ts-autotag.flake = false;
 
+    # ChatGPT.nvim
+    plugin-chatgpt-nvim.url = "github:jackMort/ChatGPT.nvim";
+    plugin-chatgpt-nvim.flake = false;
+
     # Commenting
     plugin-kommentary.url = "github:b3nj5m1n/kommentary";
     plugin-kommentary.flake = false;
@@ -156,6 +160,10 @@
 
     plugin-indent-blankline.url = "github:lukas-reineke/indent-blankline.nvim";
     plugin-indent-blankline.flake = false;
+
+    # nui - UI Component Library for Neovim - required by ChatGPT.nvim
+    plugin-nui-nvim.url = "github:MunifTanjim/nui.nvim";
+    plugin-nui-nvim.flake = false;
 
     plugin-nvim-web-devicons.url = "github:kyazdani42/nvim-web-devicons";
     plugin-nvim-web-devicons.flake = false;
