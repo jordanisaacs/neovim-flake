@@ -86,10 +86,8 @@ in
     gruvbox = {
       setup = ''
         -- gruvbox theme
-        require('gruvbox').setup {
-          style = "${cfg.style}"
-        }
-        require('gruvbox').load()
+        vim.o.background = "${cfg.style}"
+        vim.cmd.colorscheme "gruvbox"
       '';
       styles = [ "dark" "light" ];
       defaultStyle = "dark";
