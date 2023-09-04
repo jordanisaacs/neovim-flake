@@ -6,7 +6,9 @@ Removed hare language support (lsp/tree-sitter/etc). <code class="literal">vim.l
 </p><p class="simpara">If you are contributing and adding a new plugin, add the plugin name to <code class="literal">availablePlugins</code> in <a class="link" href="https://github.com/jordanisaacs/neovim-flake/blob/20cec032bd74bc3d20ac17ce36cd84786a04fd3e/modules/lib/types-plugin.nix" target="_top">types-plugin.nix</a>.</p></li><li class="listitem">
 <code class="literal">neovimBuilder</code> has been removed for configuration. Using an overlay is no longer required. See the manual for the new way to configuration.
 </li><li class="listitem">
-Treesitter grammars are now configurable with <a class="xref" href="options.html#opt-vim.treesitter.grammars"><code class="option">vim.treesitter.grammars</code></a>. Utilizes the nixpkgs <code class="literal">nvim-treesitter</code> plugin rather than a custom input in order to take advantage of build support of pinned versions. See <a class="link" href="https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees" target="_top">discourse</a> for more information. Packages can be found under the <code class="literal">pkgs.vimPlugins.nvim-treesitter.builtGrammars</code> attribute. Treesitter grammars for supported languages should be enabled within the module. By default no grammars are installed, thus the following grammars which do not have a language section are not included anymore: comment, toml, make, html, css, graphql, json.
+Treesitter grammars are now configurable with <a class="xref" href="options.html#opt-vim.treesitter.grammars"><code class="option">vim.treesitter.grammars</code></a>. Utilizes the nixpkgs <code class="literal">nvim-treesitter</code> plugin rather than a custom input in order to take advantage of build support of pinned versions. See <a class="link" href="https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees" target="_top">discourse</a> for more information. Packages can be found under the <code class="literal">pkgs.vimPlugins.nvim-treesitter.builtGrammars</code> attribute. Treesitter grammars for supported languages should be enabled within the module. By default no grammars are installed, thus the following grammars which do not have a language section are not included anymore: comment, toml, make, css, graphql, json.
+</li><li class="listitem">
+Neovim’s bundled treesitter parsers are overriden when using <code class="literal">nvim-treesitter</code> which fixes query errors.
 </li><li class="listitem"><p class="simpara">
 <a class="xref" href="options.html#opt-vim.configRC"><code class="option">vim.configRC</code></a> and <a class="xref" href="options.html#opt-vim.luaConfigRC"><code class="option">vim.luaConfigRC</code></a> are now of type DAG lines. This allows for ordering of the config. Usage is the same is in home-manager’s <code class="literal">home.activation</code> option.
 </p><pre class="programlisting nix">vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"</pre></li><li class="listitem">
@@ -43,6 +45,22 @@ Removed the deprecated <code class="literal">openOnStartup</code> option from nv
 Added support for <code class="literal">statix</code> and <code class="literal">deadnix</code> through <a class="xref" href="options.html#opt-vim.languages.nix.extraDiagnostics.types"><code class="option">vim.languages.nix.extraDiagnostics.types</code></a>
 </li><li class="listitem">
 Plugin inputs are now prefixed with <code class="literal">plugin-</code> to allow autodiscovery of them
+</li><li class="listitem">
+Added bash language support at <a class="xref" href="options.html#opt-vim.languages.bash.enable"><code class="option">vim.languages.bash.enable</code></a>, includes <code class="literal">bash-language-server</code> lsp, <code class="literal">shellcheck</code> diagnostics, and <code class="literal">shfmt</code> formatting
+</li><li class="listitem">
+Added <code class="literal">nvim-dap</code> debugger support under <a class="xref" href="options.html#opt-vim.debugger.enable"><code class="option">vim.debugger.enable</code></a>
+</li><li class="listitem">
+UI using <code class="literal">nvim-dap-ui</code> under <a class="xref" href="options.html#opt-vim.debugger.ui.enable"><code class="option">vim.debugger.ui.enable</code></a>
+</li><li class="listitem">
+Virtual text using <code class="literal">nvim-dap-virtual-text</code> under <a class="xref" href="options.html#opt-vim.debugger.virtualText.enable"><code class="option">vim.debugger.virtualText.enable</code></a>
+</li><li class="listitem">
+Support for rust-tools debugger support under <a class="xref" href="options.html#opt-vim.languages.rust.debugger.enable"><code class="option">vim.languages.rust.debugger.enable</code></a>
+</li><li class="listitem">
+Add <code class="literal">telescope-file-browser</code> under <a class="xref" href="options.html#opt-vim.telescope.fileBrowser.enable"><code class="option">vim.telescope.fileBrowser.enable</code></a>
+</li><li class="listitem">
+Internally switched to using <code class="literal">nixpkgs-fmt</code> for formatting
+</li><li class="listitem">
+Setting a language server or format package to <code class="literal">null</code> will result in neovim calling the command as if it is in your $PATH
 </li></ul></div><p><a class="link" href="https://github.com/MoritzBoehme" target="_top">MoritzBoehme</a>:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
 <code class="literal">catppuccin</code> theme is now available as a neovim theme <a class="xref" href="options.html#opt-vim.theme.style"><code class="option">vim.theme.style</code></a> and lualine theme <a class="xref" href="options.html#opt-vim.statusline.lualine.theme"><code class="option">vim.statusline.lualine.theme</code></a>.
 </li></ul></div><p><a class="link" href="https://github.com/antotocar34" target="_top">antotocar34</a>:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
