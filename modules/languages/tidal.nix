@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.languages.tidal;
-in {
+in
+{
   options.vim.languages.tidal = {
     enable = mkEnableOption "tidal language support and plugins";
 

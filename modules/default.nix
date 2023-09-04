@@ -1,10 +1,11 @@
-{
-  modules ? [],
-  pkgs,
-  lib ? pkgs.lib,
-  check ? true,
-  extraSpecialArgs ? {},
-}: let
+{ modules ? [ ]
+, pkgs
+, lib ? pkgs.lib
+, check ? true
+, extraSpecialArgs ? { }
+,
+}:
+let
   extendedLib = import ./lib/stdlib-extended.nix lib;
 
   nvimModules = import ./modules.nix {
@@ -22,4 +23,4 @@
       // extraSpecialArgs;
   };
 in
-  module.config.built.package
+module.config.built.package

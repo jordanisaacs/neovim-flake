@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.languages.markdown;
-in {
+in
+{
   options.vim.languages.markdown = {
     enable = mkEnableOption "Markdown language support";
 
@@ -17,8 +17,8 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      mdPackage = nvim.types.mkGrammarOption pkgs "markdown";
-      mdInlinePackage = nvim.types.mkGrammarOption pkgs "markdown-inline";
+      mdPackage = nvim.options.mkGrammarOption pkgs "markdown";
+      mdInlinePackage = nvim.options.mkGrammarOption pkgs "markdown-inline";
     };
 
     glow.enable = mkOption {
@@ -31,10 +31,10 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.mdPackage cfg.treesitter.mdInlinePackage];
+      vim.treesitter.grammars = [ cfg.treesitter.mdPackage cfg.treesitter.mdInlinePackage ];
     })
     (mkIf cfg.glow.enable {
-      vim.startPlugins = ["glow-nvim"];
+      vim.startPlugins = [ "glow-nvim" ];
 
       vim.luaConfigRC.glow = nvim.dag.entryAnywhere ''
         require'glow'.setup({

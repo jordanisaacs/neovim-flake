@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.lsp;
-in {
+in
+{
   options.vim.lsp = {
     nvimCodeActionMenu = {
       enable = mkEnableOption "nvim code action menu";
@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf (cfg.enable && cfg.nvimCodeActionMenu.enable) {
-    vim.startPlugins = ["nvim-code-action-menu"];
+    vim.startPlugins = [ "nvim-code-action-menu" ];
 
     vim.nnoremap = {
       "<silent><leader>ca" = ":CodeActionMenu<CR>";

@@ -1,8 +1,7 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
@@ -11,17 +10,18 @@ with builtins; let
   defaultServer = "gopls";
   servers = {
     gopls = {
-      package = pkgs.gopls;
+      package = [ "gopls" ];
       lspConfig = ''
         lspconfig.gopls.setup {
           capabilities = capabilities;
           on_attach = default_on_attach;
-          cmd = {"${cfg.lsp.package}/bin/gopls", "serve"},
+          cmd = {"${nvim.languages.commandOptToCmd cfg.lsp.package "gopls"}", "serve"};
         }
       '';
     };
   };
-in {
+in
+{
   options.vim.languages.go = {
     enable = mkEnableOption "Go language support";
 
@@ -31,7 +31,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = nvim.types.mkGrammarOption pkgs "go";
+      package = nvim.options.mkGrammarOption pkgs "go";
     };
 
     lsp = {
@@ -45,10 +45,9 @@ in {
         type = with types; enum (attrNames servers);
         default = defaultServer;
       };
-      package = mkOption {
-        description = "Go LSP server package";
-        type = types.package;
-        default = servers.${cfg.lsp.server}.package;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "Go LSP server";
+        inherit (servers.${cfg.lsp.server}) package;
       };
     };
   };
@@ -56,7 +55,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.package];
+      vim.treesitter.grammars = [ cfg.treesitter.package ];
     })
 
     (mkIf cfg.lsp.enable {

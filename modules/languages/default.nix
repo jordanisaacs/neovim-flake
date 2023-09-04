@@ -1,4 +1,4 @@
-{lib, ...}:
+{ lib, ... }:
 with lib; let
   mkEnable = desc:
     mkOption {
@@ -6,7 +6,8 @@ with lib; let
       type = types.bool;
       default = false;
     };
-in {
+in
+{
   imports = [
     ./clang.nix
     ./go.nix
@@ -20,6 +21,7 @@ in {
     ./plantuml.nix
     ./tidal.nix
     ./html.nix
+    ./bash.nix
   ];
 
   options.vim.languages = {
@@ -27,5 +29,6 @@ in {
     enableTreesitter = mkEnable "treesitter";
     enableFormat = mkEnable "formatting";
     enableExtraDiagnostics = mkEnable "extra diagnostics";
+    enableDebugger = mkEnable "debuggers";
   };
 }

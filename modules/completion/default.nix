@@ -1,34 +1,36 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.autocomplete;
   lspkindEnabled = config.vim.lsp.enable && config.vim.lsp.lspkind.enable;
+  debuggerEnabled = config.vim.debugger.enable;
+
   builtSources =
     concatMapStringsSep
-    "\n"
-    (n: "{ name = '${n}'},")
-    (attrNames cfg.sources);
+      "\n"
+      (n: "{ name = '${n}'},")
+      (attrNames cfg.sources);
 
   builtMaps =
     concatStringsSep
-    "\n"
-    (mapAttrsToList
-      (n: v:
-        if v == null
-        then ""
-        else "${n} = '${v}',")
-      cfg.sources);
+      "\n"
+      (mapAttrsToList
+        (n: v:
+          if v == null
+          then ""
+          else "${n} = '${v}',")
+        cfg.sources);
 
   dagPlacement =
     if lspkindEnabled
-    then nvim.dag.entryAfter ["lspkind"]
+    then nvim.dag.entryAfter [ "lspkind" ]
     else nvim.dag.entryAnywhere;
-in {
+in
+{
   options.vim = {
     autocomplete = {
       enable = mkOption {
@@ -38,7 +40,7 @@ in {
       };
 
       type = mkOption {
-        type = types.enum ["nvim-cmp"];
+        type = types.enum [ "nvim-cmp" ];
         default = "nvim-cmp";
         description = "Set the autocomplete plugin. Options: [nvim-cmp]";
       };
@@ -54,7 +56,7 @@ in {
           Note: only use a single attribute name per attribute set
         '';
         type = with types; attrsOf (nullOr str);
-        default = {};
+        default = { };
         example = ''
           {nvim-cmp = null; buffer = "[Buffer]";}
         '';
@@ -86,12 +88,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    vim.startPlugins = [
-      "nvim-cmp"
-      "cmp-buffer"
-      "cmp-vsnip"
-      "cmp-path"
-    ];
+    vim.startPlugins =
+      [
+        "nvim-cmp"
+        "cmp-buffer"
+        "cmp-vsnip"
+        "cmp-path"
+      ]
+      ++ optional debuggerEnabled "cmp-dap";
 
     vim.autocomplete.sources = {
       "nvim-cmp" = null;
@@ -169,17 +173,24 @@ in {
           completeopt = 'menu,menuone,noinsert',
         },
         formatting = {
-          format =
-      ${
-        if lspkindEnabled
-        then "lspkind.cmp_format(lspkind_opts)"
-        else cfg.formatting.format
-      },
-        }
+          format = ${if lspkindEnabled then "lspkind.cmp_format(lspkind_opts)" else cfg.formatting.format},
+        },
+        ${optionalString debuggerEnabled ''
+          enabled = function()
+            return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+              or require("cmp_dap").is_dap_buffer()
+          end,
+        ''}
       })
       ${optionalString (config.vim.autopairs.enable && config.vim.autopairs.type == "nvim-autopairs") ''
         local cmp_autopairs = require('nvim-autopairs.completion.cmp')
         cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({ map_char = { text = ""} }))
+      ''}
+
+      ${optionalString debuggerEnabled ''
+        cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+          sources = { name = "dap" };
+        })
       ''}
     '');
 

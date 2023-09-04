@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.lsp;
-in {
+in
+{
   options.vim.lsp = {
     lspSignature = {
       enable = mkEnableOption "lsp signature viewer";
@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf (cfg.enable && cfg.lspSignature.enable) {
-    vim.startPlugins = ["lsp-signature"];
+    vim.startPlugins = [ "lsp-signature" ];
 
     vim.luaConfigRC.lsp-signature = nvim.dag.entryAnywhere ''
       -- Enable lsp signature viewer

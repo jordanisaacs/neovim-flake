@@ -1,8 +1,7 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
@@ -11,18 +10,19 @@ with builtins; let
   defaultServer = "ccls";
   servers = {
     ccls = {
-      package = pkgs.ccls;
+      package = [ "ccls" ];
       lspConfig = ''
         lspconfig.ccls.setup{
           capabilities = capabilities;
           on_attach=default_on_attach;
-          cmd = {"${pkgs.ccls}/bin/ccls"};
+          cmd = {"${nvim.languages.commandOptToCmd cfg.lsp.package "ccls"}"};
           ${optionalString (cfg.lsp.opts != null) "init_options = ${cfg.lsp.cclsOpts}"}
         }
       '';
     };
   };
-in {
+in
+{
   options.vim.languages.clang = {
     enable = mkEnableOption "C/C++ language support";
 
@@ -41,8 +41,8 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      cPackage = nvim.types.mkGrammarOption pkgs "c";
-      cppPackage = nvim.types.mkGrammarOption pkgs "cpp";
+      cPackage = nvim.options.mkGrammarOption pkgs "c";
+      cppPackage = nvim.options.mkGrammarOption pkgs "cpp";
     };
 
     lsp = {
@@ -56,10 +56,9 @@ in {
         type = with types; enum (attrNames servers);
         default = defaultServer;
       };
-      package = mkOption {
-        description = "clang LSP server package";
-        type = types.package;
-        default = servers.${cfg.lsp.server}.package;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "clang LSP server";
+        inherit (servers.${cfg.lsp.server}) package;
       };
       opts = mkOption {
         description = "Options to pass to clang LSP server";
@@ -76,7 +75,7 @@ in {
 
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.cPackage cfg.treesitter.cppPackage];
+      vim.treesitter.grammars = [ cfg.treesitter.cPackage cfg.treesitter.cppPackage ];
     })
 
     (mkIf cfg.lsp.enable {

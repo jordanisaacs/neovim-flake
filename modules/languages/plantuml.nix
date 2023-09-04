@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.languages.plantuml;
-in {
+in
+{
   options.vim.languages = {
     plantuml = {
       enable = mkOption {
@@ -38,17 +38,17 @@ in {
 
   config =
     mkIf cfg.enable
-    {
-      vim.startPlugins = [
-        "plantuml-previewer"
-        "plantuml-syntax"
-        "open-browser"
-      ];
+      {
+        vim.startPlugins = [
+          "plantuml-previewer"
+          "plantuml-syntax"
+          "open-browser"
+        ];
 
-      vim.configRC.plantuml = nvim.dag.entryAnywhere ''
-        au filetype plantuml let g:plantuml_previewer#viewer_path = "/tmp/plantuml"
-        au filetype plantuml let g:plantuml_previewer#java_path = "${cfg.javaPackage}/bin/java"
-        au filetype plantuml let g:plantuml_previewer#plantuml_jar_path = "${cfg.plantumlPackage}/lib/plantuml.jar"
-      '';
-    };
+        vim.configRC.plantuml = nvim.dag.entryAnywhere ''
+          au filetype plantuml let g:plantuml_previewer#viewer_path = "/tmp/plantuml"
+          au filetype plantuml let g:plantuml_previewer#java_path = "${cfg.javaPackage}/bin/java"
+          au filetype plantuml let g:plantuml_previewer#plantuml_jar_path = "${cfg.plantumlPackage}/lib/plantuml.jar"
+        '';
+      };
 }

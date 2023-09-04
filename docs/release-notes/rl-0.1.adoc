@@ -18,7 +18,9 @@ If you are contributing and adding a new plugin, add the plugin name to `availab
 
 * `neovimBuilder` has been removed for configuration. Using an overlay is no longer required. See the manual for the new way to configuration.
 
-* Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Utilizes the nixpkgs `nvim-treesitter` plugin rather than a custom input in order to take advantage of build support of pinned versions. See https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees[discourse] for more information. Packages can be found under the `pkgs.vimPlugins.nvim-treesitter.builtGrammars` attribute. Treesitter grammars for supported languages should be enabled within the module. By default no grammars are installed, thus the following grammars which do not have a language section are not included anymore: comment, toml, make, html, css, graphql, json.
+* Treesitter grammars are now configurable with <<opt-vim.treesitter.grammars>>. Utilizes the nixpkgs `nvim-treesitter` plugin rather than a custom input in order to take advantage of build support of pinned versions. See https://discourse.nixos.org/t/psa-if-you-are-on-unstable-try-out-nvim-treesitter-withallgrammars/23321?u=snowytrees[discourse] for more information. Packages can be found under the `pkgs.vimPlugins.nvim-treesitter.builtGrammars` attribute. Treesitter grammars for supported languages should be enabled within the module. By default no grammars are installed, thus the following grammars which do not have a language section are not included anymore: comment, toml, make, css, graphql, json.
+
+* Neovim's bundled treesitter parsers are overriden when using `nvim-treesitter` which fixes query errors.
 
 * <<opt-vim.configRC>> and <<opt-vim.luaConfigRC>> are now of type DAG lines. This allows for ordering of the config. Usage is the same is in home-manager's `home.activation` option.
 +
@@ -56,6 +58,20 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 * Added support for `statix` and `deadnix` through <<opt-vim.languages.nix.extraDiagnostics.types>>
 
 * Plugin inputs are now prefixed with `plugin-` to allow autodiscovery of them
+
+* Added bash language support at <<opt-vim.languages.bash.enable>>, includes `bash-language-server` lsp, `shellcheck` diagnostics, and `shfmt` formatting
+
+* Added `nvim-dap` debugger support under <<opt-vim.debugger.enable>>
+    * UI using `nvim-dap-ui` under <<opt-vim.debugger.ui.enable>>
+    * Virtual text using `nvim-dap-virtual-text` under <<opt-vim.debugger.virtualText.enable>>
+
+* Support for rust-tools debugger support under <<opt-vim.languages.rust.debugger.enable>>
+
+* Add `telescope-file-browser` under <<opt-vim.telescope.fileBrowser.enable>>
+
+* Internally switched to using `nixpkgs-fmt` for formatting
+
+* Setting a language server or format package to `null` will result in neovim calling the command as if it is in your $PATH
 
 https://github.com/MoritzBoehme[MoritzBoehme]:
 

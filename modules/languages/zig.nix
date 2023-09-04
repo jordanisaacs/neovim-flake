@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.languages.zig;
-in {
+in
+{
   options.vim.languages.zig = {
     enable = mkEnableOption "SQL language support";
 
@@ -17,7 +17,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = nvim.types.mkGrammarOption pkgs "zig";
+      package = nvim.options.mkGrammarOption pkgs "zig";
     };
     lsp = {
       enable = mkOption {
@@ -25,6 +25,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableLSP;
       };
+      # TODO: Fix the zls package styles
       package = mkOption {
         description = "ZLS package";
         type = types.package;
@@ -41,7 +42,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.package];
+      vim.treesitter.grammars = [ cfg.treesitter.package ];
     })
 
     (mkIf cfg.lsp.enable {

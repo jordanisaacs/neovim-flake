@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.languages.html;
-in {
+in
+{
   options.vim.languages.html = {
     enable = mkEnableOption "HTML language support";
 
@@ -17,7 +17,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = nvim.types.mkGrammarOption pkgs "html";
+      package = nvim.options.mkGrammarOption pkgs "html";
 
       autotagHtml = mkOption {
         description = "Enable autoclose/autorename of html tags (nvim-ts-autotag)";
@@ -30,7 +30,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.package];
+      vim.treesitter.grammars = [ cfg.treesitter.package ];
 
       vim.startPlugins = optional cfg.treesitter.autotagHtml "nvim-ts-autotag";
 

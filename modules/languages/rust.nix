@@ -1,15 +1,25 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.languages.rust;
-in {
+in
+{
   options.vim.languages.rust = {
     enable = mkEnableOption "Rust language support";
+
+    packages = {
+      rustc = mkPackageOption pkgs [ "Rustc package to use" ] {
+        default = [ "rustc" ];
+      };
+
+      cargo = mkPackageOption pkgs [ "Cargo package to use" ] {
+        default = [ "cargo" ];
+      };
+    };
 
     treesitter = {
       enable = mkOption {
@@ -17,7 +27,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = nvim.types.mkGrammarOption pkgs "rust";
+      package = nvim.options.mkGrammarOption pkgs "rust";
     };
 
     crates = {
@@ -35,15 +45,22 @@ in {
         type = types.bool;
         default = config.vim.languages.enableLSP;
       };
-      package = mkOption {
-        description = "rust-analyzer package";
-        type = types.package;
-        default = pkgs.rust-analyzer;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "rust-analyzer";
+        package = [ "rust-analyzer" ];
       };
       opts = mkOption {
         description = "Options to pass to rust analyzer";
         type = types.str;
         default = "";
+      };
+    };
+
+    debugger = {
+      enable = mkOption {
+        description = "Rust debugger support (codelldb)";
+        type = types.bool;
+        default = config.vim.languages.enableDebugger;
       };
     };
   };
@@ -52,9 +69,9 @@ in {
     (mkIf cfg.crates.enable {
       vim.lsp.null-ls.enable = mkIf cfg.crates.codeActions true;
 
-      vim.startPlugins = ["crates-nvim"];
+      vim.startPlugins = [ "crates-nvim" ];
 
-      vim.autocomplete.sources = {"crates" = "[Crates]";};
+      vim.autocomplete.sources = { "crates" = "[Crates]"; };
       vim.luaConfigRC.rust-crates = nvim.dag.entryAnywhere ''
         require('crates').setup {
           null_ls = {
@@ -66,10 +83,10 @@ in {
     })
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.package];
+      vim.treesitter.grammars = [ cfg.treesitter.package ];
     })
     (mkIf cfg.lsp.enable {
-      vim.startPlugins = ["rust-tools"];
+      vim.startPlugins = [ "rust-tools" ];
 
       vim.lsp.lspconfig.enable = true;
       vim.lsp.lspconfig.sources.rust-lsp = ''
@@ -81,6 +98,7 @@ in {
           vim.keymap.set("n", "<leader>ris", rt.inlay_hints.set, opts)
           vim.keymap.set("n", "<leader>riu", rt.inlay_hints.unset, opts)
           vim.keymap.set("n", "<leader>rr", rt.runnables.runnables, opts)
+          vim.keymap.set("n", "<leader>rd", rt.debuggables.debuggables, opts)
           vim.keymap.set("n", "<leader>rp", rt.parent_module.parent_module, opts)
           vim.keymap.set("n", "<leader>rm", rt.expand_macro.expand_macro, opts)
           vim.keymap.set("n", "<leader>rc", rt.open_cargo_toml.open_cargo_toml, opts)
@@ -98,15 +116,23 @@ in {
           server = {
             capabilities = capabilities,
             on_attach = rust_on_attach,
-            cmd = {"${cfg.lsp.package}/bin/rust-analyzer"},
+            cmd = {"${nvim.languages.commandOptToCmd cfg.lsp.package "rust-analyzer"}"},
             settings = {
               ${cfg.lsp.opts}
             }
+          },
+          dap = {
+            adapter = false,
           }
         }
 
         rt.setup(rustopts)
       '';
+    })
+    (mkIf cfg.debugger.enable {
+      vim.startPlugins = [ "rust-tools" ];
+
+      vim.debugger.enable = true;
     })
   ]);
 }

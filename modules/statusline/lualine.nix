@@ -1,14 +1,14 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.statusline.lualine;
   supported_themes = import ./supported_lualine_themes.nix;
-in {
+in
+{
   options.vim.statusline.lualine = {
     enable = mkEnableOption "lualine";
 
@@ -18,45 +18,46 @@ in {
       default = true;
     };
 
-    theme = let
-      themeSupported = elem config.vim.theme.name supported_themes;
-    in
+    theme =
+      let
+        themeSupported = elem config.vim.theme.name supported_themes;
+      in
       mkOption {
         description = "Theme for lualine";
         type = types.enum ([
-            "auto"
-            "16color"
-            "gruvbox"
-            "ayu_dark"
-            "ayu_light"
-            "ayu_mirage"
-            "codedark"
-            "dracula"
-            "everforest"
-            "gruvbox"
-            "gruvbox_light"
-            "gruvbox_material"
-            "horizon"
-            "iceberg_dark"
-            "iceberg_light"
-            "jellybeans"
-            "material"
-            "modus_vivendi"
-            "molokai"
-            "nightfly"
-            "nord"
-            "oceanicnext"
-            "onelight"
-            "palenight"
-            "papercolor_dark"
-            "papercolor_light"
-            "powerline"
-            "seoul256"
-            "solarized_dark"
-            "tomorrow"
-            "wombat"
-          ]
-          ++ optional themeSupported config.vim.theme.name);
+          "auto"
+          "16color"
+          "gruvbox"
+          "ayu_dark"
+          "ayu_light"
+          "ayu_mirage"
+          "codedark"
+          "dracula"
+          "everforest"
+          "gruvbox"
+          "gruvbox_light"
+          "gruvbox_material"
+          "horizon"
+          "iceberg_dark"
+          "iceberg_light"
+          "jellybeans"
+          "material"
+          "modus_vivendi"
+          "molokai"
+          "nightfly"
+          "nord"
+          "oceanicnext"
+          "onelight"
+          "palenight"
+          "papercolor_dark"
+          "papercolor_light"
+          "powerline"
+          "seoul256"
+          "solarized_dark"
+          "tomorrow"
+          "wombat"
+        ]
+        ++ optional themeSupported config.vim.theme.name);
         default = "auto";
         # TODO: xml generation error if the closing '' is on a new line.
         # issue: https://gitlab.com/rycee/nmd/-/issues/10
@@ -198,7 +199,7 @@ in {
     #  })
     #];
 
-    vim.startPlugins = ["lualine"];
+    vim.startPlugins = [ "lualine" ];
     vim.luaConfigRC.lualine = nvim.dag.entryAnywhere ''
       require'lualine'.setup {
         options = {

@@ -1,8 +1,7 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
@@ -11,12 +10,12 @@ with builtins; let
   defaultServer = "tsserver";
   servers = {
     tsserver = {
-      package = pkgs.nodePackages.typescript-language-server;
+      package = [ "nodePackages" "typescript-language-server" ];
       lspConfig = ''
         lspconfig.tsserver.setup {
           capabilities = capabilities;
           on_attach = attach_keymaps,
-          cmd = { "${cfg.lsp.package}/bin/typescript-language-server", "--stdio" }
+          cmd = {"${nvim.languages.commandOptToCmd cfg.lsp.package "typescript-language-server"}", "--stdio"},
         }
       '';
     };
@@ -26,12 +25,12 @@ with builtins; let
   defaultFormat = "prettier";
   formats = {
     prettier = {
-      package = pkgs.nodePackages.prettier;
+      package = [ "nodePackages" "prettier" ];
       nullConfig = ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.prettier.with({
-            command = "${cfg.format.package}/bin/prettier",
+            command = "${nvim.languages.commandOptToCmd cfg.format.package "prettier"}",
           })
         )
       '';
@@ -39,7 +38,7 @@ with builtins; let
   };
 
   # TODO: specify packages
-  defaultDiagnostics = ["eslint"];
+  defaultDiagnostics = [ "eslint" ];
   diagnostics = {
     eslint = {
       package = pkgs.nodePackages.eslint;
@@ -53,7 +52,8 @@ with builtins; let
       '';
     };
   };
-in {
+in
+{
   options.vim.languages.ts = {
     enable = mkEnableOption "SQL language support";
 
@@ -63,8 +63,8 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      tsPackage = nvim.types.mkGrammarOption pkgs "tsx";
-      jsPackage = nvim.types.mkGrammarOption pkgs "javascript";
+      tsPackage = nvim.options.mkGrammarOption pkgs "tsx";
+      jsPackage = nvim.options.mkGrammarOption pkgs "javascript";
     };
 
     lsp = {
@@ -78,10 +78,9 @@ in {
         type = with types; enum (attrNames servers);
         default = defaultServer;
       };
-      package = mkOption {
-        description = "Typescript/Javascript LSP server package";
-        type = types.package;
-        default = servers.${cfg.lsp.server}.package;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "Typescript/Javascript LSP server";
+        inherit (servers.${cfg.lsp.server}) package;
       };
     };
 
@@ -96,10 +95,9 @@ in {
         type = with types; enum (attrNames formats);
         default = defaultFormat;
       };
-      package = mkOption {
-        description = "Typescript/Javascript formatter package";
-        type = types.package;
-        default = formats.${cfg.format.type}.package;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "Typescript/Javascript formatter";
+        inherit (formats.${cfg.format.type}) package;
       };
     };
 
@@ -109,7 +107,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableExtraDiagnostics;
       };
-      types = lib.nvim.types.diagnostics {
+      types = nvim.options.mkDiagnosticsOption {
         langDesc = "Typescript/Javascript";
         inherit diagnostics;
         inherit defaultDiagnostics;
@@ -120,7 +118,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.tsPackage cfg.treesitter.jsPackage];
+      vim.treesitter.grammars = [ cfg.treesitter.tsPackage cfg.treesitter.jsPackage ];
     })
 
     (mkIf cfg.lsp.enable {

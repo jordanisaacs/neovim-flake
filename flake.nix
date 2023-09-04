@@ -22,6 +22,10 @@
 
     ## Plugins (must begin with plugin-)
 
+    # tresitter plugins
+    plugin-nvim-treesitter-context.url = "github:nvim-treesitter/nvim-treesitter-context";
+    plugin-nvim-treesitter-context.flake = false;
+
     # LSP plugins
     plugin-nvim-lspconfig.url = "github:neovim/nvim-lspconfig";
     plugin-nvim-lspconfig.flake = false;
@@ -34,9 +38,6 @@
 
     plugin-trouble.url = "github:folke/trouble.nvim";
     plugin-trouble.flake = false;
-
-    plugin-nvim-treesitter-context.url = "github:nvim-treesitter/nvim-treesitter-context";
-    plugin-nvim-treesitter-context.flake = false;
 
     plugin-nvim-lightbulb.url = "github:kosayoda/nvim-lightbulb";
     plugin-nvim-lightbulb.flake = false;
@@ -59,9 +60,15 @@
     plugin-rust-tools.url = "github:simrat39/rust-tools.nvim";
     plugin-rust-tools.flake = false;
 
-    # Debug
+    # Debugger
     plugin-nvim-dap.url = "github:mfussenegger/nvim-dap";
     plugin-nvim-dap.flake = false;
+
+    plugin-nvim-dap-ui.url = "github:rcarriga/nvim-dap-ui";
+    plugin-nvim-dap-ui.flake = false;
+
+    plugin-nvim-dap-virtual-text.url = "github:theHamsta/nvim-dap-virtual-text";
+    plugin-nvim-dap-virtual-text.flake = false;
 
     # Copying/Registers
     plugin-registers.url = "github:tversteeg/registers.nvim";
@@ -73,6 +80,9 @@
     # Telescope
     plugin-telescope.url = "github:nvim-telescope/telescope.nvim";
     plugin-telescope.flake = false;
+
+    plugin-telescope-file-browser.url = "github:nvim-telescope/telescope-file-browser.nvim";
+    plugin-telescope-file-browser.flake = false;
 
     # Filetrees
     plugin-nvim-tree-lua.url = "github:kyazdani42/nvim-tree.lua";
@@ -104,6 +114,9 @@
 
     plugin-cmp-treesitter.url = "github:ray-x/cmp-treesitter";
     plugin-cmp-treesitter.flake = false;
+
+    plugin-cmp-dap.url = "github:rcarriga/cmp-dap";
+    plugin-cmp-dap.flake = false;
 
     # snippets
     plugin-vim-vsnip.url = "github:hrsh7th/vim-vsnip";
@@ -185,108 +198,117 @@
     plugin-plantuml-previewer.flake = false;
   };
 
-  outputs = {
-    nixpkgs,
-    flake-utils,
-    ...
-  } @ inputs: let
-    rawPlugins = nvimLib.plugins.fromInputs inputs "plugin-";
+  outputs =
+    { nixpkgs
+    , flake-utils
+    , ...
+    } @ inputs:
+    let
+      rawPlugins = nvimLib.plugins.fromInputs inputs "plugin-";
 
-    neovimConfiguration = {modules ? [], ...} @ args:
-      import ./modules
-      (args // {modules = [{config.build.rawPlugins = rawPlugins;}] ++ modules;});
+      neovimConfiguration = { modules ? [ ], ... } @ args:
+        import ./modules
+          (args // { modules = [{ config.build.rawPlugins = rawPlugins; }] ++ modules; });
 
-    nvimBin = pkg: "${pkg}/bin/nvim";
+      nvimBin = pkg: "${pkg}/bin/nvim";
 
-    buildPkg = pkgs: modules: (neovimConfiguration {
-      inherit pkgs modules;
-    });
+      buildPkg = pkgs: modules: (neovimConfiguration {
+        inherit pkgs modules;
+      });
 
-    nvimLib = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
+      nvimLib = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).nvim;
 
-    tidalConfig = {
-      config.vim.languages.tidal.enable = true;
-    };
-
-    mainConfig = isMaximal: let
-      overrideable = nixpkgs.lib.mkOverride 1200; # between mkOptionDefault and mkDefault
-    in {
-      config = {
-        build.viAlias = overrideable false;
-        build.vimAlias = overrideable true;
-        vim.languages = {
-          enableLSP = overrideable true;
-          enableFormat = overrideable true;
-          enableTreesitter = overrideable true;
-          enableExtraDiagnostics = overrideable true;
-
-          nix.enable = overrideable true;
-          markdown.enable = overrideable true;
-          html.enable = overrideable isMaximal;
-          clang.enable = overrideable isMaximal;
-          sql.enable = overrideable isMaximal;
-          rust = {
-            enable = overrideable isMaximal;
-            crates.enable = overrideable true;
-          };
-          ts.enable = overrideable isMaximal;
-          go.enable = overrideable isMaximal;
-          zig.enable = overrideable isMaximal;
-          python.enable = overrideable isMaximal;
-          plantuml.enable = overrideable isMaximal;
-
-          # See tidal config
-          tidal.enable = overrideable false;
-        };
-        vim.lsp = {
-          formatOnSave = overrideable true;
-          lspkind.enable = overrideable true;
-          lightbulb.enable = overrideable true;
-          lspsaga.enable = overrideable false;
-          nvimCodeActionMenu.enable = overrideable true;
-          trouble.enable = overrideable true;
-          lspSignature.enable = overrideable true;
-        };
-        vim.visuals = {
-          enable = overrideable true;
-          nvimWebDevicons.enable = overrideable true;
-          indentBlankline = {
-            enable = overrideable true;
-            fillChar = overrideable null;
-            eolChar = overrideable null;
-            showCurrContext = overrideable true;
-          };
-          cursorWordline = {
-            enable = overrideable true;
-            lineTimeout = overrideable 0;
-          };
-        };
-        vim.statusline.lualine.enable = overrideable true;
-        vim.theme.enable = true;
-        vim.autopairs.enable = overrideable true;
-        vim.autocomplete = {
-          enable = overrideable true;
-          type = overrideable "nvim-cmp";
-        };
-        vim.filetree.nvimTreeLua.enable = overrideable true;
-        vim.tabline.nvimBufferline.enable = overrideable true;
-        vim.treesitter.context.enable = overrideable true;
-        vim.keys = {
-          enable = overrideable true;
-          whichKey.enable = overrideable true;
-        };
-        vim.telescope.enable = overrideable true;
-        vim.git = {
-          enable = overrideable true;
-          gitsigns.enable = overrideable true;
-          gitsigns.codeActions = overrideable true;
-        };
+      tidalConfig = {
+        config.vim.languages.tidal.enable = true;
       };
-    };
 
-    nixConfig = mainConfig false;
-    maximalConfig = mainConfig true;
-  in
+      mainConfig = isMaximal:
+        let
+          overrideable = nixpkgs.lib.mkOverride 1200; # between mkOptionDefault and mkDefault
+        in
+        {
+          config = {
+            build.viAlias = overrideable false;
+            build.vimAlias = overrideable true;
+            vim.languages = {
+              enableLSP = overrideable true;
+              enableFormat = overrideable true;
+              enableTreesitter = overrideable true;
+              enableExtraDiagnostics = overrideable true;
+              enableDebugger = overrideable true;
+
+              nix.enable = overrideable true;
+              markdown.enable = overrideable true;
+              html.enable = overrideable isMaximal;
+              clang.enable = overrideable isMaximal;
+              sql.enable = overrideable isMaximal;
+              rust = {
+                enable = overrideable isMaximal;
+                crates.enable = overrideable true;
+              };
+              ts.enable = overrideable isMaximal;
+              go.enable = overrideable isMaximal;
+              zig.enable = overrideable isMaximal;
+              python.enable = overrideable isMaximal;
+              plantuml.enable = overrideable isMaximal;
+              bash.enable = overrideable isMaximal;
+
+              # See tidal config
+              tidal.enable = overrideable false;
+            };
+            vim.lsp = {
+              formatOnSave = overrideable true;
+              lspkind.enable = overrideable true;
+              lightbulb.enable = overrideable true;
+              lspsaga.enable = overrideable false;
+              nvimCodeActionMenu.enable = overrideable true;
+              trouble.enable = overrideable true;
+              lspSignature.enable = overrideable true;
+            };
+            vim.visuals = {
+              enable = overrideable true;
+              nvimWebDevicons.enable = overrideable true;
+              indentBlankline = {
+                enable = overrideable true;
+                fillChar = overrideable null;
+                eolChar = overrideable null;
+                showCurrContext = overrideable true;
+              };
+              cursorWordline = {
+                enable = overrideable true;
+                lineTimeout = overrideable 0;
+              };
+            };
+            vim.statusline.lualine.enable = overrideable true;
+            vim.theme.enable = true;
+            vim.autopairs.enable = overrideable true;
+            vim.autocomplete = {
+              enable = overrideable true;
+              type = overrideable "nvim-cmp";
+            };
+            vim.debugger.ui.enable = overrideable true;
+            vim.filetree.nvimTreeLua.enable = overrideable true;
+            vim.tabline.nvimBufferline.enable = overrideable true;
+            vim.treesitter.context.enable = overrideable true;
+            vim.keys = {
+              enable = overrideable true;
+              whichKey.enable = overrideable true;
+            };
+            vim.telescope = {
+              enable = overrideable true;
+              fileBrowser.enable = overrideable true;
+            };
+            vim.git = {
+              enable = overrideable true;
+              gitsigns.enable = overrideable true;
+              gitsigns.codeActions = overrideable true;
+            };
+          };
+        };
+
+      nixConfig = mainConfig false;
+      maximalConfig = mainConfig true;
+    in
     {
       lib = {
         nvim = nvimLib;
@@ -295,12 +317,13 @@
 
       overlays.default = final: prev: {
         inherit neovimConfiguration;
-        neovim-nix = buildPkg prev [nixConfig];
-        neovim-maximal = buildPkg prev [maximalConfig];
-        neovim-tidal = buildPkg prev [tidalConfig];
+        neovim-nix = buildPkg prev [ nixConfig ];
+        neovim-maximal = buildPkg prev [ maximalConfig ];
+        neovim-tidal = buildPkg prev [ tidalConfig ];
       };
     }
-    // (flake-utils.lib.eachDefaultSystem (system: let
+    // (flake-utils.lib.eachDefaultSystem (system:
+    let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
@@ -317,16 +340,23 @@
         nmdSrc = inputs.nmd;
       };
 
-      tidalPkg = buildPkg pkgs [tidalConfig];
-      nixPkg = buildPkg pkgs [nixConfig];
-      maximalPkg = buildPkg pkgs [maximalConfig];
+      tidalPkg = buildPkg pkgs [ tidalConfig ];
+      nixPkg = buildPkg pkgs [ nixConfig ];
+      maximalPkg = buildPkg pkgs [ maximalConfig ];
 
       devPkg = nixPkg.extendConfiguration {
         modules = [
-          {config.vim.languages.html.enable = true;}
+          {
+            vim.syntaxHighlighting = false;
+            vim.languages.nix.format.type = "nixpkgs-fmt";
+            vim.languages.bash.enable = true;
+            vim.languages.html.enable = true;
+            vim.filetree.nvimTreeLua.enable = false;
+          }
         ];
       };
-    in {
+    in
+    {
       apps =
         rec {
           nix = {
@@ -339,14 +369,14 @@
           };
           default = nix;
         }
-        // pkgs.lib.optionalAttrs (!(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])) {
+        // pkgs.lib.optionalAttrs (!(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])) {
           tidal = {
             type = "app";
             program = nvimBin tidalPkg;
           };
         };
 
-      devShells.default = pkgs.mkShell {nativeBuildInputs = [devPkg];};
+      devShells.default = pkgs.mkShell { nativeBuildInputs = [ devPkg ]; };
 
       packages =
         {
@@ -356,8 +386,9 @@
           default = nixPkg;
           nix = nixPkg;
           maximal = maximalPkg;
+          develop = devPkg;
         }
-        // pkgs.lib.optionalAttrs (!(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])) {
+        // pkgs.lib.optionalAttrs (!(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])) {
           tidal = tidalPkg;
         };
     }));

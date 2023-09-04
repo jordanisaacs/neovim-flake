@@ -1,14 +1,14 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   treesitter = config.vim.treesitter;
   cfg = treesitter.context;
-in {
+in
+{
   options.vim.treesitter.context = {
     enable = mkEnableOption "context of current buffer contents [nvim-treesitter-context] ";
 
@@ -38,13 +38,13 @@ in {
 
     trimScope = mkOption {
       description = nvim.nmd.asciiDoc "Which context lines to discard if <<opt-vim.treesitter.context.maxLines>> is exceeded.";
-      type = types.enum ["inner" "outer"];
+      type = types.enum [ "inner" "outer" ];
       default = "outer";
     };
 
     mode = mkOption {
       description = "Line used to calculate context.";
-      type = types.enum ["cursor" "topline"];
+      type = types.enum [ "cursor" "topline" ];
       default = "cursor";
     };
 
@@ -66,7 +66,7 @@ in {
   };
 
   config = mkIf (treesitter.enable && cfg.enable) {
-    vim.startPlugins = ["nvim-treesitter-context"];
+    vim.startPlugins = [ "nvim-treesitter-context" ];
 
     vim.luaConfigRC.treesitter-context = nvim.dag.entryAnywhere ''
       require'treesitter-context'.setup {

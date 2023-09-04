@@ -1,8 +1,7 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
@@ -11,12 +10,12 @@ with builtins; let
   defaultServer = "pyright";
   servers = {
     pyright = {
-      package = pkgs.nodePackages.pyright;
+      package = [ "nodePackages" "pyright" ];
       lspConfig = ''
         lspconfig.pyright.setup{
           capabilities = capabilities;
           on_attach = default_on_attach;
-          cmd = {"${cfg.lsp.package}/bin/pyright-langserver", "--stdio"}
+          cmd = {"${nvim.languages.commandOptToCmd cfg.lsp.package "pyright-langserver"}", "--stdio"};
         }
       '';
     };
@@ -25,18 +24,19 @@ with builtins; let
   defaultFormat = "black";
   formats = {
     black = {
-      package = pkgs.black;
+      package = [ "black" ];
       nullConfig = ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.black.with({
-            command = "${cfg.format.package}/bin/black",
+            command = "${nvim.languages.commandOptToCmd cfg.format.package "black"}",
           })
         )
       '';
     };
   };
-in {
+in
+{
   options.vim.languages.python = {
     enable = mkEnableOption "Python language support";
 
@@ -46,7 +46,7 @@ in {
         type = types.bool;
         default = config.vim.languages.enableTreesitter;
       };
-      package = nvim.types.mkGrammarOption pkgs "python";
+      package = nvim.options.mkGrammarOption pkgs "python";
     };
 
     lsp = {
@@ -60,10 +60,9 @@ in {
         type = with types; enum (attrNames servers);
         default = defaultServer;
       };
-      package = mkOption {
-        description = "Python LSP server package";
-        type = types.package;
-        default = servers.${cfg.lsp.server}.package;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "Python LSP server";
+        inherit (servers.${cfg.lsp.server}) package;
       };
     };
 
@@ -78,17 +77,16 @@ in {
         type = with types; enum (attrNames formats);
         default = defaultFormat;
       };
-      package = mkOption {
-        description = "Python formatter package";
-        type = types.package;
-        default = formats.${cfg.format.type}.package;
+      package = nvim.options.mkCommandOption pkgs {
+        description = "Python formatter";
+        inherit (formats.${cfg.format.type}) package;
       };
     };
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.treesitter.enable {
       vim.treesitter.enable = true;
-      vim.treesitter.grammars = [cfg.treesitter.package];
+      vim.treesitter.grammars = [ cfg.treesitter.package ];
     })
 
     (mkIf cfg.lsp.enable {

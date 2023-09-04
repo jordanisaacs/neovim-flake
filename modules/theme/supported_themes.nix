@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 with lib;
 with builtins; let
@@ -24,7 +23,8 @@ with builtins; let
 
   cfg = config.vim.theme;
   style = cfg.style;
-in {
+in
+{
   options.vim.theme = {
     supportedThemes = mkOption {
       description = "Supported themes";
@@ -41,7 +41,7 @@ in {
         }
         require('onedark').load()
       '';
-      styles = ["dark" "darker" "cool" "deep" "warm" "warmer"];
+      styles = [ "dark" "darker" "cool" "deep" "warm" "warmer" ];
       defaultStyle = "dark";
     };
 
@@ -53,7 +53,7 @@ in {
         })
         vim.cmd[[colorscheme tokyonight]]
       '';
-      styles = ["day" "night" "storm" "moon"];
+      styles = [ "day" "night" "storm" "moon" ];
       defaultStyle = "night";
     };
 
@@ -66,7 +66,7 @@ in {
         -- setup must be called before loading
         vim.cmd.colorscheme "catppuccin"
       '';
-      styles = ["latte" "frappe" "macchiato" "mocha"];
+      styles = [ "latte" "frappe" "macchiato" "mocha" ];
       defaultStyle = "mocha";
     };
 
@@ -91,7 +91,7 @@ in {
         }
         require('gruvbox').load()
       '';
-      styles = ["dark" "light"];
+      styles = [ "dark" "light" ];
       defaultStyle = "dark";
     };
   };

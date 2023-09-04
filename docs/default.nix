@@ -1,9 +1,10 @@
-{
-  pkgs,
-  lib ? import ../modules/lib/stdlib-extended.nix pkgs.lib,
-  nmdSrc,
-}: let
-  nmd = import nmdSrc {inherit lib pkgs;};
+{ pkgs
+, lib ? import ../modules/lib/stdlib-extended.nix pkgs.lib
+, nmdSrc
+,
+}:
+let
+  nmd = import nmdSrc { inherit lib pkgs; };
   scrubbedPkgsModule = {
     imports = [
       {
@@ -16,12 +17,13 @@
 
   nvimModuleDocs = nmd.buildModulesDocs {
     modules =
-      import ../modules/modules.nix {
-        inherit pkgs lib;
-        check = false;
-      }
-      ++ [scrubbedPkgsModule];
-    moduleRootPaths = [./..];
+      import ../modules/modules.nix
+        {
+          inherit pkgs lib;
+          check = false;
+        }
+      ++ [ scrubbedPkgsModule ];
+    moduleRootPaths = [ ./.. ];
     mkModuleUrl = path: "https://github.com/jordanisaacs/neovim-flake/blob/main/${path}#blob-path";
     channelName = "neovim-flake";
     docBook.id = "neovim-flake-options";
@@ -30,7 +32,7 @@
   docs = nmd.buildDocBookDocs {
     pathName = "neovim-flake";
     projectName = "neovim-flake";
-    modulesDocs = [nvimModuleDocs];
+    modulesDocs = [ nvimModuleDocs ];
     documentsDirectory = ./.;
     documentType = "book";
     chunkToc = ''
@@ -47,8 +49,9 @@
       </toc>
     '';
   };
-in {
-  options.json = nvimModuleDocs.json.override {path = "share/doc/neovim-flake/options.json";};
+in
+{
+  options.json = nvimModuleDocs.json.override { path = "share/doc/neovim-flake/options.json"; };
   manPages = docs.manPages;
-  manual = {inherit (docs) html htmlOpenTool;};
+  manual = { inherit (docs) html htmlOpenTool; };
 }

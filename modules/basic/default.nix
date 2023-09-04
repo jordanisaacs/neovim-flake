@@ -1,13 +1,13 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim;
-in {
+in
+{
   options.vim = {
     colourTerm = mkOption {
       type = types.bool;
@@ -58,13 +58,13 @@ in {
     };
 
     mouseSupport = mkOption {
-      type = with types; enum ["a" "n" "v" "i" "c"];
+      type = with types; enum [ "a" "n" "v" "i" "c" ];
       default = "a";
       description = "Set modes for mouse support. a - all, n - normal, v - visual, i - insert, c - command";
     };
 
     lineNumberMode = mkOption {
-      type = with types; enum ["relative" "number" "relNumber" "none"];
+      type = with types; enum [ "relative" "number" "relNumber" "none" ];
       default = "relNumber";
       description = "How line numbers are displayed. none, relative, number, relNumber";
     };
@@ -106,7 +106,7 @@ in {
     };
 
     bell = mkOption {
-      type = types.enum ["none" "visual" "on"];
+      type = types.enum [ "none" "visual" "on" ];
       default = "none";
       description = "Set how bells are handled. Options: on, visual or none";
     };
@@ -131,7 +131,7 @@ in {
   };
 
   config = {
-    vim.startPlugins = ["plenary-nvim"];
+    vim.startPlugins = [ "plenary-nvim" ];
 
     vim.nmap = mkIf cfg.disableArrows {
       "<up>" = "<nop>";
@@ -147,9 +147,9 @@ in {
       "<right>" = "<nop>";
     };
 
-    vim.nnoremap = mkIf cfg.mapLeaderSpace {"<space>" = "<nop>";};
+    vim.nnoremap = mkIf cfg.mapLeaderSpace { "<space>" = "<nop>"; };
 
-    vim.configRC.basic = nvim.dag.entryAfter ["globalsScript"] ''
+    vim.configRC.basic = nvim.dag.entryAfter [ "globalsScript" ] ''
       " Settings that are set for everything
       set encoding=utf-8
       set mouse=${cfg.mouseSupport}

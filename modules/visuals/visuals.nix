@@ -1,13 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }:
 with lib;
 with builtins; let
   cfg = config.vim.visuals;
-in {
+in
+{
   options.vim.visuals = {
     enable = mkEnableOption "visual enhancements.";
 
@@ -72,7 +72,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.indentBlankline.enable {
-      vim.startPlugins = ["indent-blankline"];
+      vim.startPlugins = [ "indent-blankline" ];
       vim.luaConfigRC.indent-blankline = nvim.dag.entryAnywhere ''
         vim.opt.list = true
 
@@ -94,13 +94,13 @@ in {
       '';
     })
     (mkIf cfg.cursorWordline.enable {
-      vim.startPlugins = ["nvim-cursorline"];
+      vim.startPlugins = [ "nvim-cursorline" ];
       vim.luaConfigRC.cursorline = nvim.dag.entryAnywhere ''
         vim.g.cursorline_timeout = ${toString cfg.cursorWordline.lineTimeout}
       '';
     })
     (mkIf cfg.nvimWebDevicons.enable {
-      vim.startPlugins = ["nvim-web-devicons"];
+      vim.startPlugins = [ "nvim-web-devicons" ];
     })
   ]);
 }

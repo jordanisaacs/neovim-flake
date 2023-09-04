@@ -1,5 +1,5 @@
 # Helpers for converting values to lua
-{lib}: {
+{ lib }: {
   yesNo = value:
     if value
     then "yes"
