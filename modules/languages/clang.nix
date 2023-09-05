@@ -65,6 +65,13 @@ in
         type = with types; nullOr str;
         default = null;
       };
+      cclsNvim = {
+        enable = mkOption {
+          description = "Enable support for extra ccls extensions through ccls.nvim";
+          default = cfg.lsp.server == "ccls";
+          defaultText = nvim.nmd.literalAsciiDoc ''`config.vim.languages.clang.lsp.server == "ccls"`'';
+        };
+      };
     };
   };
 
@@ -78,10 +85,24 @@ in
       vim.treesitter.grammars = [ cfg.treesitter.cPackage cfg.treesitter.cppPackage ];
     })
 
-    (mkIf cfg.lsp.enable {
-      vim.lsp.lspconfig.enable = true;
+    (mkIf cfg.lsp.enable (mkMerge [
+      {
+        vim.lsp.lspconfig.enable = true;
+        vim.lsp.lspconfig.sources.clang-lsp = servers.${cfg.lsp.server}.lspConfig;
+      }
 
-      vim.lsp.lspconfig.sources.clang-lsp = servers.${cfg.lsp.server}.lspConfig;
-    })
+      (mkIf cfg.lsp.cclsNvim.enable {
+        assertions = [{
+          assertion = cfg.lsp.server == "ccls";
+          message = "To enable cclsNvim, lsp must be enabled and set to ccls";
+        }];
+
+        vim.startPlugins = [ "ccls-nvim" ];
+
+        vim.luaConfigRC.ccls-nvim = nvim.dag.entryAnywhere ''
+          require("ccls").setup({})
+        '';
+      })
+    ]))
   ]);
 }

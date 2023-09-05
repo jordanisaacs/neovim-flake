@@ -60,6 +60,10 @@
     plugin-rust-tools.url = "github:simrat39/rust-tools.nvim";
     plugin-rust-tools.flake = false;
 
+    # Not primary repo, waiting on PR
+    plugin-ccls-nvim.url = "github:MCGHH/ccls.nvim";
+    plugin-ccls-nvim.flake = false;
+
     # Debugger
     plugin-nvim-dap.url = "github:mfussenegger/nvim-dap";
     plugin-nvim-dap.flake = false;

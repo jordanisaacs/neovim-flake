@@ -1,2 +1,4 @@
 result
 .config
+lang-tests
+.ccls-cache

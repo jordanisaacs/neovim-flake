@@ -160,6 +160,22 @@
         "type": "github"
       }
     },
+    "plugin-ccls-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1693106648,
+        "narHash": "sha256-GQkBm3B3v0Xb37uWN/Baqmqh1TMLds7t+DCiJ/vUZKA=",
+        "owner": "MCGHH",
+        "repo": "ccls.nvim",
+        "rev": "f79b041353d5bb4b439cf5d3b00353c362428007",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MCGHH",
+        "repo": "ccls.nvim",
+        "type": "github"
+      }
+    },
     "plugin-cmp-buffer": {
       "flake": false,
       "locked": {
@@ -993,6 +1009,7 @@
         "nmd": "nmd",
         "plugin-bufdelete-nvim": "plugin-bufdelete-nvim",
         "plugin-catppuccin": "plugin-catppuccin",
+        "plugin-ccls-nvim": "plugin-ccls-nvim",
         "plugin-cmp-buffer": "plugin-cmp-buffer",
         "plugin-cmp-dap": "plugin-cmp-dap",
         "plugin-cmp-nvim-lsp": "plugin-cmp-nvim-lsp",
