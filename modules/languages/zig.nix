@@ -55,7 +55,7 @@ in
           settings = {
             ["zls"] = {
               zig_exe_path = "${cfg.lsp.zigPackage}/bin/zig",
-              zig_lib_path = "${cfg.lsp.zigPackage}/lib/zig",
+              zig_lib_path = "${cfg.lsp.zigPackage}/lib/std",
             }
           }
         }
