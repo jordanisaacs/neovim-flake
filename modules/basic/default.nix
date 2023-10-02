@@ -29,7 +29,7 @@ in
 
     scrollOffset = mkOption {
       type = types.int;
-      default = 8;
+      default = 0;
       description = "Start scrolling this number of lines from the top or bottom of the page.";
     };
 
@@ -162,6 +162,7 @@ in
       set shortmess+=c
       set tm=${toString cfg.mapTimeout}
       set hidden
+      set scrolloff=${toString cfg.scrollOffset}
       ${optionalString cfg.splitBelow ''
         set splitbelow
       ''}
