@@ -9,20 +9,23 @@ with lib; let
 in
 {
   imports = [
+    ./bash.nix
     ./clang.nix
     ./go.nix
+    ./html.nix
+    ./java.nix
+    ./kotlin.nix
+    ./markdown.nix
     ./nix.nix
+    ./plantuml.nix
     ./python.nix
     ./rust.nix
+    ./sclang.nix
     ./sql.nix
+    ./terraform.nix
+    ./tidal.nix
     ./ts.nix
     ./zig.nix
-    ./markdown.nix
-    ./plantuml.nix
-    ./tidal.nix
-    ./sclang.nix
-    ./html.nix
-    ./bash.nix
   ];
 
   options.vim.languages = {
