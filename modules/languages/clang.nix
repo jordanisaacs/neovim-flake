@@ -20,6 +20,17 @@ with builtins; let
         }
       '';
     };
+
+    clangd = {
+      package = [ "clang-tools" ];
+      lspConfig = lib.warnIf (cfg.lsp.opts != null) "clangd does not use lsp.opts" ''
+        lspconfig.ccls.setup{
+          capabilities = capabilities;
+          on_attach=default_on_attach;
+          cmd = {"${nvim.languages.commandOptToCmd cfg.lsp.package "clangd"}"};
+        }
+      '';
+    };
   };
 in
 {
