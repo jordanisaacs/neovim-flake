@@ -69,6 +69,8 @@ vim.luaConfigRC = lib.nvim.dag.entryAnywhere "config here"
 
 * Add `telescope-file-browser` under <<opt-vim.telescope.fileBrowser.enable>>
 
+* Add `telescope-live-grep-args` under <<opt-vim.telescope.liveGrepArgs.enable>>
+
 * Internally switched to using `nixpkgs-fmt` for formatting
 
 * Setting a language server or format package to `null` will result in neovim calling the command as if it is in your $PATH

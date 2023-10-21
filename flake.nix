@@ -88,6 +88,9 @@
     plugin-telescope-file-browser.url = "github:nvim-telescope/telescope-file-browser.nvim";
     plugin-telescope-file-browser.flake = false;
 
+    plugin-telescope-live-grep-args.url = "github:nvim-telescope/telescope-live-grep-args.nvim";
+    plugin-telescope-live-grep-args.flake = false;
+
     # Filetrees
     plugin-nvim-tree-lua.url = "github:kyazdani42/nvim-tree.lua";
     plugin-nvim-tree-lua.flake = false;
@@ -313,6 +316,7 @@
             vim.telescope = {
               enable = overrideable true;
               fileBrowser.enable = overrideable true;
+              liveGrepArgs.enable = overrideable true;
             };
             vim.git = {
               enable = overrideable true;
