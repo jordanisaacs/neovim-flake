@@ -15,7 +15,7 @@ with builtins; let
     rnix = {
       package = [ "rnix-lsp" ];
       internalFormatter = cfg.format.type == "nixpkgs-fmt";
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.rnix.setup{
           capabilities = capabilities,
         ${
@@ -31,7 +31,7 @@ with builtins; let
     nil = {
       package = [ "nil" ];
       internalFormatter = true;
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.nil_ls.setup{
           capabilities = capabilities,
         ${
@@ -67,7 +67,7 @@ with builtins; let
   formats = {
     alejandra = {
       package = [ "alejandra" ];
-      nullConfig = ''
+      nullConfig = /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.alejandra.with({

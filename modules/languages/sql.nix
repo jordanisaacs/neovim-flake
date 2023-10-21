@@ -12,7 +12,7 @@ with builtins; let
   servers = {
     sqls = {
       package = [ "sqls" ];
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.sqls.setup {
           on_attach = function(client, bufnr)
             client.server_capabilities.execute_command = true
@@ -29,7 +29,7 @@ with builtins; let
   formats = {
     sqlfluff = {
       package = [ sqlfluffDefault ];
-      nullConfig = ''
+      nullConfig = /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.sqlfluff.with({
@@ -45,7 +45,7 @@ with builtins; let
   diagnostics = {
     sqlfluff = {
       package = pkgs.${sqlfluffDefault};
-      nullConfig = pkg: ''
+      nullConfig = pkg: /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.diagnostics.sqlfluff.with({

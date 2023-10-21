@@ -17,7 +17,7 @@ in
   config = mkIf (cfg.enable && cfg.fidget.enable) {
     vim.startPlugins = [ "fidget" ];
 
-    vim.luaConfigRC.fidget = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.fidget = nvim.dag.entryAnywhere /* lua */ ''
       -- Enable fidget
       require'fidget'.setup()
     '';

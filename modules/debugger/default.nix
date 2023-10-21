@@ -32,7 +32,7 @@ in
     {
       vim.startPlugins = [ "nvim-dap" ];
 
-      vim.luaConfigRC.dap-setup = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.dap-setup = nvim.dag.entryAnywhere /* lua */ ''
         local dap = require('dap')
 
         local codelldb_bin = "${cfg.package}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb"
@@ -64,20 +64,22 @@ in
     (mkIf cfg.virtualText.enable {
       vim.startPlugins = [ "nvim-dap-virtual-text" ];
 
-      vim.luaConfigRC.dap-virtual-text = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.dap-virtual-text = nvim.dag.entryAnywhere /* lua */ ''
         require("nvim-dap-virtual-text").setup()
       '';
     })
     (mkIf cfg.ui.enable {
       vim.startPlugins = [ "nvim-dap-ui" ];
 
-      vim.luaConfigRC.dap-ui = nvim.dag.entryAfter [ "dap-setup" ] (''
+      vim.luaConfigRC.dap-ui = nvim.dag.entryAfter [ "dap-setup" ] ((
+        /* lua */ ''
         local dapui = require"dapui"
 
         dapui.setup()
         vim.keymap.set("n", "<leader>du", dapui.toggle)
       ''
-      + (optionalString cfg.ui.autoOpen ''
+      )
+      + (optionalString cfg.ui.autoOpen /* lua */ ''
         -- TODO: move these into generic events
         dap.listeners.after.event_initialized["dapui_config"] = function()
           dapui.open()

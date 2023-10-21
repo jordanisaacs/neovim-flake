@@ -11,7 +11,7 @@ with builtins; let
   servers = {
     pyright = {
       package = [ "nodePackages" "pyright" ];
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.pyright.setup{
           capabilities = capabilities;
           on_attach = default_on_attach;
@@ -25,7 +25,7 @@ with builtins; let
   formats = {
     black = {
       package = [ "black" ];
-      nullConfig = ''
+      nullConfig = /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.black.with({

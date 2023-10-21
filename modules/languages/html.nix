@@ -34,7 +34,7 @@ in
 
       vim.startPlugins = optional cfg.treesitter.autotagHtml "nvim-ts-autotag";
 
-      vim.luaConfigRC.html-autotag = mkIf cfg.treesitter.autotagHtml (nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.html-autotag = mkIf cfg.treesitter.autotagHtml (nvim.dag.entryAnywhere /* lua */ ''
         require('nvim-ts-autotag').setup()
       '');
     })

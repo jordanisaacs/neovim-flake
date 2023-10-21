@@ -29,7 +29,7 @@ in
       {
         vim.startPlugins = [ "nvim-autopairs" ];
 
-        vim.luaConfigRC.autopairs = nvim.dag.entryAnywhere ''
+        vim.luaConfigRC.autopairs = nvim.dag.entryAnywhere /* lua */ ''
           require("nvim-autopairs").setup{}
         '';
       };

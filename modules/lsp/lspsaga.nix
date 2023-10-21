@@ -45,7 +45,7 @@ in
         else { }
       );
 
-    vim.luaConfigRC.lspsage = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.lspsage = nvim.dag.entryAnywhere /* lua */ ''
       -- Enable lspsaga
       local saga = require 'lspsaga'
       saga.init_lsp_saga()

@@ -105,7 +105,7 @@ in
       "path" = "[Path]";
     };
 
-    vim.luaConfigRC.completion = mkIf (cfg.type == "nvim-cmp") (dagPlacement ''
+    vim.luaConfigRC.completion = mkIf (cfg.type == "nvim-cmp") (dagPlacement /* lua */ ''
       local nvim_cmp_menu_map = function(entry, vim_item)
         -- name for each source
         vim_item.menu = ({

@@ -47,7 +47,7 @@ in
       #     ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
       #   },
       # },
-      vim.luaConfigRC.telescope-live-grep-args-setup = nvim.dag.entryBefore [ "telescope" ] ''
+      vim.luaConfigRC.telescope-live-grep-args-setup = nvim.dag.entryBefore [ "telescope" ] /* lua */ ''
         local lga_actions = require("telescope-live-grep-args.actions")
 
         require("telescope").setup {
@@ -59,7 +59,7 @@ in
         }
       '';
 
-      vim.luaConfigRC.telescope-live-grep-args-load = nvim.dag.entryAfter [ "telescope" ] ''
+      vim.luaConfigRC.telescope-live-grep-args-load = nvim.dag.entryAfter [ "telescope" ] /* lua */ ''
         require("telescope").load_extension "live_grep_args"
 
       '';
@@ -72,7 +72,7 @@ in
         "<leader>fd" = "<cmd> Telescope file_browser<CR>";
       };
 
-      vim.luaConfigRC.telescope-file-browser-setup = nvim.dag.entryBefore [ "telescope" ] ''
+      vim.luaConfigRC.telescope-file-browser-setup = nvim.dag.entryBefore [ "telescope" ] /* lua */ ''
         require("telescope").setup {
           extensions = {
             file_browser = {
@@ -82,7 +82,7 @@ in
         }
       '';
 
-      vim.luaConfigRC.telescope-file-browser-load = nvim.dag.entryAfter [ "telescope" ] ''
+      vim.luaConfigRC.telescope-file-browser-load = nvim.dag.entryAfter [ "telescope" ] /* lua */ ''
         require("telescope").load_extension "file_browser"
       '';
     })
@@ -122,7 +122,7 @@ in
         "<leader>fvx" = "<cmd> Telescope git_stash<CR>";
       };
 
-      vim.luaConfigRC.telescope = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.telescope = nvim.dag.entryAnywhere /* lua */ ''
         require("telescope").setup {
           defaults = {
             vimgrep_arguments = {

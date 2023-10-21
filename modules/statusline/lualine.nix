@@ -200,7 +200,7 @@ in
     #];
 
     vim.startPlugins = [ "lualine" ];
-    vim.luaConfigRC.lualine = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.lualine = nvim.dag.entryAnywhere /* lua */ ''
       require'lualine'.setup {
         options = {
           icons_enabled = ${boolToString cfg.icons},

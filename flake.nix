@@ -12,7 +12,7 @@
     rnix-lsp.inputs.nixpkgs.follows = "flake-utils";
     rnix-lsp.inputs.utils.follows = "flake-utils";
 
-    nil.url = "github:jordanisaacs/nil";
+    nil.url = "github:oxalica/nil";
     nil.inputs.nixpkgs.follows = "nixpkgs";
     nil.inputs.flake-utils.follows = "flake-utils";
 

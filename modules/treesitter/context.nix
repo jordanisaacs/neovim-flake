@@ -68,7 +68,7 @@ in
   config = mkIf (treesitter.enable && cfg.enable) {
     vim.startPlugins = [ "nvim-treesitter-context" ];
 
-    vim.luaConfigRC.treesitter-context = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.treesitter-context = nvim.dag.entryAnywhere /* lua */ ''
       require'treesitter-context'.setup {
         enable = true,
         max_lines = ${toString cfg.maxLines},

@@ -38,7 +38,7 @@ in
       set nofoldenable
     '');
 
-    vim.luaConfigRC.treesitter = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.treesitter = nvim.dag.entryAnywhere /* lua */ ''
       require'nvim-treesitter.configs'.setup {
         highlight = {
           enable = true,

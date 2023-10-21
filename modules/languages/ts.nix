@@ -11,7 +11,7 @@ with builtins; let
   servers = {
     tsserver = {
       package = [ "nodePackages" "typescript-language-server" ];
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.tsserver.setup {
           capabilities = capabilities;
           on_attach = attach_keymaps,
@@ -26,7 +26,7 @@ with builtins; let
   formats = {
     prettier = {
       package = [ "nodePackages" "prettier" ];
-      nullConfig = ''
+      nullConfig = /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.prettier.with({
@@ -42,7 +42,7 @@ with builtins; let
   diagnostics = {
     eslint = {
       package = pkgs.nodePackages.eslint;
-      nullConfig = pkg: ''
+      nullConfig = pkg: /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.diagnostics.eslint.with({

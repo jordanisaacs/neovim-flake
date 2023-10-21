@@ -47,7 +47,7 @@ in
 
     (mkIf cfg.lsp.enable {
       vim.lsp.lspconfig.enable = true;
-      vim.lsp.lspconfig.sources.zig-lsp = ''
+      vim.lsp.lspconfig.sources.zig-lsp = /* lua */ ''
         lspconfig.zls.setup {
           capabilities = capabilities,
           on_attach=default_on_attach,

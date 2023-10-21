@@ -73,7 +73,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.indentBlankline.enable {
       vim.startPlugins = [ "indent-blankline" ];
-      vim.luaConfigRC.indent-blankline = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.indent-blankline = nvim.dag.entryAnywhere /* lua */ ''
         vim.opt.list = true
 
         ${optionalString (cfg.indentBlankline.eolChar != null) ''
@@ -95,7 +95,7 @@ in
     })
     (mkIf cfg.cursorWordline.enable {
       vim.startPlugins = [ "nvim-cursorline" ];
-      vim.luaConfigRC.cursorline = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.cursorline = nvim.dag.entryAnywhere /* lua */ ''
         vim.g.cursorline_timeout = ${toString cfg.cursorWordline.lineTimeout}
       '';
     })

@@ -11,7 +11,7 @@ with builtins; let
   servers = {
     bashls = {
       package = [ "nodePackages" "bash-language-server" ];
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.bashls.setup{
           capabilities = capabilities;
           on_attach = default_on_attach;
@@ -25,7 +25,7 @@ with builtins; let
   formats = {
     shfmt = {
       package = [ "shfmt" ];
-      nullConfig = ''
+      nullConfig = /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.formatting.shfmt.with({
@@ -40,7 +40,7 @@ with builtins; let
   diagnostics = {
     shellcheck = {
       package = pkgs.shellcheck;
-      nullConfig = pkg: ''
+      nullConfig = pkg: /* lua */ ''
         table.insert(
           ls_sources,
           null_ls.builtins.diagnostics.shellcheck.with({

@@ -32,7 +32,7 @@ in
 
     vim.autocomplete.sources = { "nvim_lsp" = "[LSP]"; };
 
-    vim.luaConfigRC.lsp-setup = ''
+    vim.luaConfigRC.lsp-setup = /* lua */ ''
       vim.g.formatsave = ${boolToString cfg.formatOnSave};
 
       local attach_keymaps = function(client, bufnr)

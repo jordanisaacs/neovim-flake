@@ -23,7 +23,7 @@ in
       {
         vim.startPlugins = [ "gitsigns-nvim" ];
 
-        vim.luaConfigRC.gitsigns = nvim.dag.entryAnywhere ''
+        vim.luaConfigRC.gitsigns = nvim.dag.entryAnywhere /* lua */ ''
           require('gitsigns').setup {
             on_attach = function(bufnr)
               local gs = package.loaded.gitsigns

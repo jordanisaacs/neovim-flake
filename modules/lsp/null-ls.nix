@@ -1,4 +1,4 @@
-# vim.luaConfigRC.lsp = nvim.dag.entryAnywhere ''
+# vim.luaConfigRC.lsp = nvim.dag.entryAnywhere /* lua */ ''
 #   }
 #   -- Enable null-ls
 # '';
@@ -27,13 +27,13 @@ in
       vim.lsp.enable = true;
       vim.startPlugins = [ "null-ls" ];
 
-      vim.luaConfigRC.null_ls-setup = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.null_ls-setup = nvim.dag.entryAnywhere /* lua */ ''
         local null_ls = require("null-ls")
         local null_helpers = require("null-ls.helpers")
         local null_methods = require("null-ls.methods")
         local ls_sources = {}
       '';
-      vim.luaConfigRC.null_ls = nvim.dag.entryAfter [ "null_ls-setup" "lsp-setup" ] ''
+      vim.luaConfigRC.null_ls = nvim.dag.entryAfter [ "null_ls-setup" "lsp-setup" ] /* lua */ ''
         require('null-ls').setup({
           diagnostics_format = "[#{m}] #{s} (#{c})",
           debounce = 250,

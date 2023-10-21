@@ -72,7 +72,7 @@ in
       vim.startPlugins = [ "crates-nvim" ];
 
       vim.autocomplete.sources = { "crates" = "[Crates]"; };
-      vim.luaConfigRC.rust-crates = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.rust-crates = nvim.dag.entryAnywhere /* lua */ ''
         require('crates').setup {
           null_ls = {
             enabled = ${boolToString cfg.crates.codeActions},
@@ -89,7 +89,7 @@ in
       vim.startPlugins = [ "rust-tools" ];
 
       vim.lsp.lspconfig.enable = true;
-      vim.lsp.lspconfig.sources.rust-lsp = ''
+      vim.lsp.lspconfig.sources.rust-lsp = /* lua */ ''
         local rt = require('rust-tools')
 
         rust_on_attach = function(client, bufnr)

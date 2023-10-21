@@ -36,7 +36,7 @@ in
     (mkIf cfg.glow.enable {
       vim.startPlugins = [ "glow-nvim" ];
 
-      vim.luaConfigRC.glow = nvim.dag.entryAnywhere ''
+      vim.luaConfigRC.glow = nvim.dag.entryAnywhere /* lua */ ''
         require'glow'.setup({
           glow_path = "${pkgs.glow}/bin/glow",
         })

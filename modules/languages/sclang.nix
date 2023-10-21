@@ -110,7 +110,7 @@ in {
     vim.startPlugins = [
       "scnvim"
     ];
-    vim.luaConfigRC.scnvim = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.scnvim = nvim.dag.entryAnywhere /* lua */ ''
       local scnvim = require 'scnvim'
       local map = scnvim.map
       local map_expr = scnvim.map_expr

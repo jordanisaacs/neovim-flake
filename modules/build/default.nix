@@ -98,7 +98,7 @@ in
   config =
     let
       buildPlug = name:
-        pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+        pkgs.vimUtils.buildVimPlugin rec {
           pname = name;
           version = "master";
           src =

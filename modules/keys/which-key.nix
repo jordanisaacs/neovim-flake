@@ -19,6 +19,8 @@ in
   config = mkIf (cfg.enable && cfg.whichKey.enable) {
     vim.startPlugins = [ "which-key" ];
 
-    vim.luaConfigRC.whichkey = nvim.dag.entryAnywhere ''local wk = require("which-key").setup {}'';
+    vim.luaConfigRC.whichkey = nvim.dag.entryAnywhere /* lua */ ''
+      local wk = require("which-key").setup {}
+    '';
   };
 }

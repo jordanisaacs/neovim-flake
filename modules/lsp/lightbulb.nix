@@ -21,7 +21,7 @@ in
       autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
     '';
 
-    vim.luaConfigRC.lightbulb = nvim.dag.entryAnywhere ''
+    vim.luaConfigRC.lightbulb = nvim.dag.entryAnywhere /* lua */ ''
       -- Enable trouble diagnostics viewer
       require'nvim-lightbulb'.setup()
     '';

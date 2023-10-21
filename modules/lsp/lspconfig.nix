@@ -24,7 +24,7 @@ in
 
       vim.startPlugins = [ "nvim-lspconfig" ];
 
-      vim.luaConfigRC.lspconfig = nvim.dag.entryAfter [ "lsp-setup" ] ''
+      vim.luaConfigRC.lspconfig = nvim.dag.entryAfter [ "lsp-setup" ] /* lua */ ''
         local lspconfig = require('lspconfig')
       '';
     }

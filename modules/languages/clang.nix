@@ -11,7 +11,7 @@ with builtins; let
   servers = {
     ccls = {
       package = [ "ccls" ];
-      lspConfig = ''
+      lspConfig = /* lua */ ''
         lspconfig.ccls.setup{
           capabilities = capabilities;
           on_attach=default_on_attach;
@@ -23,7 +23,7 @@ with builtins; let
 
     clangd = {
       package = [ "clang-tools" ];
-      lspConfig = lib.warnIf (cfg.lsp.opts != null) "clangd does not use lsp.opts" ''
+      lspConfig = lib.warnIf (cfg.lsp.opts != null) "clangd does not use lsp.opts" /* lua */ ''
         lspconfig.ccls.setup{
           capabilities = capabilities;
           on_attach=default_on_attach;
@@ -110,7 +110,7 @@ in
 
         vim.startPlugins = [ "ccls-nvim" ];
 
-        vim.luaConfigRC.ccls-nvim = nvim.dag.entryAnywhere ''
+        vim.luaConfigRC.ccls-nvim = nvim.dag.entryAnywhere /* lua */ ''
           require("ccls").setup({})
         '';
       })
