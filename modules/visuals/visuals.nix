@@ -45,7 +45,7 @@ in
       };
 
       showEndOfLine = mkOption {
-        description = nvim.nmd.asciiDoc ''
+        description = ''
           Displays the end of line character set by <<opt-vim.visuals.indentBlankline.eolChar>> instead of the
           indent guide on line returns.
         '';

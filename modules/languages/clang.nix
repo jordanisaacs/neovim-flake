@@ -80,7 +80,7 @@ in
         enable = mkOption {
           description = "Enable support for extra ccls extensions through ccls.nvim";
           default = cfg.lsp.server == "ccls";
-          defaultText = nvim.nmd.literalAsciiDoc ''`config.vim.languages.clang.lsp.server == "ccls"`'';
+          defaultText = literalExpression ''config.vim.languages.clang.lsp.server == "ccls"'';
         };
       };
     };

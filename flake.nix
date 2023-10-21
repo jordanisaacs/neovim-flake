@@ -4,7 +4,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     # For generating documentation website
-    nmd.url = "gitlab:rycee/nmd";
+    nmd.url = "sourcehut:~rycee/nmd";
     nmd.flake = false;
 
     # Language server (use master instead of nixpkgs)
