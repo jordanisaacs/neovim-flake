@@ -215,6 +215,10 @@
 
     plugin-plantuml-previewer.url = "github:weirongxu/plantuml-previewer.vim";
     plugin-plantuml-previewer.flake = false;
+
+    # misc
+    plugin-vim-be-good.url = "github:ThePrimeagen/vim-be-good";
+    plugin-vim-be-good.flake = false;
   };
 
   outputs =

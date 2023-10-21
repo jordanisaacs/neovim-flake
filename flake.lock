@@ -1009,6 +1009,22 @@
         "type": "github"
       }
     },
+    "plugin-vim-be-good": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1667916364,
+        "narHash": "sha256-lJNY/5dONZLkxSEegrwtZ6PHYsgMD3nZkbxm6fFq3vY=",
+        "owner": "ThePrimeagen",
+        "repo": "vim-be-good",
+        "rev": "c290810728a4f75e334b07dc0f3a4cdea908d351",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ThePrimeagen",
+        "repo": "vim-be-good",
+        "type": "github"
+      }
+    },
     "plugin-vim-vsnip": {
       "flake": false,
       "locked": {
@@ -1126,6 +1142,7 @@
         "plugin-todo-comments": "plugin-todo-comments",
         "plugin-tokyonight": "plugin-tokyonight",
         "plugin-trouble": "plugin-trouble",
+        "plugin-vim-be-good": "plugin-vim-be-good",
         "plugin-vim-vsnip": "plugin-vim-vsnip",
         "plugin-which-key": "plugin-which-key",
         "rnix-lsp": "rnix-lsp",
