@@ -11,6 +11,7 @@ in
   imports = [
     ./bash.nix
     ./clang.nix
+    ./cmake.nix
     ./go.nix
     ./html.nix
     ./java.nix
