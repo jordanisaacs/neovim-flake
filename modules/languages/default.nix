@@ -23,6 +23,7 @@ in
     ./rust.nix
     ./sclang.nix
     ./sql.nix
+    ./tailwindcss.nix
     ./terraform.nix
     ./tidal.nix
     ./ts.nix
