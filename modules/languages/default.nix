@@ -11,6 +11,7 @@ in
   imports = [
     ./bash.nix
     ./clang.nix
+    ./css.nix
     ./go.nix
     ./html.nix
     ./java.nix
@@ -22,6 +23,7 @@ in
     ./rust.nix
     ./sclang.nix
     ./sql.nix
+    ./tailwindcss.nix
     ./terraform.nix
     ./tidal.nix
     ./ts.nix
